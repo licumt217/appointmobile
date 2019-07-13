@@ -15,40 +15,14 @@ module.exports={
         cssSourceMap: true,
         sourceMap: true
     },
-    dev:{
-        env:{
-            NODE_ENV:'"dev"'
-        },
-        index:path.resolve(__dirname,'../questionmobile/index.html'),
-        assetsRoot:path.resolve(__dirname,'../questionmobile'),
-        assetsSubDirectory:'static',
-        assetsPublicPath:'/questionmobile/',
-        productionSourceMap: false, //是否打开打包映射文件
-        productionGzip: false,
-        productionGzipExtensions: ['js', 'css'],
-        sourceMap:false
-    },
-    test:{
-        env:{
-            NODE_ENV:'"test"'
-        },
-        index:path.resolve(__dirname,'../questionmobile/index.html'),
-        assetsRoot:path.resolve(__dirname,'../questionmobile'),
-        assetsSubDirectory:'static',
-        assetsPublicPath:'/questionmobile/',
-        productionSourceMap: false, //是否打开打包映射文件
-        productionGzip: false,
-        productionGzipExtensions: ['js', 'css'],
-        sourceMap:false
-    },
     prep:{
         env:{
             NODE_ENV:'"prep"'
         },
-        index:path.resolve(__dirname,'../questionmobile/index.html'),
-        assetsRoot:path.resolve(__dirname,'../questionmobile'),
+        index:path.resolve(__dirname,'../appointmobile/index.html'),
+        assetsRoot:path.resolve(__dirname,'../appointmobile'),
         assetsSubDirectory:'static',
-        assetsPublicPath:'/questionmobile/',
+        assetsPublicPath:'/appointmobile/',
         productionSourceMap: false, //是否打开打包映射文件
         productionGzip: false,
         productionGzipExtensions: ['js', 'css'],
@@ -58,10 +32,10 @@ module.exports={
         env:{
             NODE_ENV:'"prod"'
         },
-        index:path.resolve(__dirname,'../questionmobile/index.html'),
-        assetsRoot:path.resolve(__dirname,'../questionmobile'),
+        index:path.resolve(__dirname,'../appointmobile/index.html'),
+        assetsRoot:path.resolve(__dirname,'../appointmobile'),
         assetsSubDirectory:'static',
-        assetsPublicPath:'/questionmobile/',
+        assetsPublicPath:'/appointmobile/',
         productionSourceMap: false, //是否打开打包映射文件
         productionGzip: false,
         productionGzipExtensions: ['js', 'css'],

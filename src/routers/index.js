@@ -15,16 +15,9 @@ const user_operate = r => require.ensure([], () => r(require('../pages/user/oper
 const paper_list = r => require.ensure([], () => r(require('../pages/paper/list')), 'paper_list')
 const paper_detail = r => require.ensure([], () => r(require('../pages/paper/detail')), 'paper_detail')
 
-const report_list = r => require.ensure([], () => r(require('../pages/report/list')), 'report_list')
-const report_detail = r => require.ensure([], () => r(require('../pages/report/detail')), 'report_detail')
-
-
-
-
-
 
 const router=new VueRouter({
-    base:'questionmobile',
+    base:'appointmobile',
     // mode:'history',
     routes:[
         // {
@@ -52,15 +45,6 @@ const router=new VueRouter({
         },{
             path:'/paper/list',
             component:paper_list
-        },
-
-        //报告
-        {
-            path:'/report/list',
-            component:report_list
-        },{
-            path:'/report/detail',
-            component:report_detail
         },
 
 
