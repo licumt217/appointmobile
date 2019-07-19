@@ -61,6 +61,19 @@ class Util{
         var re=/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
         return re.test(s);
     }
+
+    /**
+     * 取得url后边的参数
+     * @param name
+     * @returns
+     */
+    static getUrlParam(name) {
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
+        var r = window.location.search.substr(1).match(reg)
+        if (r !== null) return unescape(r[2])
+        return null
+    }
+
 }
 
 export {Util}

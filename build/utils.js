@@ -7,7 +7,7 @@ exports.assetsPath = function (_path) {
   var assetsSubDirectory = process.env.NODE_ENV === 'prod'
     ? config.prod.assetsSubDirectory
     : (assetsSubDirectory = process.env.NODE_ENV === 'test'
-      ? config.test.assetsSubDirectory:config.dev.assetsSubDirectory)
+      ? config.test.assetsSubDirectory:config.prep.assetsSubDirectory)
   return path.posix.join(assetsSubDirectory, _path)
 }
 

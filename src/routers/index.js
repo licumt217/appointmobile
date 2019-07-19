@@ -20,10 +20,10 @@ const router=new VueRouter({
     base:'appointmobile',
     // mode:'history',
     routes:[
-        // {
-        //     path:'/',
-        //     component:homepage
-        // },
+        {
+            path:'/',
+            component:user_login
+        },
 
         //user
         {

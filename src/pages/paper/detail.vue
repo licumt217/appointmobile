@@ -196,14 +196,14 @@
                         }
 
 
-                        this.http.post('questionMobile/saveFinshAnswer', data).then(data => {
+                        this.http.post('appointmobile/saveFinshAnswer', data).then(data => {
 
                             if(!nextMeasureId){
 
-                                Promise.all([this.http.post('questionMobile/generateReport', {
+                                Promise.all([this.http.post('appointmobile/generateReport', {
                                     manageId:this.paperId,
                                     intermediateTableId:this.intermediateTableId
-                                }),this.http.post('questionMobile/detailResult', {
+                                }),this.http.post('appointmobile/detailResult', {
                                     manageId:this.paperId,
                                     intermediateTableId:this.intermediateTableId
                                 })]).then(data=>{
@@ -247,7 +247,7 @@
                     measureId:this.curMeasure.id,
                 }
 
-                this.http.post('questionMobile/saveAnswer', data).then(data => {
+                this.http.post('appointmobile/saveAnswer', data).then(data => {
                     this.$Message.success("保存成功！")
                     this.init()
 
@@ -256,7 +256,7 @@
                 })
             },
             getMeasureList(){
-                this.http.post('questionMobile/getManage', {
+                this.http.post('appointmobile/getManage', {
                     manageId:this.paperId
                 }).then(data => {
 

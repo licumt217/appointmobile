@@ -61,7 +61,7 @@
         },
         methods: {
             getList() {
-                this.http.post('questionMobile/list', {}).then(data => {
+                this.http.post('appointmobile/list', {}).then(data => {
 
                     this.dataList = data.data;
                 }).catch(error=>{

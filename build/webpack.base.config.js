@@ -73,7 +73,7 @@ module.exports = {
             //    loader:"style-loader!css-loader!postcss-loader"
             //}
 
-        ].concat(utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, extract: true }))
+        ].concat(utils.styleLoaders({ sourceMap: config.prep.cssSourceMap, extract: true }))
     },
     // eslint: {
     //     formatter: require('eslint-friendly-formatter')

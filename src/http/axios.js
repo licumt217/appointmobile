@@ -4,7 +4,7 @@ import axios from 'axios'
 axios.defaults.timeout = 20000;
 axios.defaults.baseURL = '';
 
-var baseURL = 'http://47.92.74.29:8360/'
+var baseURL = 'http://www.zhuancaiqian.com/appoint_wx/wechatApi/'
 // if (location.host.indexOf('prep') > -1 || location.host.indexOf('localhost') > -1) {
 //     baseURL = 'http://localhost:3000/'
 // } else if (location.host.indexOf('open') > -1) {
@@ -31,16 +31,19 @@ axios.interceptors.response.use(
     response => {
 
 
-        if(response.data.success===3){
+        alert(JSON.stringify(response))
+
+
+        if(response.data.isSuccess==="2"){
             store.commit("reset")
 
             location.href=location.href.split("#")[0]+"#"+"/user/login"
 
-            return Promise.reject(response.data.error);
-        }else if(response.data.success===1){
-            return Promise.reject(response.data.error);
-        }else if(response.data.success===0){
-            return Promise.resolve(response.data);
+            return Promise.reject(response.data.errorMsg);
+        }else if(response.data.isSuccess==="1"){
+            return Promise.reject(response.data.errorMsg);
+        }else if(response.data.isSuccess==="0"){
+            return Promise.resolve(response.data.data);
         }
 
     },

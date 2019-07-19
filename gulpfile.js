@@ -2,13 +2,13 @@ let gulp = require('gulp') //加载gulp模块
 let minimist = require('minimist') //传参
 let pro = require('child_process') //运行子进程库
 let sftp = require('gulp-sftp') //sftp上传程序
-let projectName = 'questionmobile'
+let projectName = 'appointmobile'
 let gutil = require('gulp-util')
 
 let username = 'root'
 let password = '819819819qQ'
 let assets = process.cwd() + '/' + projectName
-let address = '/server/html/questionmobile'
+let address = '/server/html/appointmobile'
 
 let remoteServer1Prep = {
     host: '47.92.74.29',

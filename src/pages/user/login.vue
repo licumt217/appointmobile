@@ -86,6 +86,29 @@
             },
         },
         mounted() {
+
+
+            let code =Util.getUrlParam("code")
+
+            alert(Util.getUrlParam("code"))
+            this.http.get('getOpenId', {
+                params:{
+                    code:code
+                }
+            }).then((data) => {
+
+                alert(data)
+                alert(JSON.stringify(data))
+
+            }).catch(err => {
+                this.$Message.error(err)
+            })
+
+            return;
+
+
+
+
             if (this.isLogin) {
                 this.$router.push('/paper/list')
             }
