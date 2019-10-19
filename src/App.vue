@@ -63,9 +63,9 @@
             $route (to, from) {
 
 
-                if (!this.isLogin && (to.path !== '/user/register' && to.path !== '/user/login')) {
-                    this.$router.push('/user/login')
-                }
+                // if (!this.isLogin && (to.path !== '/user/register' && to.path !== '/user/login')) {
+                //     this.$router.push('/user/login')
+                // }
             },
         },
         computed: {

@@ -8,9 +8,10 @@ Vue.use(VueRouter)
 
 const homepage = r => require.ensure([], () => r(require('../pages/homepage')), 'homepage')
 
-const user_login = r => require.ensure([], () => r(require('../pages/user/login')), 'user_login')
 const user_register = r => require.ensure([], () => r(require('../pages/user/register')), 'user_register')
-const user_operate = r => require.ensure([], () => r(require('../pages/user/operate')), 'user_operate')
+const user_preTable = r => require.ensure([], () => r(require('../pages/user/preTable')), 'user_preTable')
+const myAppoint = r => require.ensure([], () => r(require('../pages/myAppoint')), 'myAppoint')
+const appointDetail = r => require.ensure([], () => r(require('../pages/appointDetail')), 'appointDetail')
 
 const paper_list = r => require.ensure([], () => r(require('../pages/paper/list')), 'paper_list')
 const paper_detail = r => require.ensure([], () => r(require('../pages/paper/detail')), 'paper_detail')
@@ -22,29 +23,24 @@ const router=new VueRouter({
     routes:[
         {
             path:'/',
-            component:user_login
+            component:user_register
         },
 
-        //user
         {
-            path:'/user/login',
-            component:user_login
-        },{
             path:'/user/register',
             component:user_register
         },{
-            path:'/user/operate',
-            component:user_operate
+            path:'/user/preTable',
+            component:user_preTable
         },
 
 
-        //问卷管理
         {
-            path:'/paper/detail',
-            component:paper_detail
+            path:'/myAppoint',
+            component:myAppoint
         },{
-            path:'/paper/list',
-            component:paper_list
+            path:'/appointDetail',
+            component:appointDetail
         },
 
 

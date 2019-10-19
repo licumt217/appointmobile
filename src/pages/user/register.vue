@@ -4,8 +4,6 @@
     <div class="login-wrap">
         <transition name="slideT">
             <div class="mainContent" >
-                <div class="ms-title">心理测评管理系统</div>
-
                 <div class="ms-login">
 
                     <Tabs >
@@ -17,8 +15,8 @@
                                     <Input  type="number" placeholder="请输入手机号" v-model="formItem.phone"></Input>
                                 </Form-item>
 
-                                <Form-item prop="password" label="密码">
-                                    <Input type="password" placeholder="请输入密码" :maxlength="20" v-model="formItem.password"></Input>
+                                <Form-item prop="idCard" label="身份证号">
+                                    <Input  type="text" placeholder="请输入身份证号" v-model="formItem.idCard"></Input>
                                 </Form-item>
 
                                 <Form-item prop="name" label="姓名">
@@ -48,9 +46,6 @@
                     <div class="login-btn">
                         <Button type="primary" @click="register">注册</Button>
                     </div>
-                    <div class="signup-btn">
-                        <a href="javascript:" @click="back2Login">返回登录</a>
-                    </div>
                 </div>
             </div>
         </transition>
@@ -71,8 +66,8 @@
                         {required: true, message: "手机号不能为空", trigger: "blur"},
                         {type: 'string', min: 11, message: '手机号长度不能少于11位', trigger: 'blur'}
                     ],
-                    password: [
-                        {required: true, message: "密码不能为空", trigger: "blur"}
+                    idCard: [
+                        {required: true, message: "身份证号不能为空", trigger: "blur"}
                     ],
                     sex: [
                         {required: true, message: "性别不能为空", trigger: "change"}
@@ -93,15 +88,12 @@
         },
         mounted() {
             if (this.isLogin) {
-                this.$router.push('/')
+                // this.$router.push('/')
             }
         },
         methods: {
             hideKbd(e){
                 e.target.blur()
-            },
-            back2Login(){
-              this.$router.go(-1)
             },
             register() {
 
@@ -113,24 +105,21 @@
                             return;
                         }
 
-                        if(!Util.isValidEmail(this.formItem.email)){
-                            this.$Message.warning("请输入合法的电子邮箱！")
+                        if(!Util.isValidID(this.formItem.idCard)){
+                            this.$Message.warning("请输入合法的身份证号！")
                             return;
                         }
 
-                        if(!sessionStorage.userGroupId){
-                            this.$Message.warning("用户组ID不能为空！")
-                            return;
-                        }
-                        this.formItem.userGroup=sessionStorage.userGroupId
-                        this.http.post('login/register', this.formItem).then((data) => {
+                        // this.http.post('login/register', this.formItem).then((data) => {
                             this.$Message.success("注册成功")
 
-                            this.$router.push('/user/login')
+                            //TODO 入口是哪个菜单，注册后需要跳转到具体菜单。
 
-                        }).catch(err => {
-                            this.$Message.error(err)
-                        })
+                            this.$router.push('/user/preTable')
+
+                        // }).catch(err => {
+                        //     this.$Message.error(err)
+                        // })
 
                     }
 
@@ -144,7 +133,7 @@
 <style scoped>
     .login-wrap {
         width: 100%;
-        background: url("../../assets/images/bg-image.jpg");
+        /*background: url("../../assets/images/bg-image.jpg");*/
         background-size: 100% 100%;
     }
 
