@@ -12,9 +12,10 @@ const user_register = r => require.ensure([], () => r(require('../pages/user/reg
 const user_preTable = r => require.ensure([], () => r(require('../pages/user/preTable')), 'user_preTable')
 const myAppoint = r => require.ensure([], () => r(require('../pages/myAppoint')), 'myAppoint')
 const appointDetail = r => require.ensure([], () => r(require('../pages/appointDetail')), 'appointDetail')
+const appointType = r => require.ensure([], () => r(require('../pages/appointType')), 'appointType')
+const therapistList = r => require.ensure([], () => r(require('../pages/therapistList')), 'therapistList')
+const appointTime = r => require.ensure([], () => r(require('../pages/appointTime')), 'appointTime')
 
-const paper_list = r => require.ensure([], () => r(require('../pages/paper/list')), 'paper_list')
-const paper_detail = r => require.ensure([], () => r(require('../pages/paper/detail')), 'paper_detail')
 
 
 const router=new VueRouter({
@@ -41,6 +42,16 @@ const router=new VueRouter({
         },{
             path:'/appointDetail',
             component:appointDetail
+        },{
+            path:'/appointType',
+            component:appointType
+        },{
+            path:'/therapistList',
+            component:therapistList
+        },
+        {
+            path:'/appointTime',
+            component:appointTime
         },
 
 

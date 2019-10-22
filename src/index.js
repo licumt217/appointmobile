@@ -2,10 +2,10 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import App from './App.vue'
 import router from './routers'
-import iView from 'iview';
+import iView from 'view-design';
 import axios from './http/axios'
 
-import 'iview/dist/styles/iview.css';
+import 'view-design/dist/styles/iview.css';
 
 Vue.use(Vuex)
 import store from './store'

@@ -1,87 +1,90 @@
 <template>
 
 
-    <div class="">
-        <transition name="slideT">
-            <div class="mainContent">
-                <div class="ms-login">
+    <section class="">
+        <div class="mainContent">
+            <div class="ms-login">
 
-                    <Tabs value="setting">
-                        <TabPane label="我的预约" name="myAppoint">
+                <Tabs value="myAppoint">
+                    <TabPane label="我的预约" name="myAppoint">
 
-                            <Card>
-                                <p slot="title">当前预约</p>
-                                <p>预约名称：总是失眠咨询</p>
-                                <p>预约地点：北京市五道口宇宙中心</p>
-                                <p>预约时间：2019/12/20</p>
-                                <p>咨询师：范冰冰</p>
-                                <div style="margin-top: 1em;">
-                                    <Button @click="go2Detail" style="margin-right: 2em;">查看详情</Button>
-                                    <Button type="error" @click="cancel">取消预约</Button>
-                                </div>
-                            </Card>
+                        <Card>
+                            <p slot="title">当前预约</p><!---->
+                            <p>预约名称：总是失眠咨询</p>
+                            <p>预约地点：北京市五道口宇宙中心</p>
+                            <p>预约时间：2019/12/20</p>
+                            <p>咨询师：范冰冰</p>
+                            <div style="margin-top: 1em;">
+                                <Button @click="go2Detail" style="margin-right: 2em;">查看详情</Button>
+                                <Button type="error" @click="cancel">取消预约</Button>
+                            </div>
+                        </Card>
 
-                        </TabPane>
+                        <div style="margin-top: 1em;" >
+                            <Button type="primary" long @click="appoint">立即预约</Button>
+                        </div>
 
-                        <TabPane label="预约历史" name="appointHistory">
+                    </TabPane>
 
-                            <Table border stripe :columns="columns12" :data="data6">
-                                <template slot-scope="{ row }" slot="name">
-                                    <span @click="go2Detail">{{ row.name }}</span>
-                                </template>
-                            </Table>
+                    <TabPane label="预约历史" name="appointHistory">
 
-                        </TabPane>
+                        <Table border stripe :columns="columns12" :data="data6">
+                            <template slot-scope="{ row }" slot="name">
+                                <span @click="go2Detail">{{ row.name }}</span>
+                            </template>
+                        </Table>
 
-                        <TabPane label="设置" name="setting">
+                    </TabPane>
 
-                            <Collapse v-model="setting" accordion>
-                                <Panel name="emergencyPerson">
-                                    紧急联系人设置
-                                    <div slot="content">
-                                        <Card v-for="person in emergencyPersonList" style="margin-bottom: 0.5em;">
-                                            <p slot="title">
-                                                {{person.name}}
-                                            </p>
-                                            <p>关系：{{person.relation}}</p>
-                                            <p>手机号：{{person.phone}}</p>
-                                            <p>电子邮件：{{person.email}}</p>
-                                            <Row style="">
-                                                <Col span="6" offset="18">
-                                                    <Button type="error" ghost size="small" @click="deletePerson">
-                                                        删除联系人
-                                                    </Button>
-                                                </Col>
-                                            </Row>
+                    <TabPane label="设置" name="setting">
 
-                                        </Card>
-                                        <Row v-show="emergencyPersonList.length<3">
+                        <Collapse v-model="setting" accordion>
+                            <Panel name="emergencyPerson">
+                                紧急联系人设置
+                                <div slot="content">
+                                    <Card v-for="person in emergencyPersonList" style="margin-bottom: 0.5em;">
+                                        <p slot="title">
+                                            {{person.name}}
+                                        </p>
+                                        <p>关系：{{person.relation}}</p>
+                                        <p>手机号：{{person.phone}}</p>
+                                        <p>电子邮件：{{person.email}}</p>
+                                        <Row style="">
                                             <Col span="6" offset="18">
-                                                <Button type="primary" size="small" @click="showAddPersonModal">添加联系人
+                                                <Button type="error" ghost size="small" @click="deletePerson">
+                                                    删除联系人
                                                 </Button>
                                             </Col>
                                         </Row>
-                                    </div>
-                                </Panel>
-                                <Panel name="2">
-                                    斯蒂夫·盖瑞·沃兹尼亚克
-                                    <p slot="content">斯蒂夫·盖瑞·沃兹尼亚克（Stephen Gary
-                                        Wozniak），美国电脑工程师，曾与史蒂夫·乔布斯合伙创立苹果电脑（今之苹果公司）。斯蒂夫·盖瑞·沃兹尼亚克曾就读于美国科罗拉多大学，后转学入美国著名高等学府加州大学伯克利分校（UC
-                                        Berkeley）并获得电机工程及计算机（EECS）本科学位（1987年）。</p>
-                                </Panel>
-                            </Collapse>
+
+                                    </Card>
+                                    <Row v-show="emergencyPersonList.length<3">
+                                        <Col span="6" offset="18">
+                                            <Button type="primary" size="small" @click="showAddPersonModal">添加联系人
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                </div>
+                            </Panel>
+                            <Panel name="2">
+                                其它设置
+                                <p slot="content">
+                                    斯蒂夫·盖瑞·沃兹尼亚克（Stephen Gary
+                                </p>
+                            </Panel>
+                        </Collapse>
 
 
-                        </TabPane>
+                    </TabPane>
 
-                    </Tabs>
+                </Tabs>
 
-                    <!--                    <div class="login-btn" style="margin-top: 0.5em;">-->
-                    <!--                        <Button type="primary" @click="operate">确定</Button>-->
-                    <!--                    </div>-->
-                </div>
             </div>
-        </transition>
+
+
+
+
+        </div>
 
         <Modal v-model="isShowAddPersonModal" fullscreen title="添加紧急联系人">
             <Form :model="emergencyForm" :rules="rules" ref="emergencyForm" :label-width="80" class="demo-ruleForm">
@@ -110,7 +113,7 @@
             </div>
         </Modal>
 
-    </div>
+    </section>
 
 </template>
 
@@ -223,6 +226,9 @@
 
                 })
 
+            },
+            appoint(){
+                this.$router.push('/appointType')
             },
 
 
