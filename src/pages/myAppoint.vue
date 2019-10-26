@@ -6,6 +6,7 @@
             <div class="ms-login">
 
                 <Tabs value="myAppoint">
+
                     <TabPane label="我的预约" name="myAppoint">
 
                         <Card>
@@ -22,16 +23,23 @@
 
                         <div style="margin-top: 1em;" >
                             <Row>
-                                <Col span="10" offset="1">
+                                <Col span="7" offset="1">
                                     <Button type="primary" long @click="appoint">立即预约</Button>
                                 </Col>
-                                <Col span="10" offset="1">
+                                <Col span="7" offset="1">
                                     <Button type="success" long @click="emergencyConsult">紧急咨询</Button>
                                 </Col>
+
+                                <Col span="7" offset="1">
+                                    <Button type="warning" long @click="transfer">转介</Button>
+                                </Col>
+
                             </Row>
                         </div>
 
                     </TabPane>
+
+
 
                     <TabPane label="预约历史" name="appointHistory">
 
@@ -42,6 +50,8 @@
                         </Table>
 
                     </TabPane>
+
+
 
                     <TabPane label="设置" name="setting">
 
@@ -209,6 +219,17 @@
         mounted() {
         },
         methods: {
+            /**
+             * 转介
+             */
+            transfer(){
+
+                this.$router.push({
+                    path:'/therapistListWithTransfer',
+                    query:{
+                    }
+                })
+            },
             //紧急咨询
             emergencyConsult(){
                 this.$router.push({

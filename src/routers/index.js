@@ -14,6 +14,7 @@ const myAppoint = r => require.ensure([], () => r(require('../pages/myAppoint'))
 const appointDetail = r => require.ensure([], () => r(require('../pages/appointDetail')), 'appointDetail')
 const appointType = r => require.ensure([], () => r(require('../pages/appointType')), 'appointType')
 const therapistList = r => require.ensure([], () => r(require('../pages/therapistList')), 'therapistList')
+const therapistListWithTransfer = r => require.ensure([], () => r(require('../pages/therapistListWithTransfer')), 'therapistListWithTransfer')
 const therapistDetail = r => require.ensure([], () => r(require('../pages/therapistDetail')), 'therapistDetail')
 const appointTime = r => require.ensure([], () => r(require('../pages/appointTime')), 'appointTime')
 
@@ -49,6 +50,9 @@ const router=new VueRouter({
         },{
             path:'/therapistList',
             component:therapistList
+        },{
+            path:'/therapistListWithTransfer',
+            component:therapistListWithTransfer
         },{
             path:'/therapistDetail',
             component:therapistDetail
