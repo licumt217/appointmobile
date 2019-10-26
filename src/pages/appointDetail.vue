@@ -9,16 +9,30 @@
             <p>预约时间：2019/12/20</p>
             <p>咨询师：范冰冰</p>
             <div style="margin-top: 1em;">
-                <Button type="error" @click="cancel">取消预约</Button>
+                <Button size="small" type="error" @click="cancel">取消预约</Button>
+                <Button size="small" small type="success" @click="showFeedbackModal">咨询效果反馈</Button>
+                <Button size="small"  type="error" @click="showComplainModal">投诉咨询师</Button>
             </div>
         </Card>
+
+        <ComplainModal ref="complainModal" @complain="complain"></ComplainModal>
+        <FeedbackModal ref="feedbackModal" @feedback="feedback"></FeedbackModal>
+
+
+
     </div>
 
 </template>
 
 <script>
     import {Util} from '../assets/js/Util'
+    import ComplainModal from './components/ComplainModal'
+    import FeedbackModal from './components/FeedbackModal'
     export default {
+        components:{
+            ComplainModal,
+            FeedbackModal
+        },
         data() {
             return {
                 formItem: {
@@ -70,6 +84,19 @@
         mounted() {
         },
         methods: {
+            complain(){
+                alert(3)
+            },
+            feedback(){
+                alert(2)
+            },
+            showComplainModal(){
+                this.$refs.complainModal.show();
+            },
+            showFeedbackModal(){
+                this.$refs.feedbackModal.show();
+            },
+
             /**
              * 24小时内能取消（已支付的直接退款
              * 24小时外不能退款）
@@ -94,41 +121,6 @@
 </script>
 
 <style scoped>
-    .login-wrap {
-        position: relative;
-        width: 100%;
-        background-size: 100% 100%;
-    }
-
-    .mainContent {
-        width:98%;
-        margin-left: 1%;
-        margin-bottom: 5%;
-    }
-
-    .ms-login {
-        overflow: hidden;
-        padding: 10px;
-        border-radius: 5px;
-        background: #fff;
-        box-sizing: border-box;
-        position: relative
-    }
-
-    .login-btn {
-        text-align: center;
-    }
-
-    .signup-btn {
-        margin-top: 10px;
-        text-align: center;
-        cursor: pointer;
-    }
-
-    .login-btn button {
-        width: 100%;
-        height: 36px;
-    }
 
 
 

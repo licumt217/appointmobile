@@ -21,7 +21,14 @@
                         </Card>
 
                         <div style="margin-top: 1em;" >
-                            <Button type="primary" long @click="appoint">立即预约</Button>
+                            <Row>
+                                <Col span="10" offset="1">
+                                    <Button type="primary" long @click="appoint">立即预约</Button>
+                                </Col>
+                                <Col span="10" offset="1">
+                                    <Button type="success" long @click="emergencyConsult">紧急咨询</Button>
+                                </Col>
+                            </Row>
                         </div>
 
                     </TabPane>
@@ -50,7 +57,7 @@
                                         <p>手机号：{{person.phone}}</p>
                                         <p>电子邮件：{{person.email}}</p>
                                         <Row style="">
-                                            <Col span="6" offset="18">
+                                            <Col span="6" offset="17">
                                                 <Button type="error" ghost size="small" @click="deletePerson">
                                                     删除联系人
                                                 </Button>
@@ -202,6 +209,15 @@
         mounted() {
         },
         methods: {
+            //紧急咨询
+            emergencyConsult(){
+                this.$router.push({
+                    path:'/therapistList',
+                    query:{
+                        isEmergency:true
+                    }
+                })
+            },
             showAddPersonModal() {
                 this.isShowAddPersonModal = true;
             },

@@ -27,6 +27,9 @@
 
 
         </div>
+        <EmergencyConsultModal ref="emergencyConsult" @consult="consult"></EmergencyConsultModal>
+
+
 
 
 
@@ -37,55 +40,94 @@
 <script>
     import {Util} from '../assets/js/Util'
     import {SCHOOL_TYPE,QUALIFICATION_TYPE,SEX} from "../assets/js/constants/constant"
-
+    import EmergencyConsultModal from './components/EmergencyConsultModal'
     export default {
+        components:{
+            EmergencyConsultModal
+        },
         data() {
             return {
+                isEmergency:this.$route.query.isEmergency?true:false,
                 SCHOOL_TYPE,
                 QUALIFICATION_TYPE,
                 SEX,
                 appointType: 'family',
                 mannerType: '1',
-                therapistList: [
-                    {
-                        name: '张老师',
-                        sex: 'male',
-                        qualification_type: '1',
-                        school_type: '1'
-                    },{
-                        name: '李老师',
-                        sex: 'male',
-                        qualification_type: '2',
-                        school_type: '1'
-                    },{
-                        name: '王老师',
-                        sex: 'female',
-                        qualification_type: '1',
-                        school_type: '2'
-                    },
-
-                ],
+                therapistList: [],
 
 
             }
         },
         computed: {},
         mounted() {
+            this.getTherapistList();
         },
         methods: {
+            //紧急咨询回调
+            consult(){
+                //TODO 后续流程呢？
+            },
+
+            getTherapistList(){
+                //TODO 根据是否紧急咨询返回对应列表，有些咨询师不允许紧急咨询的
+                if(this.isEmergency){
+                    this.therapistList=[
+                        {
+                            name: '张老师',
+                            sex: 'male',
+                            qualification_type: '1',
+                            school_type: '1'
+                        },{
+                            name: '李老师',
+                            sex: 'male',
+                            qualification_type: '2',
+                            school_type: '1'
+                        }
+
+                    ]
+                }else{
+                    this.therapistList=[
+                        {
+                            name: '张老师',
+                            sex: 'male',
+                            qualification_type: '1',
+                            school_type: '1'
+                        },{
+                            name: '李老师',
+                            sex: 'male',
+                            qualification_type: '2',
+                            school_type: '1'
+                        },{
+                            name: '王老师',
+                            sex: 'female',
+                            qualification_type: '1',
+                            school_type: '2'
+                        },
+
+                    ]
+                }
+            },
 
             detail() {
 
-                this.$router.push('/therapistList')
+                this.$router.push('/therapistDetail')
 
             },
             next() {
+
+                //TODO 紧急咨询时填原因
 
                 //TODO 判断是否平台黑名单或所选咨询师的黑名单，是的话无法继续预约。分两次判断，当前所选咨询师黑名单的话可以切换咨询师
 
                 //TODO 判断是否首次预约，首次的话需要同意隐私条款。隐私条款每条都需要同意吗？类似复选框都选中？还是确定一条之后依次出现下一条。这样是否太变态了？
 
-                this.$router.push('/appointTime')
+                if(this.isEmergency){
+
+                    this.$refs.emergencyConsult.show()
+
+                }else{
+                    this.$router.push('/appointTime')
+                }
 
             },
 
