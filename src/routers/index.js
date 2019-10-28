@@ -17,6 +17,11 @@ const therapistList = r => require.ensure([], () => r(require('../pages/therapis
 const therapistListWithTransfer = r => require.ensure([], () => r(require('../pages/therapistListWithTransfer')), 'therapistListWithTransfer')
 const therapistDetail = r => require.ensure([], () => r(require('../pages/therapistDetail')), 'therapistDetail')
 const appointTime = r => require.ensure([], () => r(require('../pages/appointTime')), 'appointTime')
+const userFeedbackPush = r => require.ensure([], () => r(require('../pages/push/user/feedback')), 'userFeedbackPush')
+const userRoomAgreePush = r => require.ensure([], () => r(require('../pages/push/user/roomAgree')), 'userRoomAgreePush')
+const caseManagerRoomConfirmPush = r => require.ensure([], () => r(require('../pages/push/caseManager/roomConfirm')), 'caseManagerRoomConfirmPush')
+const therapistRoomAgreePush = r => require.ensure([], () => r(require('../pages/push/therapist/roomAgree')), 'therapistRoomAgreePush')
+const therapistRoomDenyPush = r => require.ensure([], () => r(require('../pages/push/therapist/roomDeny')), 'therapistRoomDenyPush')
 
 
 
@@ -60,6 +65,22 @@ const router=new VueRouter({
         {
             path:'/appointTime',
             component:appointTime
+        },
+        {
+            path:'/userFeedbackPush',
+            component:userFeedbackPush
+        },{
+            path:'/userRoomAgreePush',
+            component:userRoomAgreePush
+        },{
+            path:'/caseManagerRoomConfirmPush',
+            component:caseManagerRoomConfirmPush
+        },{
+            path:'/therapistRoomAgreePush',
+            component:therapistRoomAgreePush
+        },{
+            path:'/therapistRoomDenyPush',
+            component:therapistRoomDenyPush
         },
 
 
