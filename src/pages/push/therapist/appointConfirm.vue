@@ -4,14 +4,14 @@
     <section class="">
 
         <Card>
-            <p slot="title">房间确认通知</p><!---->
+            <p slot="title">预约确认通知</p><!---->
             <p>预约名称：总是失眠咨询</p>
             <p>预约地点：北京市五道口宇宙中心</p>
             <p>预约时间：2019/12/20</p>
-            <p>咨询师：范冰冰</p>
+            <p>用户：贾静雯</p>
             <div style="margin-top: 1em;">
-                <Button @click="agree" style="margin-right: 2em;">同意预约此房间</Button>
-                <Button type="error" @click="deny">拒绝预约此房间</Button>
+                <Button @click="agree" style="margin-right: 2em;">接受预约</Button>
+                <Button type="error" @click="deny">拒绝预约</Button>
             </div>
         </Card>
 
@@ -45,11 +45,10 @@
         },
         computed: {},
         mounted() {
-            this.getDetail();
         },
         methods: {
             agree() {
-                alert("同意")
+                alert("接受")
 
             },
             deny() {

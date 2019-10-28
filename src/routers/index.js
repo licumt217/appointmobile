@@ -17,11 +17,21 @@ const therapistList = r => require.ensure([], () => r(require('../pages/therapis
 const therapistListWithTransfer = r => require.ensure([], () => r(require('../pages/therapistListWithTransfer')), 'therapistListWithTransfer')
 const therapistDetail = r => require.ensure([], () => r(require('../pages/therapistDetail')), 'therapistDetail')
 const appointTime = r => require.ensure([], () => r(require('../pages/appointTime')), 'appointTime')
+
 const userFeedbackPush = r => require.ensure([], () => r(require('../pages/push/user/feedback')), 'userFeedbackPush')
 const userRoomAgreePush = r => require.ensure([], () => r(require('../pages/push/user/roomAgree')), 'userRoomAgreePush')
+const userAppointDenyPush = r => require.ensure([], () => r(require('../pages/push/user/appointDeny')), 'userAppointDenyPush')
+const userAppointAgreePush = r => require.ensure([], () => r(require('../pages/push/user/appointAgree')), 'userAppointAgreePush')
+
 const caseManagerRoomConfirmPush = r => require.ensure([], () => r(require('../pages/push/caseManager/roomConfirm')), 'caseManagerRoomConfirmPush')
+
 const therapistRoomAgreePush = r => require.ensure([], () => r(require('../pages/push/therapist/roomAgree')), 'therapistRoomAgreePush')
 const therapistRoomDenyPush = r => require.ensure([], () => r(require('../pages/push/therapist/roomDeny')), 'therapistRoomDenyPush')
+const therapistAppointConfirmPush = r => require.ensure([], () => r(require('../pages/push/therapist/appointConfirm')), 'therapistAppointConfirmPush')
+const therapistAppointFinishConfirmPush = r => require.ensure([], () => r(require('../pages/push/therapist/appointFinishConfirm')), 'therapistAppointFinishConfirmPush')
+const therapistEmergencyAppointPush = r => require.ensure([], () => r(require('../pages/push/therapist/emergencyAppoint')), 'therapistEmergencyAppointPush')
+const therapistPaySuccessPush = r => require.ensure([], () => r(require('../pages/push/therapist/paySuccess')), 'therapistPaySuccessPush')
+
 
 
 
@@ -66,6 +76,8 @@ const router=new VueRouter({
             path:'/appointTime',
             component:appointTime
         },
+
+
         {
             path:'/userFeedbackPush',
             component:userFeedbackPush
@@ -73,6 +85,15 @@ const router=new VueRouter({
             path:'/userRoomAgreePush',
             component:userRoomAgreePush
         },{
+            path:'/userAppointDenyPush',
+            component:userAppointDenyPush
+        },{
+            path:'/userAppointAgreePush',
+            component:userAppointAgreePush
+        },
+
+
+        {
             path:'/caseManagerRoomConfirmPush',
             component:caseManagerRoomConfirmPush
         },{
@@ -81,6 +102,18 @@ const router=new VueRouter({
         },{
             path:'/therapistRoomDenyPush',
             component:therapistRoomDenyPush
+        },{
+            path:'/therapistAppointConfirmPush',
+            component:therapistAppointConfirmPush
+        },{
+            path:'/therapistAppointFinishConfirmPush',
+            component:therapistAppointFinishConfirmPush
+        },{
+            path:'/therapistEmergencyAppointPush',
+            component:therapistEmergencyAppointPush
+        },{
+            path:'/therapistPaySuccessPush',
+            component:therapistPaySuccessPush
         },
 
 

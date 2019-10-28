@@ -4,7 +4,7 @@ import App from './App.vue'
 import router from './routers'
 import iView from 'view-design';
 import axios from './http/axios'
-
+require('./assets/js/StringPrototype')
 import 'view-design/dist/styles/iview.css';
 
 Vue.use(Vuex)

@@ -2,8 +2,16 @@
 
 
     <section class="">
-        
 
+        <Card>
+            <p slot="title">房间申请拒绝通知</p><!---->
+            <p>预约名称：总是失眠咨询</p>
+            <p>预约地点：北京市五道口宇宙中心</p>
+            <p>预约时间：2019/12/20</p>
+            <p>案例管理者：曹操</p>
+            <p>审核状态：拒绝</p>
+            <p>原因：此房间已被占用</p>
+        </Card>
 
 
 
@@ -35,11 +43,14 @@
         },
         computed: {},
         mounted() {
-            this.getDetail();
         },
         methods: {
-            getDetail() {
+            agree() {
+                alert("同意")
 
+            },
+            deny() {
+                alert("拒绝")
 
             },
 
