@@ -14,6 +14,7 @@ module.exports={
         proxyTable: {},
         cssSourceMap: true,
         sourceMap: true
+
     },
     prep:{
         env:{

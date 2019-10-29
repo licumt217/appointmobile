@@ -39,6 +39,9 @@ compiler.plugin('compilation', function (compilation) {
         cb()
     })
 })
+// handle fallback for HTML5 history API
+app.use(require('connect-history-api-fallback')())
+
 app.use(webpackDevMiddleware(compiler,{
     publicPath: webpackConfig.output.publicPath,
     stats: {
@@ -66,7 +69,7 @@ module.exports = app.listen(port, function (err) {
         console.log(err)
         return
     }
-    var uri = 'http://localhost:' + port+"/#/user/register"
+    var uri = 'http://localhost:' + port+"/user/register"
     console.log('Listening at ' + uri + '\n')
     setTimeout(function () {
         opn(uri)

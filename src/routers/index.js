@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store'
-
+import {Util} from '../assets/js/Util'
 Vue.use(VueRouter)
 
 
@@ -33,13 +33,14 @@ const therapistAppointConfirmPush = r => require.ensure([], () => r(require('../
 const therapistAppointFinishConfirmPush = r => require.ensure([], () => r(require('../pages/push/therapist/appointFinishConfirm')), 'therapistAppointFinishConfirmPush')
 const therapistEmergencyAppointPush = r => require.ensure([], () => r(require('../pages/push/therapist/emergencyAppoint')), 'therapistEmergencyAppointPush')
 const therapistPaySuccessPush = r => require.ensure([], () => r(require('../pages/push/therapist/paySuccess')), 'therapistPaySuccessPush')
+const pay = r => require.ensure([], () => r(require('../pages/pay')), 'pay')
 
 
 
 
 const router=new VueRouter({
     base:'appointmobile',
-    // mode:'history',
+    mode:'history',
     routes:[
         {
             path:'/',
@@ -127,14 +128,60 @@ const router=new VueRouter({
         },
 
 
+        {
+            path:'/pay',
+            component:pay
+        },
+
+
 
     ]
 })
 
-router.afterEach((to,from,next)=>{
+router.beforeEach((to,from,next)=>{
 
-    //切换路由时菜单动态跟随切换
-        store.commit('activeMenuName',to.meta.activeName)
+    //验证openid是否和手机号绑定了
+
+    if(sessionStorage.phone){
+        next()
+    }else{
+
+        if(sessionStorage.openid){
+
+            if(to.path==='/user/register'){
+                next()
+            }else{
+                next('/user/register')
+            }
+
+
+        }else{
+            let code =Util.getUrlParam("code")
+
+            if(!code){
+                console.error("授权code不能为空!")
+            }else{
+                this.http.get('getOpenId', {
+                    params:{
+                        code:code
+                    }
+                }).then((openid) => {
+                    alert('获取openId返回'+openid+JSON.stringify(openid))
+                    sessionStorage.openid=openid;
+                    next()
+                }).catch(err => {
+                    this.$Message.error(err)
+                })
+            }
+
+
+        }
+
+
+    }
+
+
+
 
 })
 

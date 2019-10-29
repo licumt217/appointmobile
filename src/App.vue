@@ -47,6 +47,7 @@
 
 <script>
     import Pass from './components/PasswordModify'
+    import {Util} from './assets/js/Util'
     export default {
         name: 'app',
         data() {

@@ -9,12 +9,6 @@ switch (node_env) {
     case 'prep':
         require('./prep-server')
         break;
-    case 'test':
-        require('./test-server')
-        break;
-    case 'dev':
-        require('./dev-server')
-        break;
     default:
         require('./local-server')
 }
