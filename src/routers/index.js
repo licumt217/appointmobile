@@ -17,6 +17,8 @@ const therapistList = r => require.ensure([], () => r(require('../pages/therapis
 const therapistListWithTransfer = r => require.ensure([], () => r(require('../pages/therapistListWithTransfer')), 'therapistListWithTransfer')
 const therapistDetail = r => require.ensure([], () => r(require('../pages/therapistDetail')), 'therapistDetail')
 const appointTime = r => require.ensure([], () => r(require('../pages/appointTime')), 'appointTime')
+const continueTime = r => require.ensure([], () => r(require('../pages/continueTime')), 'continueTime')
+const selectRoom = r => require.ensure([], () => r(require('../pages/selectRoom')), 'selectRoom')
 
 const userFeedbackPush = r => require.ensure([], () => r(require('../pages/push/user/feedback')), 'userFeedbackPush')
 const userRoomAgreePush = r => require.ensure([], () => r(require('../pages/push/user/roomAgree')), 'userRoomAgreePush')
@@ -75,6 +77,14 @@ const router=new VueRouter({
         {
             path:'/appointTime',
             component:appointTime
+        },
+        {
+            path:'/continueTime',
+            component:continueTime
+        },
+        {
+            path:'/selectRoom',
+            component:selectRoom
         },
 
 

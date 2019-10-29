@@ -12,8 +12,8 @@
             <p>支付时间：2019.10.27 12:12:10</p>
             <p>支付金额：贾静雯</p>
             <div style="margin-top: 1em;">
-                <Button @click="agree" style="margin-right: 2em;">设置持续时间</Button>
-                <Button type="error" @click="deny">选择房间</Button>
+                <Button @click="setContinueTime" style="margin-right: 2em;">设置持续时间</Button>
+<!--                <Button type="error" @click="deny">选择房间</Button>-->
             </div>
         </Card>
 
@@ -49,6 +49,11 @@
         mounted() {
         },
         methods: {
+            setContinueTime(){
+              this.$router.push({
+                  path:'/continueTime'
+              })
+            },
             agree() {
                 alert("接受")
 

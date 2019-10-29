@@ -1,5 +1,5 @@
 
 
-String.prototype.padStart= function(len,replaceStr=" ") {   
+String.prototype.padStart= function(len,replaceStr=" ") {
 }
 
