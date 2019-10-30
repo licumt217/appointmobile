@@ -10,13 +10,19 @@ import 'view-design/dist/styles/iview.css';
 Vue.use(Vuex)
 import store from './store'
 Vue.use(iView)
+import VConsole from 'vconsole';
 
+if(process.env.NODE_ENV!=='prod'){
+  new VConsole();
+}
 Vue.prototype.http=axios;
 
 Vue.config.productionTip = false
 
-new Vue({
+const app=new Vue({
   render: h => h(App),
   router,
   store,
 }).$mount('#app')
+
+export default app

@@ -4,6 +4,8 @@ import store from '../store'
 import {Util} from '../assets/js/Util'
 Vue.use(VueRouter)
 
+import axios from '../http/axios'
+
 
 
 const homepage = r => require.ensure([], () => r(require('../pages/homepage')), 'homepage')
@@ -161,7 +163,8 @@ router.beforeEach((to,from,next)=>{
             if(!code){
                 console.error("授权code不能为空!")
             }else{
-                this.http.get('getOpenId', {
+                debugger
+                axios.get('getOpenId', {
                     params:{
                         code:code
                     }
