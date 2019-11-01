@@ -164,14 +164,28 @@ router.beforeEach((to,from,next)=>{
                 console.error("授权code不能为空!")
             }else{
                 debugger
-                axios.get('getOpenId', {
+                axios.get('getOpenid', {
                     params:{
                         code:code
                     }
                 }).then((openid) => {
-                    alert('获取openId返回'+openid+JSON.stringify(openid))
                     sessionStorage.openid=openid;
-                    next()
+                    axios.get('getPhoneByOpenid', {
+                        params:{
+                            openid
+                        }
+                    }).then((phone) => {
+                        if(phone){
+                            sessionStorage.phone=phone
+                            next()
+                        }else{
+                            next('/user/register')
+                        }
+
+                    }).catch(err => {
+                        this.$Message.error(err)
+                    })
+
                 }).catch(err => {
                     this.$Message.error(err)
                 })

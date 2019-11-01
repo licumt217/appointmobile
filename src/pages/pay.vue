@@ -29,10 +29,6 @@
 
 
 
-                    alert(JSON.stringify(obj))
-
-
-                    setTimeout(()=>{
                         WeixinJSBridge.invoke(
                             'getBrandWCPayRequest', obj,
                             function(res){
@@ -44,7 +40,6 @@
                                     alert("支付失败")
                                 }
                             });
-                    },5000)
 
 
 
