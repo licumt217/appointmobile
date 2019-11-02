@@ -25,13 +25,13 @@
         },
         methods: {
             pay(){
-                this.http.post('unifiedOrder', {
+                this.http.post('order/unifiedOrder', {
                     openid:sessionStorage.openid,
                     therapist_id:Util.uuid(),
                     amount:0.01,
                 }).then((data) => {
 
-                        PayUtil.pay(data,this.successCallback,this.failCallback)
+                        PayUtil.pay(data.secuParam,this.successCallback,this.failCallback)
 
                 }).catch(err => {
                     this.$Message.error(err)

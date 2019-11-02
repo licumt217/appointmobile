@@ -15,16 +15,16 @@
                                     <Input  type="number" placeholder="请输入手机号" v-model="formItem.phone"></Input>
                                 </Form-item>
 
-                                <Form-item prop="idCard" label="身份证号">
-                                    <Input  type="text" placeholder="请输入身份证号" v-model="formItem.idCard"></Input>
+                                <Form-item prop="identification_no" label="身份证号">
+                                    <Input  type="text" placeholder="请输入身份证号" v-model="formItem.identification_no"></Input>
                                 </Form-item>
 
                                 <Form-item prop="name" label="姓名">
                                     <Input placeholder="请输入姓名" :maxlength="20" v-model="formItem.name"></Input>
                                 </Form-item>
 
-                                <FormItem label="性别" prop="sex">
-                                    <RadioGroup v-model="formItem.sex" vertical>
+                                <FormItem label="性别" prop="gender">
+                                    <RadioGroup v-model="formItem.gender" vertical>
                                         <Radio label="male">男</Radio>
                                         <Radio label="female">女</Radio>
                                     </RadioGroup>
@@ -66,10 +66,10 @@
                         {required: true, message: "手机号不能为空", trigger: "blur"},
                         {type: 'string', min: 11, message: '手机号长度不能少于11位', trigger: 'blur'}
                     ],
-                    idCard: [
+                    identification_no: [
                         {required: true, message: "身份证号不能为空", trigger: "blur"}
                     ],
-                    sex: [
+                    gender: [
                         {required: true, message: "性别不能为空", trigger: "change"}
                     ],
                     birthday: [
@@ -105,21 +105,26 @@
                             return;
                         }
 
-                        if(!Util.isValidID(this.formItem.idCard)){
+                        if(!Util.isValidID(this.formItem.identification_no)){
                             this.$Message.warning("请输入合法的身份证号！")
                             return;
                         }
 
-                        // this.http.post('login/register', this.formItem).then((data) => {
+                        this.formItem.openid=sessionStorage.openid;
+
+                        this.http.post('user/registerAndBind', this.formItem).then((data) => {
+
                             this.$Message.success("注册成功")
+
+                            sessionStorage.user_id=data;
 
                             //TODO 入口是哪个菜单，注册后需要跳转到具体菜单。
 
-                            this.$router.push('/user/preTable')
+                            this.$router.push('/pay')
 
-                        // }).catch(err => {
-                        //     this.$Message.error(err)
-                        // })
+                        }).catch(err => {
+                            this.$Message.error(err)
+                        })
 
                     }
 
@@ -144,16 +149,7 @@
         height:100%;
     }
 
-    .ms-title {
-        width: 100%;
-        margin-bottom: 20px;
-        text-align: center;
-        font-size: 26px;
-        color: rgba(255, 255, 255, 0.8);
-        font-weight: 500;
-        letter-spacing: 4px;
 
-    }
 
     .ms-login {
         width: 100%;
@@ -169,24 +165,12 @@
         text-align: center;
     }
 
-    .signup-btn {
-        margin-top: 10px;
-        text-align: center;
-        cursor: pointer;
-    }
 
     .login-btn button {
         width: 100%;
         height: 36px;
     }
 
-    .slideT-enter-active, .slideT-leave-active {
-        transition: all .6s ease-out;
-    }
 
-    .slideT-enter {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
 
 </style>

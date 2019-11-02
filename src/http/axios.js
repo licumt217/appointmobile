@@ -4,7 +4,7 @@ import axios from 'axios'
 axios.defaults.timeout = 20000;
 axios.defaults.baseURL = '';
 
-var baseURL = 'http://www.zhuancaiqian.com/appoint_wx/wechatApi/'
+var baseURL = 'http://www.zhuancaiqian.com/appoint_wx/'
 // if (location.host.indexOf('prep') > -1 || location.host.indexOf('localhost') > -1) {
 //     baseURL = 'http://localhost:3000/'
 // } else if (location.host.indexOf('open') > -1) {

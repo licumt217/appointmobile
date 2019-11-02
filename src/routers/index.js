@@ -144,7 +144,7 @@ router.beforeEach((to,from,next)=>{
 
     //验证openid是否和手机号绑定了
 
-    if(sessionStorage.phone){
+    if(sessionStorage.user_id){
         next()
     }else{
 
@@ -164,19 +164,19 @@ router.beforeEach((to,from,next)=>{
                 console.error("授权code不能为空!")
             }else{
                 debugger
-                axios.get('getOpenid', {
+                axios.get('wechatApi/getOpenid', {
                     params:{
                         code:code
                     }
                 }).then((openid) => {
                     sessionStorage.openid=openid;
-                    axios.get('getPhoneByOpenid', {
+                    axios.get('user/getUserByOpenid', {
                         params:{
                             openid
                         }
-                    }).then((phone) => {
-                        if(phone){
-                            sessionStorage.phone=phone
+                    }).then((data) => {
+                        if(data){
+                            sessionStorage.user_id=data.id
                             next()
                         }else{
                             next('/user/register')
