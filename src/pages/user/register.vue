@@ -112,11 +112,12 @@
 
                         this.formItem.openid=sessionStorage.openid;
 
-                        this.http.post('user/registerAndBind', this.formItem).then((data) => {
+                        this.http.post('login/registerAndBind', this.formItem).then((data) => {
 
                             this.$Message.success("注册成功")
 
-                            sessionStorage.user_id=data;
+                            sessionStorage.user_id=data.userInfo.user_id;
+                            sessionStorage.token=data.token;
 
                             //TODO 入口是哪个菜单，注册后需要跳转到具体菜单。
 

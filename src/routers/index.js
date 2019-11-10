@@ -170,13 +170,14 @@ router.beforeEach((to,from,next)=>{
                     }
                 }).then((openid) => {
                     sessionStorage.openid=openid;
-                    axios.get('user/getUserByOpenid', {
+                    axios.get('login/getUserByOpenid', {
                         params:{
                             openid
                         }
                     }).then((data) => {
                         if(data){
-                            sessionStorage.user_id=data.id
+                            sessionStorage.user_id=data.userInfo.id
+                            sessionStorage.token=data.token
                             next()
                         }else{
                             next('/user/register')
