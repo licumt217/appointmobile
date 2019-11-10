@@ -3,13 +3,13 @@
 
     <section class="">
         <div class="mainContent">
-            <Card v-for="person in therapistList" style="margin-bottom: 0.5em;">
+            <Card v-for="item in therapistList" style="margin-bottom: 0.5em;">
                 <p slot="title">
-                    {{person.name}}
+                    {{item.name}}
                 </p>
-                <p>性别：{{SEX[person.sex]}}</p>
-                <p>流派：{{SCHOOL_TYPE[person.school_type]}}</p>
-                <p>资历：{{QUALIFICATION_TYPE[person.qualification_type]}}</p>
+                <p>性别：{{SEX[item.gender]}}</p>
+                <p>流派：{{schoolTypeObj[item.schoolTypeId].name}}</p>
+                <p>资历：{{qualificationTypeObj[item.qualificationTypeId].name}}</p>
                 <Row style="margin-top: .5em;" justify="space-between" type="flex">
                     <Col span="8" >
                         <Button type="primary" size="small" @click="next">
@@ -39,7 +39,8 @@
 
 <script>
     import {Util} from '../assets/js/Util'
-    import {SCHOOL_TYPE,QUALIFICATION_TYPE,SEX} from "../assets/js/constants/constant"
+    import Role from '../assets/js/Role'
+    import {SEX} from "../assets/js/constants/constant"
     import EmergencyConsultModal from './components/EmergencyConsultModal'
     export default {
         components:{
@@ -47,28 +48,77 @@
         },
         data() {
             return {
+                qualificationTypeObj:{},
+                schoolTypeObj:{},
                 isEmergency:this.$route.query.isEmergency?true:false,
-                SCHOOL_TYPE,
-                QUALIFICATION_TYPE,
                 SEX,
-                appointType: 'family',
-                mannerType: '1',
                 therapistList: [],
+                consultTypeId:this.$route.query.consultTypeId,
+                mannerTypeId:this.$route.query.mannerTypeId,
 
 
             }
         },
         computed: {},
         mounted() {
-            this.getTherapistList();
+            this.getList();
+            this.getQualificationTypeList()
+            this.getSchoolTypeList()
         },
         methods: {
+            getQualificationTypeList(){
+                this.http.post('qualificationtype/list', {}).then((data) => {
+
+                    this.qualificationTypeObj=Util.array2Object(data)
+
+                }).catch(err => {
+                    this.$Message.error(err)
+                })
+            },
+
+            getSchoolTypeList(){
+                this.http.post('schooltype/list', {}).then((data) => {
+
+                    this.schoolTypeObj=Util.array2Object(data)
+
+                }).catch(err => {
+                    this.$Message.error(err)
+                })
+            },
             //紧急咨询回调
             consult(){
                 //TODO 后续流程呢？
             },
 
+            getList(page) {
+
+
+
+                page=page||1;
+
+                let pageSize=Util.pageSize
+
+                let whereObj={
+                    role:Role.therapist,
+                    page,
+                    pageSize
+                }
+
+                if(this.isEmergency){
+                    whereObj.isEmergency=1
+                }
+
+                this.http.post('user/list', whereObj).then((data) => {
+
+                    this.therapistList = data.data;
+
+                }).catch(err => {
+                    this.$Message.error(err)
+                })
+            },
             getTherapistList(){
+
+
                 //TODO 根据是否紧急咨询返回对应列表，有些咨询师不允许紧急咨询的
                 if(this.isEmergency){
                     this.therapistList=[
@@ -88,16 +138,6 @@
                 }else{
                     this.therapistList=[
                         {
-                            name: '张老师',
-                            sex: 'male',
-                            qualification_type: '1',
-                            school_type: '1'
-                        },{
-                            name: '李老师',
-                            sex: 'male',
-                            qualification_type: '2',
-                            school_type: '1'
-                        },{
                             name: '王老师',
                             sex: 'female',
                             qualification_type: '1',

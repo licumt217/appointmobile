@@ -10,15 +10,20 @@
                     <TabPane label="我的预约" name="myAppoint">
 
                         <Card>
-                            <p slot="title">当前预约</p><!---->
-                            <p>预约名称：总是失眠咨询</p>
-                            <p>预约地点：北京市五道口宇宙中心</p>
-                            <p>预约时间：2019/12/20</p>
-                            <p>咨询师：范冰冰</p>
-                            <div style="margin-top: 1em;">
-                                <Button @click="go2Detail" style="margin-right: 2em;">查看详情</Button>
-                                <Button type="error" @click="cancel">取消预约</Button>
-                            </div>
+                            <p slot="title">当前预约</p>
+                            <template v-if="curAppoint">
+                                <p>预约名称：总是失眠咨询</p>
+                                <p>预约地点：北京市五道口宇宙中心</p>
+                                <p>预约时间：2019/12/20</p>
+                                <p>咨询师：范冰冰</p>
+                                <div style="margin-top: 1em;">
+                                    <Button @click="go2Detail" style="margin-right: 2em;">查看详情</Button>
+                                    <Button type="error" @click="cancel">取消预约</Button>
+                                </div>
+                            </template>
+                            <template>
+                                <h3>暂无预约</h3>
+                            </template>
                         </Card>
 
                         <div style="margin-top: 1em;" >
@@ -140,6 +145,7 @@
     export default {
         data() {
             return {
+                curAppoint:null,
                 isShowAddPersonModal: false,
                 emergencyPersonList: [
                     {
@@ -265,7 +271,7 @@
 
             },
             appoint(){
-                this.$router.push('/appointType')
+                this.$router.push('/consultType')
             },
 
 

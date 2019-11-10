@@ -121,7 +121,7 @@
 
                             //TODO 入口是哪个菜单，注册后需要跳转到具体菜单。
 
-                            this.$router.push('/pay')
+                            this.$router.push('/myAppoint')
 
                         }).catch(err => {
                             this.$Message.error(err)

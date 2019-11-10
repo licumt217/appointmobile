@@ -5,32 +5,7 @@ let SEX={
     female:"女"
 }
 
-/**
- * 流派类型
- * @type {{"1": string, "2": string}}
- */
-let SCHOOL_TYPE={
-    1:'古典流派',
-    2:'现代流派'
-}
 
-/**
- * 资历类型
- * @type {{"1": string, "2": string}}
- */
-let QUALIFICATION_TYPE={
-    1:'老资历',
-    2:'新资历'
-}
-
-/**
- * 咨询方式类型
- * @type {{"1": string, "2": string}}
- */
-let MANNER_TYPE={
-    1:'线上',
-    2:'线下'
-}
 
 /**
  * 伦理公告显示类型
@@ -42,4 +17,4 @@ let NOTICE_SHOW_TYPE={
     2:'一段时间显示'
 }
 
-export {SEX,SCHOOL_TYPE,QUALIFICATION_TYPE,MANNER_TYPE,NOTICE_SHOW_TYPE}
+export {SEX,NOTICE_SHOW_TYPE}

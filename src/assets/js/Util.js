@@ -81,7 +81,33 @@ class Util{
             return v.toString(16)
         })
     }
+    /**
+     * 数组转对象
+     * @param array
+     * @param key
+     */
+    static array2Object(array,key='id'){
+        let obj={}
+
+        array.forEach(item=>{
+            obj[item[key]]=item;
+        })
+
+        return obj;
+    }
+
+    /**
+     * 获取某年某月有多少天
+     * @param year
+     * @param month 0-11
+     * @returns {number}
+     */
+    static getDaysOfMonth(year, month) {
+        month+=1;
+        let d = new Date(year, month, 0);
+        return d.getDate();
+    }
 
 }
-
+Util.pageSize=10;
 export {Util}

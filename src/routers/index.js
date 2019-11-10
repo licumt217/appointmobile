@@ -6,15 +6,13 @@ Vue.use(VueRouter)
 
 import axios from '../http/axios'
 
-
-
 const homepage = r => require.ensure([], () => r(require('../pages/homepage')), 'homepage')
 
 const user_register = r => require.ensure([], () => r(require('../pages/user/register')), 'user_register')
 const user_preTable = r => require.ensure([], () => r(require('../pages/user/preTable')), 'user_preTable')
 const myAppoint = r => require.ensure([], () => r(require('../pages/myAppoint')), 'myAppoint')
 const appointDetail = r => require.ensure([], () => r(require('../pages/appointDetail')), 'appointDetail')
-const appointType = r => require.ensure([], () => r(require('../pages/appointType')), 'appointType')
+const consultType = r => require.ensure([], () => r(require('../pages/consultType')), 'consultType')
 const therapistList = r => require.ensure([], () => r(require('../pages/therapistList')), 'therapistList')
 const therapistListWithTransfer = r => require.ensure([], () => r(require('../pages/therapistListWithTransfer')), 'therapistListWithTransfer')
 const therapistDetail = r => require.ensure([], () => r(require('../pages/therapistDetail')), 'therapistDetail')
@@ -65,8 +63,8 @@ const router=new VueRouter({
             path:'/appointDetail',
             component:appointDetail
         },{
-            path:'/appointType',
-            component:appointType
+            path:'/consultType',
+            component:consultType
         },{
             path:'/therapistList',
             component:therapistList
