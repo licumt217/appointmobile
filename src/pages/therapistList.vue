@@ -12,7 +12,7 @@
                 <p>资历：{{qualificationTypeObj[item.qualificationTypeId].name}}</p>
                 <Row style="margin-top: .5em;" justify="space-between" type="flex">
                     <Col span="8" >
-                        <Button type="primary" size="small" @click="next">
+                        <Button type="primary" size="small" @click="next(item)">
                             选择此咨询师
                         </Button>
                     </Col>
@@ -101,7 +101,8 @@
                 let whereObj={
                     role:Role.therapist,
                     page,
-                    pageSize
+                    pageSize,
+                    mannerTypeId:this.mannerTypeId
                 }
 
                 if(this.isEmergency){
@@ -116,44 +117,13 @@
                     this.$Message.error(err)
                 })
             },
-            getTherapistList(){
-
-
-                //TODO 根据是否紧急咨询返回对应列表，有些咨询师不允许紧急咨询的
-                if(this.isEmergency){
-                    this.therapistList=[
-                        {
-                            name: '张老师',
-                            sex: 'male',
-                            qualification_type: '1',
-                            school_type: '1'
-                        },{
-                            name: '李老师',
-                            sex: 'male',
-                            qualification_type: '2',
-                            school_type: '1'
-                        }
-
-                    ]
-                }else{
-                    this.therapistList=[
-                        {
-                            name: '王老师',
-                            sex: 'female',
-                            qualification_type: '1',
-                            school_type: '2'
-                        },
-
-                    ]
-                }
-            },
 
             detail() {
 
                 this.$router.push('/therapistDetail')
 
             },
-            next() {
+            next(item) {
 
                 //TODO 紧急咨询时填原因
 
@@ -166,7 +136,12 @@
                     this.$refs.emergencyConsult.show()
 
                 }else{
-                    this.$router.push('/appointTime')
+                    this.$router.push({
+                        path:'/appointTime',
+                        query:{
+                            therapist_id:item.therapist_id
+                        }
+                    })
                 }
 
             },

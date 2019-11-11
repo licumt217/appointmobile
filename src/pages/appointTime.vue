@@ -3,12 +3,12 @@
 
     <section class="" style="padding: 1em;">
 
-        <section style="margin-bottom: 1em;">
+        <section style="margin-bottom: 2em;">
             <span style="font-weight: bold">请选择预约日期：</span>
-            <DatePicker type="date" :options="timeOptions" placeholder="请选择预约日期" style="width: 200px"></DatePicker>
+            <DatePicker v-model="appoint_date" type="date" :options="timeOptions" placeholder="请选择预约日期" style="width: 200px"></DatePicker>
         </section>
 
-        <section style="">
+        <section style="" v-if="appoint_date && availablePeriodArray">
 
             <p style="font-weight: bold;margin-bottom: 1em;">请选择预约时段：</p>
 
@@ -17,8 +17,8 @@
 
                     <template v-for="(period,index) in availablePeriodArray">
 
-                        <Checkbox :label="period.key" style="margin-right: 3em;">
-                            {{period.desc}}
+                        <Checkbox :label="period" style="margin-right: 3em;">
+                            {{descMap[period]}}
                         </Checkbox>
                         <template v-if="index%2!==0">
                             <br/>
@@ -36,8 +36,8 @@
 
                     <template v-for="(period,index) in myAvailablePeriodArray">
 
-                        <Checkbox :label="period.key" style="margin-right: 3em;">
-                            {{period.desc}}
+                        <Checkbox :label="period" style="margin-right: 3em;">
+                            {{descMap[period]}}
                         </Checkbox>
                         <template v-if="index%2!==0">
                             <br/>
@@ -65,39 +65,27 @@
 
 <script>
     import {Util} from '../assets/js/Util'
+    import DateUtil from '../assets/js/DateUtil'
     import TimePeriod from "./components/TimePeriod";
 
     export default {
         data() {
             return {
-                periodArray: ['period1','period3'],
+                therapist_id:this.$route.query.therapist_id,
+                appoint_date:null,
+                periodArray: [],
                 myPeriodArray: ['period1','period3'],
-                availablePeriodArray:[],
-                myAvailablePeriodArray:[{
-                    desc:'08:00-08:50',
-                    key:'period1'
-                },{
-                    desc:'09:00-09:50',
-                    key:'period2'
-                },{
-                    desc:'10:00-10:50',
-                    key:'period3'
-                },{
-                    desc:'11:00-11:50',
-                    key:'period4'
-                },{
-                    desc:'13:00-13:50',
-                    key:'period5'
-                },{
-                    desc:'14:00-14:50',
-                    key:'period6'
-                },{
-                    desc:'15:00-15:50',
-                    key:'period7'
-                },{
-                    desc:'16:00-16:50',
-                    key:'period8'
-                },],
+                availablePeriodArray:null,
+                myAvailablePeriodArray:[
+                    'period1',
+                    'period2',
+                    'period3',
+                    'period4',
+                    'period5',
+                    'period6',
+                    'period7',
+                    'period8',
+                ],
                 appointType: 'family',
                 mannerType: '1',
                 roomId: '359baf4a6e1f4cc5a10ad31d1b2f5317',
@@ -108,17 +96,75 @@
                         return date && (this.isBeforeToday(date) || this.isAfterTwoMonths(date))
                     }
                 },
+                descMap:{
+                    period1:'08:00-08:50',
+                    period2:'09:00-09:50',
+                    period3:'10:00-10:50',
+                    period4:'11:00-11:50',
+                    period5:'13:00-13:50',
+                    period6:'14:00-14:50',
+                    period7:'15:00-15:50',
+                    period8:'16:00-16:50',
+                }
 
             }
         },
         components: {
             TimePeriod
         },
+        watch:{
+            appoint_date(newValue,oldValue){
+                this.getAvailablePeriod()
+            }
+        },
         computed: {},
         mounted() {
         },
         methods: {
 
+
+            /**
+             * 获取咨询师在某天的可预约时段
+             */
+            getAvailablePeriod(){
+                if(!this.appoint_date){
+                    return;
+                }
+
+                this.periodArray=[]
+                this.http.post('therapistperiod/list', {
+                    therapist_id:this.therapist_id,
+                    appoint_date:DateUtil.format(this.appoint_date)
+                }).then((data) => {
+
+                    if(data.length===0){
+                        this.availablePeriodArray=JSON.parse(JSON.stringify(this.myAvailablePeriodArray))
+                    }else{
+                        let notAvailableArray=[]
+                        data.forEach(item=>{
+                            for(let i=1;i<=8;i++){
+                                let key=`period${i}`
+                                let data=item[key]
+                                if(data===1){
+                                    notAvailableArray.push(key)
+                                }
+                            }
+                        })
+                        let fullArray=JSON.parse(JSON.stringify(this.myAvailablePeriodArray))
+
+                        this.availablePeriodArray=fullArray.filter((item)=>{
+                            return !notAvailableArray.includes(item)
+                        })
+
+
+
+
+                    }
+
+                }).catch(err => {
+                    this.$Message.error(err)
+                })
+            },
             isBeforeToday(date) {
                 return date.valueOf() < (Date.now() - 86400000);
             },
@@ -131,7 +177,33 @@
 
             next() {
 
-                this.$router.push('/therapistList')
+                if(!this.appoint_date){
+                    this.$Message.warning("请选择预约日期！")
+                    return;
+                }
+
+                if(!this.periodArray || this.periodArray.length===0){
+                    this.$Message.warning("请选择预约时段！")
+                    return;
+                }
+
+                this.http.post('order/unifiedOrder', {
+                    openid:sessionStorage.openid,
+                    amount:0.01,
+                    therapist_id:this.therapist_id,
+                    appoint_date:DateUtil.format(this.appoint_date),
+                    periodArray:this.periodArray
+                }).then((data) => {
+                    this.$Message.success("预约成功！")
+                    this.$router.push({
+                        path:'/myAppoint',
+                        query:{
+                        }
+                    })
+
+                }).catch(err => {
+                    this.$Message.error(err)
+                })
 
             },
 
