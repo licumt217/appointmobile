@@ -72,6 +72,8 @@
         data() {
             return {
                 therapist_id:this.$route.query.therapist_id,
+                consult_type_id:this.$route.query.consult_type_id,
+                manner_type_id:this.$route.query.manner_type_id,
                 appoint_date:null,
                 periodArray: [],
                 myPeriodArray: ['period1','period3'],
@@ -192,7 +194,9 @@
                     amount:0.01,
                     therapist_id:this.therapist_id,
                     appoint_date:DateUtil.format(this.appoint_date),
-                    periodArray:this.periodArray
+                    periodArray:this.periodArray,
+                    consult_type_id:this.consult_type_id,
+                    manner_type_id:this.manner_type_id,
                 }).then((data) => {
                     this.$Message.success("预约成功！")
                     this.$router.push({

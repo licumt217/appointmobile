@@ -53,8 +53,8 @@
                 isEmergency:this.$route.query.isEmergency?true:false,
                 SEX,
                 therapistList: [],
-                consultTypeId:this.$route.query.consultTypeId,
-                mannerTypeId:this.$route.query.mannerTypeId,
+                consult_type_id:this.$route.query.consult_type_id,
+                manner_type_id:this.$route.query.manner_type_id,
 
 
             }
@@ -139,7 +139,9 @@
                     this.$router.push({
                         path:'/appointTime',
                         query:{
-                            therapist_id:item.therapist_id
+                            therapist_id:item.therapist_id,
+                            consult_type_id:this.consult_type_id,
+                            manner_type_id:this.manner_type_id
                         }
                     })
                 }

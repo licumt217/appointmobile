@@ -18,7 +18,7 @@
 
             <div class="mannerType" style="margin-top:1em;margin-left: 0.5em;">
                 <p style="font-size: 14px;font-weight:bold;margin-bottom: 5px;">咨询方式</p>
-                <RadioGroup v-model="mannerTypeId" vertical style="margin-left: 1em;">
+                <RadioGroup v-model="manner_type_id" vertical style="margin-left: 1em;">
                     <Radio :label="item.id" v-for="item in mannerTypeList">
                         <Icon type="social-apple"></Icon>
                         <span>{{item.name}}</span>
@@ -49,7 +49,7 @@
             return {
                 consultTypeList:[],
                 mannerTypeList:[],
-                mannerTypeId: '',
+                manner_type_id: '',
                 consult: '',
 
 
@@ -88,7 +88,7 @@
                     return ;
                 }
 
-                if(!this.mannerTypeId){
+                if(!this.manner_type_id){
                     this.$Message.warning("请选择咨询方式！")
                     return ;
                 }
@@ -96,8 +96,8 @@
                 this.$router.push({
                     path:'/therapistList',
                     query:{
-                        consultTypeId:this.consult.id,
-                        mannerTypeId:this.mannerTypeId,
+                        consult_type_id:this.consult.id,
+                        manner_type_id:this.manner_type_id,
 
                     }
                 })
