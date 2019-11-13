@@ -8,8 +8,8 @@
                     {{item.name}}
                 </p>
                 <p>性别：{{SEX[item.gender]}}</p>
-                <p>流派：{{schoolTypeObj[item.schoolTypeId].name}}</p>
-                <p>资历：{{qualificationTypeObj[item.qualificationTypeId].name}}</p>
+                <p>流派：{{schoolTypeObj[item.school_type_id].name}}</p>
+                <p>资历：{{qualificationTypeObj[item.qualification_type_id].name}}</p>
                 <Row style="margin-top: .5em;" justify="space-between" type="flex">
                     <Col span="8" >
                         <Button type="primary" size="small" @click="next(item)">
@@ -69,7 +69,7 @@
             getQualificationTypeList(){
                 this.http.post('qualificationtype/list', {}).then((data) => {
 
-                    this.qualificationTypeObj=Util.array2Object(data)
+                    this.qualificationTypeObj=Util.array2Object(data,'qualification_type_id')
 
                 }).catch(err => {
                     this.$Message.error(err)
@@ -79,7 +79,7 @@
             getSchoolTypeList(){
                 this.http.post('schooltype/list', {}).then((data) => {
 
-                    this.schoolTypeObj=Util.array2Object(data)
+                    this.schoolTypeObj=Util.array2Object(data,'school_type_id')
 
                 }).catch(err => {
                     this.$Message.error(err)
@@ -102,7 +102,7 @@
                     role:Role.therapist,
                     page,
                     pageSize,
-                    mannerTypeId:this.mannerTypeId
+                    manner_type_id:this.manner_type_id
                 }
 
                 if(this.isEmergency){

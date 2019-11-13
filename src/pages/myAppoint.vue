@@ -12,10 +12,8 @@
                         <Card>
                             <p slot="title">当前预约</p>
                             <template v-if="curAppoint">
-                                <p>预约名称：总是失眠咨询</p>
-                                <p>预约地点：北京市五道口宇宙中心</p>
-                                <p>预约时间：2019/12/20</p>
-                                <p>咨询师：范冰冰</p>
+                                <p>预约时间：{{curAppoint.appoint_date}}</p>
+                                <p>咨询师：{{curAppoint.name}}</p>
                                 <div style="margin-top: 1em;">
                                     <Button @click="go2Detail" style="margin-right: 2em;">查看详情</Button>
                                     <Button type="error" @click="cancel">取消预约</Button>
@@ -223,8 +221,25 @@
         },
         computed: {},
         mounted() {
+            this.init()
         },
         methods: {
+            init(){
+                this.getCurAppoint()
+            },
+            /**
+             * 获取当前预约
+             * */
+            getCurAppoint(){
+                this.http.post('order/getCurAppoint', {
+                    openid:sessionStorage.openid
+                }).then((data) => {
+                    this.curAppoint=data;
+
+                }).catch(err => {
+                    this.$Message.error(err)
+                })
+            },
             /**
              * 转介
              */
@@ -280,7 +295,16 @@
                     title: '您确定取消吗？',
                     content: '',
                     onOk: () => {
-                        this.$Message.success("操作成功！");
+                        this.http.post('order/cancelOrder', {
+                            order_id:this.curAppoint.order_id
+                        }).then((data) => {
+                            this.curAppoint=data;
+                            this.$Message.success('操作成功')
+                            this.init()
+
+                        }).catch(err => {
+                            this.$Message.error(err)
+                        })
                     },
                     onCancel: () => {
                     }

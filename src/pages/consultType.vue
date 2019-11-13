@@ -8,7 +8,7 @@
                 <RadioGroup v-model="consult" vertical style="margin-left: 1em;">
                     <Radio :label="item" v-for="item in consultTypeList">
                         <Icon type="social-apple"></Icon>
-                        <span>{{item.name}}</span>
+                        <span>{{item.consult_type_name}}</span>
                     </Radio>
                 </RadioGroup>
                 <div class="tip" style="padding:1em 1em 0 1em;" v-show="consult.remark">
@@ -19,9 +19,9 @@
             <div class="mannerType" style="margin-top:1em;margin-left: 0.5em;">
                 <p style="font-size: 14px;font-weight:bold;margin-bottom: 5px;">咨询方式</p>
                 <RadioGroup v-model="manner_type_id" vertical style="margin-left: 1em;">
-                    <Radio :label="item.id" v-for="item in mannerTypeList">
+                    <Radio :label="item.manner_type_id" v-for="item in mannerTypeList">
                         <Icon type="social-apple"></Icon>
-                        <span>{{item.name}}</span>
+                        <span>{{item.manner_type_name}}</span>
                     </Radio>
                 </RadioGroup>
             </div>
@@ -96,7 +96,7 @@
                 this.$router.push({
                     path:'/therapistList',
                     query:{
-                        consult_type_id:this.consult.id,
+                        consult_type_id:this.consult.consult_type_id,
                         manner_type_id:this.manner_type_id,
 
                     }

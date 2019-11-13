@@ -174,7 +174,7 @@ router.beforeEach((to,from,next)=>{
                         }
                     }).then((data) => {
                         if(data){
-                            sessionStorage.user_id=data.userInfo.id
+                            sessionStorage.user_id=data.userInfo.user_id
                             sessionStorage.token=data.token
                             next()
                         }else{

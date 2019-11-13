@@ -111,7 +111,7 @@
                     case 'detail':
 
                         this.http.post('user/getById', {
-                            id:this.$store.state.userId
+                            user_id:this.$store.state.user_id
                         }).then((data) => {
 
                             this.$router.push({

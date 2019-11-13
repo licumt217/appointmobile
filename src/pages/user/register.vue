@@ -35,7 +35,7 @@
                                 </Form-item>
 
                                 <FormItem label="出生日期" prop="birthday" >
-                                    <DatePicker type="date" placeholder="请选择出生日期" id="aaa" @click.native="hideKbd" v-model="formItem.birthday" placement="top"></DatePicker>
+                                    <DatePicker type="date" placeholder="请选择出生日期" @click.native="hideKbd" v-model="formItem.birthday" placement="top"></DatePicker>
                                 </FormItem>
 
                             </Form>
