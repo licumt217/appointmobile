@@ -93,7 +93,10 @@
                     return ;
                 }
 
+
                 this.$router.push({
+
+
                     path:'/therapistList',
                     query:{
                         consult_type_id:this.consult.consult_type_id,

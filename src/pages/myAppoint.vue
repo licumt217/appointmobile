@@ -3,23 +3,24 @@
 
     <section class="">
         <div class="mainContent">
-            <div class="ms-login">
+            <div >
 
-                <Tabs value="myAppoint">
+                <Tabs value="myAppoint" @on-click="changeTab">
 
                     <TabPane label="我的预约" name="myAppoint">
 
                         <Card>
                             <p slot="title">当前预约</p>
                             <template v-if="curAppoint">
-                                <p>预约时间：{{curAppoint.appoint_date}}</p>
+                                <p>预约日期：{{curAppoint.appoint_date}}</p>
+                                <p>预约时段：{{Util.getAppointPeriodStrFromArray(curAppoint)}}</p>
                                 <p>咨询师：{{curAppoint.name}}</p>
                                 <div style="margin-top: 1em;">
-                                    <Button @click="go2Detail" style="margin-right: 2em;">查看详情</Button>
+                                    <Button @click="go2Detail(curAppoint)" style="margin-right: 2em;">查看详情</Button>
                                     <Button type="error" @click="cancel">取消预约</Button>
                                 </div>
                             </template>
-                            <template>
+                            <template v-else>
                                 <h3>暂无预约</h3>
                             </template>
                         </Card>
@@ -46,9 +47,9 @@
 
                     <TabPane label="预约历史" name="appointHistory">
 
-                        <Table border stripe :columns="columns12" :data="data6">
-                            <template slot-scope="{ row }" slot="name">
-                                <span @click="go2Detail">{{ row.name }}</span>
+                        <Table border stripe :columns="appointListColumns" :data="appointList">
+                            <template slot-scope="{ row }" slot="appoint_date">
+                                <span @click="go2Detail(row)">{{ row.appoint_date }}</span>
                             </template>
                         </Table>
 
@@ -139,10 +140,12 @@
 
 <script>
     import {Util} from '../assets/js/Util'
+    const ORDER_STATE =require('../assets/js/constants/ORDER_STATE')
 
     export default {
         data() {
             return {
+                Util,
                 curAppoint:null,
                 isShowAddPersonModal: false,
                 emergencyPersonList: [
@@ -155,12 +158,6 @@
                     {
                         name: '范冰冰',
                         relation: '兄妹',
-                        phone: '18601965856',
-                        email: '447818666@qq.com'
-                    },
-                    {
-                        name: '周慧敏',
-                        relation: '姐弟',
                         phone: '18601965856',
                         email: '447818666@qq.com'
                     }
@@ -188,35 +185,28 @@
                         {required: true, message: "电子邮箱不能为空", trigger: "blur"}
                     ],
                 },
-                columns12: [
-                    {
-                        title: '预约名称',
-                        slot: 'name',
-                    },
+                appointListColumns: [
                     {
                         title: '预约日期',
-                        key: 'date'
+                        slot: 'appoint_date',
+                    },
+                    {
+                        title: '咨询师名称',
+                        key: 'name'
                     },
                 ],
-                data6: [
-                    {
-                        name: '心理很阴暗咨询1',
-                        date: '2019/06/21',
-                    }, {
-                        name: '心理很阴暗咨询2',
-                        date: '2019/06/21',
-                    }, {
-                        name: '心理很阴暗咨询3',
-                        date: '2019/06/21',
-                    }, {
-                        name: '心理很阴暗咨询4',
-                        date: '2019/06/21',
-                    }, {
-                        name: '心理很阴暗咨询5',
-                        date: '2019/06/21',
-                    },
-
-                ]
+                appointList: [
+                ],
+                descMap:{
+                    period1:'08:00-08:50',
+                    period2:'09:00-09:50',
+                    period3:'10:00-10:50',
+                    period4:'11:00-11:50',
+                    period5:'13:00-13:50',
+                    period6:'14:00-14:50',
+                    period7:'15:00-15:50',
+                    period8:'16:00-16:50',
+                }
             }
         },
         computed: {},
@@ -224,6 +214,23 @@
             this.init()
         },
         methods: {
+            changeTab(name){
+                if(name==='appointHistory'){
+                    this.getAppointList()
+                }
+            },
+
+            getAppointList(){
+                this.http.post('order/getAppointHistory', {
+                    openid:sessionStorage.openid,
+                }).then((data) => {
+                    this.appointList=data;
+
+                }).catch(err => {
+                    this.$Message.error(err)
+                })
+            },
+
             init(){
                 this.getCurAppoint()
             },
@@ -286,6 +293,10 @@
 
             },
             appoint(){
+                if(this.curAppoint){
+                    this.$Message.warning("您有进行中的预约！")
+                    return;
+                }
                 this.$router.push('/consultType')
             },
 
@@ -323,8 +334,13 @@
                     }
                 })
             },
-            go2Detail() {
-                this.$router.push('/appointDetail')
+            go2Detail(order) {
+                this.$router.push({
+                    path:'/appointDetail',
+                    query:{
+                        order_id:order.order_id
+                    }
+                })
             },
             back() {
                 this.$router.go(-1)
@@ -341,41 +357,15 @@
 </script>
 
 <style scoped>
-    .login-wrap {
-        position: relative;
-        width: 100%;
-        background-size: 100% 100%;
-    }
 
     .mainContent {
-        width: 98%;
-        margin-left: 1%;
-        margin-bottom: 5%;
+        width: 97%;
+        margin:0 auto;
     }
 
-    .ms-login {
-        overflow: hidden;
-        padding: 10px;
-        border-radius: 5px;
-        background: #fff;
-        box-sizing: border-box;
-        position: relative
-    }
 
-    .login-btn {
-        text-align: center;
-    }
 
-    .signup-btn {
-        margin-top: 10px;
-        text-align: center;
-        cursor: pointer;
-    }
 
-    .login-btn button {
-        width: 100%;
-        height: 36px;
-    }
 
 
 </style>
