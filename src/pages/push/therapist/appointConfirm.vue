@@ -1,68 +1,108 @@
 <template>
 
 
-    <section class="">
-
+    <div class="">
         <Card>
-            <p slot="title">预约确认通知</p><!---->
-            <p>预约名称：总是失眠咨询</p>
-            <p>预约地点：北京市五道口宇宙中心</p>
-            <p>预约时间：2019/12/20</p>
-            <p>用户：贾静雯</p>
-            <div style="margin-top: 1em;">
-                <Button @click="agree" style="margin-right: 2em;">接受预约</Button>
-                <Button type="error" @click="deny">拒绝预约</Button>
-            </div>
+
+            <p slot="title">预约详情</p>
+            <p>预约日期：{{order.appoint_date}}</p>
+            <p>预约时段：{{Util.getAppointPeriodStrFromArray(order)}}</p>
+            <p>咨询师：{{order.name}}</p>
+            <p>订单状态：{{ORDER_STATE_DESC[order.state]}}</p>
+            <!--            可能需要用户的一些基本信息-->
+
         </Card>
+        <div style="margin:1em auto 0 auto;" v-if="order.state===ORDER_STATE.COMMIT">
+            <Button @click="accept">接受咨询</Button>
+            <Button type="success" @click="deny">拒绝咨询 </Button>
+
+        </div>
+
+        <div style="margin:1em auto 0 auto;" v-if="order.state===ORDER_STATE.DONE">
+            <Button @click="done">确认完成</Button>
+
+        </div>
 
 
-
-
-    </section>
+    </div>
 
 </template>
 
 <script>
     import {Util} from '../../../assets/js/Util'
-    import {SCHOOL_TYPE,QUALIFICATION_TYPE,SEX} from "../../../assets/js/constants/constant"
+
+    const ORDER_STATE_DESC = require('../../../assets/js/constants/ORDER_STATE_DESC')
+    const ORDER_STATE = require('../../../assets/js/constants/ORDER_STATE')
     export default {
-        components:{
-        },
+        components: {},
         data() {
             return {
-                SCHOOL_TYPE,
-                QUALIFICATION_TYPE,
-                SEX,
-                person: {
-                    name: '张老师',
-                    sex: 'male',
-                    qualification_type: '1',
-                    school_type: '1'
-                },
-
-
+                ORDER_STATE_DESC,
+                ORDER_STATE,
+                Util,
+                order_id: this.$route.query.order_id,
+                order: {},
             }
         },
         computed: {},
         mounted() {
+            this.init()
         },
         methods: {
-            agree() {
-                alert("接受")
-
+            init() {
+                this.getAppointDetail()
             },
-            deny() {
-                alert("拒绝")
 
+            getAppointDetail() {
+                this.http.post('order/getAppointDetail', {
+                    order_id: this.order_id
+                }).then((data) => {
+                    this.order = data;
+
+                }).catch(err => {
+                    this.$Message.error(err)
+                })
             },
+            accept(){
+                this.http.post('order/accept', {
+                    order_id: this.order_id
+                }).then((data) => {
+                    this.$Message.success('操作成功！')
+                    this.init()
+
+                }).catch(err => {
+                    this.$Message.error(err)
+                })
+            },
+            deny(){
+                this.http.post('order/deny', {
+                    order_id: this.order_id
+                }).then((data) => {
+                    this.$Message.success('操作成功！')
+                    this.init()
+
+                }).catch(err => {
+                    this.$Message.error(err)
+                })
+            },
+            done(){
+                this.http.post('order/done', {
+                    order_id: this.order_id
+                }).then((data) => {
+                    this.$Message.success('操作成功！')
+                    this.init()
+
+                }).catch(err => {
+                    this.$Message.error(err)
+                })
+            }
+
 
         }
     }
 </script>
 
 <style scoped>
-
-
 
 
 </style>

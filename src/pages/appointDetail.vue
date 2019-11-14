@@ -112,6 +112,7 @@
                 })
             },
             getAppointDetail() {
+
                 this.http.post('order/getAppointDetail', {
                     order_id: this.order_id
                 }).then((data) => {
