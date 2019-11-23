@@ -17,11 +17,11 @@
                     @click="cancel">取消预约
             </Button>
             <Button v-if="order.state===ORDER_STATE.DONE " type="warning" @click="showFeedbackModal">咨询效果反馈</Button>
-            <Button v-if="order.state===ORDER_STATE.DONE " type="error" @click="showComplainModal">投诉咨询师</Button>
+            <Button v-if="order.state===ORDER_STATE.DONE " :order_id="order.order_id" type="error" @click="showComplainModal">投诉咨询师</Button>
 
         </div>
 
-        <ComplainModal ref="complainModal" @complain="complain"></ComplainModal>
+        <ComplainModal ref="complainModal" ></ComplainModal>
         <FeedbackModal ref="feedbackModal" @feedback="feedback"></FeedbackModal>
 
 
@@ -121,9 +121,6 @@
                 }).catch(err => {
                     this.$Message.error(err)
                 })
-            },
-            complain() {
-                alert(3)
             },
             feedback() {
                 alert(2)

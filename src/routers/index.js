@@ -167,6 +167,7 @@ router.beforeEach((to,from,next)=>{
                         code:code
                     }
                 }).then((openid) => {
+
                     sessionStorage.openid=openid;
                     axios.get('login/getUserByOpenid', {
                         params:{

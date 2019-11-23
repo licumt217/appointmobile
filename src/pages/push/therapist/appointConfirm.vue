@@ -18,10 +18,16 @@
 
         </div>
 
+<!--        //咨询过了结束日期后才能有以下的确认完成操作-->
         <div style="margin:1em auto 0 auto;" v-if="order.state===ORDER_STATE.DONE">
             <Button @click="done">确认完成</Button>
+            <Button @click="showComplainModal">投诉用户</Button>
 
         </div>
+
+        <Button @click="done">确认完成</Button>
+
+        <ComplainModal ref="complainModal" :order_id="order.order_id"></ComplainModal>
 
 
     </div>
@@ -33,8 +39,9 @@
 
     const ORDER_STATE_DESC = require('../../../assets/js/constants/ORDER_STATE_DESC')
     const ORDER_STATE = require('../../../assets/js/constants/ORDER_STATE')
+    import ComplainModal from '../../components/ComplainModal'
     export default {
-        components: {},
+        components: {ComplainModal},
         data() {
             return {
                 ORDER_STATE_DESC,
@@ -44,6 +51,7 @@
                 order: {},
             }
         },
+
         computed: {},
         mounted() {
             this.init()
@@ -51,6 +59,9 @@
         methods: {
             init() {
                 this.getAppointDetail()
+            },
+            showComplainModal() {
+                this.$refs.complainModal.show();
             },
 
             getAppointDetail() {
@@ -95,7 +106,7 @@
                 }).catch(err => {
                     this.$Message.error(err)
                 })
-            }
+            },
 
 
         }

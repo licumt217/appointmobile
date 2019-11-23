@@ -29,6 +29,10 @@
             }
         },
         props: {
+            order_id:{
+                type:String,
+                default:''
+            }
         },
         computed: {},
         watch:{
@@ -45,9 +49,19 @@
                 this.$refs.form.validate((valid) => {
                     if (valid) {
 
-                        this.$Message.success("投诉成功！");
-                        this.hide();
-                        this.$emit('complain')
+                        this.http.post('complaint/add', {
+                            order_id: this.order_id,
+                            content:this.form.content
+                        }).then((data) => {
+                            this.$Message.success("投诉成功！");
+                            this.hide();
+                            // this.$emit('complain')
+
+                        }).catch(err => {
+                            this.$Message.error(err)
+                        })
+
+
 
                     }
 
