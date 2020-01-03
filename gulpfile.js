@@ -6,13 +6,13 @@ let projectName = 'appointmobile'
 let gutil = require('gulp-util')
 
 let username = 'root'
-let password = '819819819qQ'
+let password = 'y2pe2NF7'
 let assets = process.cwd() + '/' + projectName
 let address = '/server/html/appointmobile'
 
 let remoteServer1Prep = {
     host: '47.92.74.29',
-    port: 22,
+    port: 22444,
     remotePath: address,
     user: username,
     pass: password
