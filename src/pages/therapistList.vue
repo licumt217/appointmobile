@@ -8,8 +8,8 @@
                     {{item.name}}
                 </p>
                 <p>性别：{{SEX[item.gender]}}</p>
-                <p>流派：{{schoolTypeObj[item.school_type_id].name}}</p>
-                <p>资历：{{qualificationTypeObj[item.qualification_type_id].name}}</p>
+                <p>流派：{{schoolTypeObj[item.school_type_id].school_type_name}}</p>
+                <p>资历：{{qualificationTypeObj[item.qualification_type_id].qualification_type_name}}</p>
                 <Row style="margin-top: .5em;" justify="space-between" type="flex">
                     <Col span="8" >
                         <Button type="primary" size="small" @click="next(item)">
