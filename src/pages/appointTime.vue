@@ -18,7 +18,7 @@
                     <template v-for="(period,index) in availablePeriodArray">
 
                         <Checkbox :label="period" style="margin-right: 3em;">
-                            {{descMap[period]}}
+                            {{`${period}:00-${period}:50`}}
                         </Checkbox>
                         <template v-if="index%2!==0">
                             <br/>
@@ -37,7 +37,7 @@
                     <template v-for="(period,index) in myAvailablePeriodArray">
 
                         <Checkbox :label="period" style="margin-right: 3em;">
-                            {{descMap[period]}}
+                            {{`${period}:00-${period}:50`}}
                         </Checkbox>
                         <template v-if="index%2!==0">
                             <br/>
@@ -98,16 +98,7 @@
                         return date && (this.isBeforeToday(date) || this.isAfterTwoMonths(date))
                     }
                 },
-                descMap:{
-                    period1:'08:00-08:50',
-                    period2:'09:00-09:50',
-                    period3:'10:00-10:50',
-                    period4:'11:00-11:50',
-                    period5:'13:00-13:50',
-                    period6:'14:00-14:50',
-                    period7:'15:00-15:50',
-                    period8:'16:00-16:50',
-                }
+                allAvailablePeriodArray:[],//咨询师设置的可用时段
 
             }
         },
@@ -116,7 +107,7 @@
         },
         watch:{
             appoint_date(newValue,oldValue){
-                this.getAvailablePeriod()
+                this.getPeriodSet()
             }
         },
         computed: {},
@@ -124,7 +115,18 @@
         },
         methods: {
 
+            getPeriodSet() {
+                this.http.post('therapist/getUseablePeriodSet', {
+                    therapist_id:this.therapist_id
+                }).then((data) => {
+                    this.allAvailablePeriodArray=data.period.split(',')
+                    this.getAvailablePeriod()
 
+                }).catch(err => {
+                    this.$Message.error(err)
+                })
+
+            },
             /**
              * 获取咨询师在某天的可预约时段
              */
@@ -140,26 +142,21 @@
                 }).then((data) => {
 
                     if(data.length===0){
-                        this.availablePeriodArray=JSON.parse(JSON.stringify(this.myAvailablePeriodArray))
+                        this.availablePeriodArray=this.allAvailablePeriodArray
                     }else{
-                        let notAvailableArray=[]
-                        data.forEach(item=>{
-                            for(let i=1;i<=8;i++){
-                                let key=`period${i}`
-                                let data=item[key]
-                                if(data===1){
-                                    notAvailableArray.push(key)
+
+                        this.availablePeriodArray=this.allAvailablePeriodArray.filter((item)=>{
+
+                            let flag=true;
+
+                            data.forEach((obj)=>{
+                                if(obj.period.includes(item)){
+                                    flag=false;
                                 }
-                            }
+                            })
+
+                            return flag;
                         })
-                        let fullArray=JSON.parse(JSON.stringify(this.myAvailablePeriodArray))
-
-                        this.availablePeriodArray=fullArray.filter((item)=>{
-                            return !notAvailableArray.includes(item)
-                        })
-
-
-
 
                     }
 

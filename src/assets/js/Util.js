@@ -108,26 +108,22 @@ class Util{
         return d.getDate();
     }
 
+    static fixZero(val) {
+        if (val < 10) {
+            return '0' + val;
+        } else {
+            return val;
+        }
+    }
+
     static getAppointPeriodStrFromArray(appoint){
         let str='';
+        appoint.period.split(',').forEach(item=>{
+            str+=(`${Util.fixZero(item)}:00-${Util.fixZero(item)}:50 `)
+        })
 
-        let descMap={
-            period1:'08:00-08:50',
-                period2:'09:00-09:50',
-                period3:'10:00-10:50',
-                period4:'11:00-11:50',
-                period5:'13:00-13:50',
-                period6:'14:00-14:50',
-                period7:'15:00-15:50',
-                period8:'16:00-16:50',
-        }
 
-        for(let i=1;i<=8;i++){
-            let key=`period${i}`
-            if(appoint[key]){
-                str+=(descMap[key]+' ')
-            }
-        }
+
         return str;
     }
 
