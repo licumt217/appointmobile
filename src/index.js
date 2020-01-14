@@ -5,6 +5,30 @@ import router from './routers'
 import iView from 'view-design';
 import axios from './http/axios'
 require('./assets/js/StringPrototype')
+
+
+import  { ToastPlugin,Group, XInput, XButton, Badge, Confirm,Selector,Datetime,
+  PopupPicker,XTable,Actionsheet,ConfirmPlugin,XHeader,Flexbox, FlexboxItem,LoadingPlugin} from 'vux'
+
+Vue.use(ToastPlugin)
+Vue.component('x-button', XButton)
+Vue.component('x-input', XInput)
+Vue.component('group', Group)
+Vue.component('badge', Badge)
+Vue.component('confirm', Confirm)
+Vue.component('selector', Selector)
+Vue.component('datetime', Datetime)
+Vue.component('popup-picker', PopupPicker)
+Vue.component('x-table', XTable)
+Vue.component('actionsheet', Actionsheet)
+// Vue.component('popup-radio', PopupRadio)
+Vue.component('x-header', XHeader)
+Vue.component('flexbox', Flexbox)
+Vue.component('flexbox-item', FlexboxItem)
+
+Vue.use(ConfirmPlugin)
+Vue.use(LoadingPlugin)
+
 import 'view-design/dist/styles/iview.css';
 
 Vue.use(Vuex)

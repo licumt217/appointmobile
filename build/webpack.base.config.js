@@ -7,12 +7,13 @@ var webpack = require('webpack');
 var utils = require('./utils')
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
+const vuxLoader = require('vux-loader')
 //var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 var projectRoot = path.resolve(__dirname, '../');
-module.exports = {
+let webpackConfig= {
     entry: {
         index: path.join(projectRoot, 'src/index'), //打包入口
-        vendor: ['jquery', 'iview', 'vue']
+        vendor: ['jquery', 'vue']
     },
     output: {
         path: config.prod.assetsRoot,
@@ -28,12 +29,6 @@ module.exports = {
             'src': path.resolve(__dirname, '../src')
         }
     },
-    //externals: {
-    //    'map': 'QMap'
-    //},
-    // resolveLoader: {
-    //     fallback: [path.join(__dirname, '../node_modules')]
-    // },
     module: {
         rules: [{
                 test: /\.vue$/,
@@ -75,18 +70,6 @@ module.exports = {
 
         ].concat(utils.styleLoaders({ sourceMap: config.prep.cssSourceMap, extract: true }))
     },
-    // eslint: {
-    //     formatter: require('eslint-friendly-formatter')
-    // },
-    // vue: {
-
-
-    //postcss: [
-    //    require('autoprefixer')({
-    //        browsers: ['last 2 versions']
-    //    })
-    //]
-    //},
     plugins: [
         //     new webpack.optimize.CommonsChunkPlugin('static/build.js'),
         new webpack.ProvidePlugin({ //全局jquery插件
@@ -104,11 +87,9 @@ module.exports = {
         }),
         //这个不添加allChunks参数的话，不会抽离chunk的css
         new ExtractTextPlugin({ filename: 'css/[name].[hash:5].css', allChunks: true }),
-        //new OptimizeCssAssetsPlugin({
-        //    assetNameRegExp: /\.optimize\.css$/g,
-        //    cssProcessor: require('cssnano'),
-        //    cssProcessorOptions: { discardComments: {removeAll: true } },
-        //    canPrint: true
-        //})
     ],
 }
+
+module.exports=vuxLoader.merge(webpackConfig, {
+    plugins: ['vux-ui']
+})

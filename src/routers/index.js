@@ -10,6 +10,19 @@ const homepage = r => require.ensure([], () => r(require('../pages/homepage')), 
 
 const user_register = r => require.ensure([], () => r(require('../pages/user/register')), 'user_register')
 const user_preTable = r => require.ensure([], () => r(require('../pages/user/preTable')), 'user_preTable')
+const user_modifypass = r => require.ensure([], () => r(require('../pages/user/modifypass')), 'user_modifypass')
+const user_center = r => require.ensure([], () => r(require('../pages/user/center')), 'user_center')
+
+
+
+const appoint_myAppoint = r => require.ensure([], () => r(require('../pages/appoint/myAppoint')), 'appoint_myAppoint')
+const appoint_history = r => require.ensure([], () => r(require('../pages/appoint/history')), 'appoint_history')
+const appoint_setting = r => require.ensure([], () => r(require('../pages/appoint/setting')), 'appoint_setting')
+
+
+
+
+
 const myAppoint = r => require.ensure([], () => r(require('../pages/myAppoint')), 'myAppoint')
 const appointDetail = r => require.ensure([], () => r(require('../pages/appointDetail')), 'appointDetail')
 const consultType = r => require.ensure([], () => r(require('../pages/consultType')), 'consultType')
@@ -53,7 +66,29 @@ const router=new VueRouter({
         },{
             path:'/user/preTable',
             component:user_preTable
+        },{
+            path:'/user/modifypass',
+            component:user_modifypass
+        },{
+            path:'/user/center',
+            component:user_center
         },
+
+
+
+
+        {
+            path:'/appoint/myAppoint',
+            component:appoint_myAppoint
+        },{
+            path:'/appoint/history',
+            component:appoint_history
+        },{
+            path:'/appoint/setting',
+            component:appoint_setting
+        },
+
+
 
 
         {
@@ -161,7 +196,6 @@ router.beforeEach((to,from,next)=>{
             if(!code){
                 console.error("授权code不能为空!")
             }else{
-                debugger
                 axios.get('wechatApi/getOpenid', {
                     params:{
                         code:code
@@ -177,6 +211,7 @@ router.beforeEach((to,from,next)=>{
                         if(data){
                             sessionStorage.user_id=data.userInfo.user_id
                             sessionStorage.token=data.token
+                            store.commit('isLogin', true)
                             next()
                         }else{
                             next('/user/register')

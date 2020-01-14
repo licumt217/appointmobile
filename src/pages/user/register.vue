@@ -7,9 +7,9 @@
                 <div class="ms-login">
 
                     <Tabs >
-                        <Tab-pane label="账户注册" name="account" icon="android-person">
+                        <Tab-pane label="用户注册" name="account" icon="android-person">
 
-                            <Form :model="formItem" :rules="rules" ref="loginForm" :label-width="80" class="demo-ruleForm">
+                            <Form :model="formItem" :rules="rules" ref="registerForm" :label-width="80" class="demo-ruleForm">
 
                                 <Form-item prop="phone" label="手机号">
                                     <Input  type="number" placeholder="请输入手机号" v-model="formItem.phone"></Input>
@@ -39,13 +39,32 @@
                                 </FormItem>
 
                             </Form>
+                            <div class="login-btn">
+                                <Button type="primary" @click="register">注册</Button>
+                            </div>
 
+                        </Tab-pane>
+                        <Tab-pane label="咨询师登录" name="therapist" icon="android-person">
+
+                            <Form :model="loginFormItem" :rules="loginRules" ref="loginForm" :label-width="80" class="demo-ruleForm">
+
+                                <Form-item prop="phone" label="手机号">
+                                    <Input  type="number" placeholder="请输入手机号" v-model="loginFormItem.phone"></Input>
+                                </Form-item>
+
+                                <Form-item prop="password" label="密码">
+                                    <Input  type="password" placeholder="请输入密码" v-model="loginFormItem.password"></Input>
+                                </Form-item>
+
+
+                            </Form>
+                            <div class="login-btn">
+                                <Button type="primary" @click="login">登录</Button>
+                            </div>
                         </Tab-pane>
                     </Tabs>
 
-                    <div class="login-btn">
-                        <Button type="primary" @click="register">注册</Button>
-                    </div>
+
                 </div>
             </div>
         </transition>
@@ -60,6 +79,8 @@
         data() {
             return {
                 formItem: {
+                },
+                loginFormItem: {
                 },
                 rules: {
                     phone: [
@@ -79,6 +100,15 @@
                         {required: true, message: "电子邮箱不能为空", trigger: "blur"}
                     ],
                 },
+                loginRules: {
+                    phone: [
+                        {required: true, message: "手机号不能为空", trigger: "blur"},
+                        {type: 'string', min: 11, message: '手机号长度不能少于11位', trigger: 'blur'}
+                    ],
+                    password: [
+                        {required: true, message: "密码不能为空", trigger: "blur"}
+                    ],
+                },
             }
         },
         computed: {
@@ -95,9 +125,40 @@
             hideKbd(e){
                 e.target.blur()
             },
+            /**
+             * 已在pc端注册过的咨询师登录，进行账号关联
+             */
+            login(){
+                this.$refs.loginForm.validate((valid) => {
+                    if (valid) {
+
+                        if(!Util.isValidPhone(this.loginFormItem.phone)){
+                            this.$Message.warning("请输入合法的手机号！")
+                            return;
+                        }
+
+                        this.loginFormItem.openid=sessionStorage.openid;
+
+                        this.http.post('login/bind', this.loginFormItem).then((data) => {
+
+                            this.$Message.success("登录成功")
+
+                            sessionStorage.user_id=data.userInfo.user_id;
+                            sessionStorage.token=data.token;
+
+                            this.$router.push('/appoint/myAppoint')
+
+                        }).catch(err => {
+                            this.$Message.error(err)
+                        })
+
+                    }
+
+                })
+            },
             register() {
 
-                this.$refs.loginForm.validate((valid) => {
+                this.$refs.registerForm.validate((valid) => {
                     if (valid) {
 
                         if(!Util.isValidPhone(this.formItem.phone)){
@@ -121,7 +182,7 @@
 
                             //TODO 入口是哪个菜单，注册后需要跳转到具体菜单。
 
-                            this.$router.push('/myAppoint')
+                            this.$router.push('/appoint/myAppoint')
 
                         }).catch(err => {
                             this.$Message.error(err)
