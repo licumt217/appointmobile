@@ -144,7 +144,6 @@
                     this.$refs.emergencyConsult.show()
 
                 }else{
-                    alert(this.consult_type_id)
                     this.$router.push({
                         path:'/steps/step3',
                         query:{
