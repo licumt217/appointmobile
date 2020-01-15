@@ -3,16 +3,16 @@
 
     <section class="">
         <div class="mainContent">
-            <div class="appointType" style="margin-top: 2em;margin-left: 0.5em;">
+            <div class="appointType" style="margin-left: 0.5em;">
                 <p style="font-size: 14px;font-weight:bold;margin-bottom: 5px;">咨询类型</p>
-                <RadioGroup v-model="consult" vertical style="margin-left: 1em;">
-                    <Radio :label="item" v-for="item in consultTypeList">
+                <RadioGroup v-model="consult_type_id" vertical style="margin-left: 1em;">
+                    <Radio :label="item.consult_type_id" v-for="item in consultTypeList">
                         <Icon type="social-apple"></Icon>
                         <span>{{item.consult_type_name}}</span>
                     </Radio>
                 </RadioGroup>
-                <div class="tip" style="padding:1em 1em 0 1em;" v-show="consult.remark">
-                    {{consult.remark}}
+                <div class="tip" style="padding:1em 1em 0 1em;" v-if="consultTypeMapObj[consult_type_id] && consultTypeMapObj[consult_type_id].remark">
+                    {{consultTypeMapObj[consult_type_id].remark}}
                 </div>
             </div>
 
@@ -42,15 +42,15 @@
 </template>
 
 <script>
-    import {Util} from '../assets/js/Util'
-
+    import {Util} from '../../assets/js/Util'
     export default {
         data() {
             return {
                 consultTypeList:[],
                 mannerTypeList:[],
                 manner_type_id: '',
-                consult: '',
+                consultTypeMapObj:{},
+                consult_type_id: '',
 
 
             }
@@ -66,6 +66,8 @@
                 this.http.post('consulttype/list', {}).then((data) => {
 
                     this.consultTypeList = data;
+
+                    this.consultTypeMapObj=Util.array2Object(data,'consult_type_id')
 
                 }).catch(err => {
                     this.$Message.error(err)
@@ -83,7 +85,7 @@
 
 
             next() {
-                if(!this.consult){
+                if(!this.consult_type_id){
                     this.$Message.warning("请选择咨询类型！")
                     return ;
                 }
@@ -97,9 +99,9 @@
                 this.$router.push({
 
 
-                    path:'/therapistList',
+                    path:'/steps/step2',
                     query:{
-                        consult_type_id:this.consult.consult_type_id,
+                        consult_type_id:this.consult_type_id,
                         manner_type_id:this.manner_type_id,
 
                     }
@@ -117,7 +119,6 @@
     .mainContent {
         width: 98%;
         margin-left: 1%;
-        margin-bottom: 5%;
     }
 
 

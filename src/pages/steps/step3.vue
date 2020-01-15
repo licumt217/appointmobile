@@ -64,9 +64,9 @@
 </template>
 
 <script>
-    import {Util} from '../assets/js/Util'
-    import DateUtil from '../assets/js/DateUtil'
-    import TimePeriod from "./components/TimePeriod";
+    import {Util} from '../../assets/js/Util'
+    import DateUtil from '../../assets/js/DateUtil'
+    import TimePeriod from "../components/TimePeriod";
 
     export default {
         data() {
@@ -197,7 +197,7 @@
                 }).then((data) => {
                     this.$Message.success("预约成功！")
                     this.$router.push({
-                        path:'/myAppoint',
+                        path:'/appoint/myAppoint',
                         query:{
                         }
                     })

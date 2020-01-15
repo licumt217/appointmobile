@@ -3,27 +3,39 @@
 
     <section class="">
         <div class="mainContent">
-            <Card v-for="item in therapistList" style="margin-bottom: 0.5em;">
-                <p slot="title">
-                    {{item.name}}
-                </p>
-                <p>性别：{{SEX[item.gender]}}</p>
-                <p>流派：{{schoolTypeObj[item.school_type_id].school_type_name}}</p>
-                <p>资历：{{qualificationTypeObj[item.qualification_type_id].qualification_type_name}}</p>
-                <Row style="margin-top: .5em;" justify="space-between" type="flex">
-                    <Col span="8" >
-                        <Button type="primary" size="small" @click="next(item)">
-                            选择此咨询师
-                        </Button>
-                    </Col>
-                    <Col span="8" >
-                        <Button type="primary" ghost size="small" @click="detail">
-                            查看详情
-                        </Button>
-                    </Col>
-                </Row>
+            <template v-if="therapistList.length>0">
+                <Card v-for="item in therapistList" style="margin-bottom: 0.5em;">
+                    <p slot="title">
+                        {{item.name}}
+                    </p>
+                    <p>性别：{{SEX[item.gender]}}</p>
+                    <p>流派：{{schoolTypeObj[item.school_type_id].school_type_name}}</p>
+                    <p>资历：{{qualificationTypeObj[item.qualification_type_id].qualification_type_name}}</p>
+                    <Row style="margin-top: .5em;" justify="space-between" type="flex">
+                        <Col span="8" >
+                            <Button type="primary" size="small" @click="next(item)">
+                                选择此咨询师
+                            </Button>
+                        </Col>
+                        <Col span="8" >
+                            <Button type="primary" ghost size="small" @click="detail(item)">
+                                查看详情
+                            </Button>
+                        </Col>
+                    </Row>
 
-            </Card>
+                </Card>
+            </template>
+            <template v-else>
+                <Card >
+                    <p slot="title">
+                        无结果
+                    </p>
+                    <p>未找到符合条件的咨询师</p>
+                </Card>
+            </template>
+
+
 
 
         </div>
@@ -38,10 +50,10 @@
 </template>
 
 <script>
-    import {Util} from '../assets/js/Util'
-    import Role from '../assets/js/Role'
-    import {SEX} from "../assets/js/constants/constant"
-    import EmergencyConsultModal from './components/EmergencyConsultModal'
+    import {Util} from '../../assets/js/Util'
+    import Role from '../../assets/js/Role'
+    import {SEX} from "../../assets/js/constants/constant"
+    import EmergencyConsultModal from '../components/EmergencyConsultModal'
     export default {
         components:{
             EmergencyConsultModal
@@ -61,29 +73,20 @@
         },
         computed: {},
         mounted() {
-            this.getList();
-            this.getQualificationTypeList()
-            this.getSchoolTypeList()
+            this.init();
         },
         methods: {
-            getQualificationTypeList(){
-                this.http.post('qualificationtype/list', {}).then((data) => {
-
-                    this.qualificationTypeObj=Util.array2Object(data,'qualification_type_id')
-
-                }).catch(err => {
-                    this.$Message.error(err)
-                })
-            },
-
-            getSchoolTypeList(){
-                this.http.post('schooltype/list', {}).then((data) => {
-
-                    this.schoolTypeObj=Util.array2Object(data,'school_type_id')
-
-                }).catch(err => {
-                    this.$Message.error(err)
-                })
+            init(){
+                Promise.all([
+                    this.http.post('qualificationtype/list', {}),
+                    this.http.post('schooltype/list', {})
+                ]).then((data) => {
+                    this.qualificationTypeObj=Util.array2Object(data[0],'qualification_type_id')
+                    this.schoolTypeObj=Util.array2Object(data[1],'school_type_id')
+                    this.getList();
+                }).catch(error => {
+                    this.$Message.error(error)
+                });
             },
             //紧急咨询回调
             consult(){
@@ -118,9 +121,14 @@
                 })
             },
 
-            detail() {
+            detail(item) {
 
-                this.$router.push('/therapistDetail')
+                this.$router.push({
+                    path:'/therapist/detail',
+                    query:{
+                        therapist_id:item.therapist_id
+                    }
+                })
 
             },
             next(item) {
@@ -136,8 +144,9 @@
                     this.$refs.emergencyConsult.show()
 
                 }else{
+                    alert(this.consult_type_id)
                     this.$router.push({
-                        path:'/appointTime',
+                        path:'/steps/step3',
                         query:{
                             therapist_id:item.therapist_id,
                             consult_type_id:this.consult_type_id,

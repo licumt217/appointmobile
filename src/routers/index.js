@@ -6,30 +6,34 @@ Vue.use(VueRouter)
 
 import axios from '../http/axios'
 
-const homepage = r => require.ensure([], () => r(require('../pages/homepage')), 'homepage')
 
-const user_register = r => require.ensure([], () => r(require('../pages/user/register')), 'user_register')
-const user_preTable = r => require.ensure([], () => r(require('../pages/user/preTable')), 'user_preTable')
-const user_modifypass = r => require.ensure([], () => r(require('../pages/user/modifypass')), 'user_modifypass')
-const user_center = r => require.ensure([], () => r(require('../pages/user/center')), 'user_center')
-
-
-
-const appoint_myAppoint = r => require.ensure([], () => r(require('../pages/appoint/myAppoint')), 'appoint_myAppoint')
-const appoint_history = r => require.ensure([], () => r(require('../pages/appoint/history')), 'appoint_history')
-const appoint_setting = r => require.ensure([], () => r(require('../pages/appoint/setting')), 'appoint_setting')
+const user_register             = r => require.ensure([], () => r(require('../pages/user/register')), 'user_register')
+const user_preTable             = r => require.ensure([], () => r(require('../pages/user/preTable')), 'user_preTable')
+const user_modifypass           = r => require.ensure([], () => r(require('../pages/user/modifypass')), 'user_modifypass')
+const user_center               = r => require.ensure([], () => r(require('../pages/user/center')), 'user_center')
 
 
 
+const appoint_myAppoint         = r => require.ensure([], () => r(require('../pages/appoint/myAppoint')), 'appoint_myAppoint')
+const appoint_history           = r => require.ensure([], () => r(require('../pages/appoint/history')), 'appoint_history')
+const appoint_setting           = r => require.ensure([], () => r(require('../pages/appoint/setting')), 'appoint_setting')
+const appoint_detail            = r => require.ensure([], () => r(require('../pages/appoint/detail')), 'appoint_detail')
 
 
-const myAppoint = r => require.ensure([], () => r(require('../pages/myAppoint')), 'myAppoint')
-const appointDetail = r => require.ensure([], () => r(require('../pages/appointDetail')), 'appointDetail')
-const consultType = r => require.ensure([], () => r(require('../pages/consultType')), 'consultType')
-const therapistList = r => require.ensure([], () => r(require('../pages/therapistList')), 'therapistList')
+
+const steps_step1             = r => require.ensure([], () => r(require('../pages/steps/step1')), 'steps_step1')
+const steps_step2             = r => require.ensure([], () => r(require('../pages/steps/step2')), 'steps_step2')
+const steps_step3             = r => require.ensure([], () => r(require('../pages/steps/step3')), 'steps_step3')
+
+
+const therapist_detail  = r => require.ensure([], () => r(require('../pages/therapist/detail')), 'therapist_detail')
+
+
+
+
+
+
 const therapistListWithTransfer = r => require.ensure([], () => r(require('../pages/therapistListWithTransfer')), 'therapistListWithTransfer')
-const therapistDetail = r => require.ensure([], () => r(require('../pages/therapistDetail')), 'therapistDetail')
-const appointTime = r => require.ensure([], () => r(require('../pages/appointTime')), 'appointTime')
 const continueTime = r => require.ensure([], () => r(require('../pages/continueTime')), 'continueTime')
 const selectRoom = r => require.ensure([], () => r(require('../pages/selectRoom')), 'selectRoom')
 
@@ -55,6 +59,7 @@ const router=new VueRouter({
     base:'appointmobile',
     mode:'history',
     routes:[
+
         {
             path:'/',
             component:user_register
@@ -86,33 +91,36 @@ const router=new VueRouter({
         },{
             path:'/appoint/setting',
             component:appoint_setting
+        },{
+            path:'/appoint/detail',
+            component:appoint_detail
+        },
+
+
+
+        {
+            path:'/steps/step1',
+            component:steps_step1
+        },{
+            path:'/steps/step2',
+            component:steps_step2
+        },{
+            path:'/steps/step3',
+            component:steps_step3
+        },
+
+
+        {
+            path:'/therapist/detail',
+            component:therapist_detail
         },
 
 
 
 
         {
-            path:'/myAppoint',
-            component:myAppoint
-        },{
-            path:'/appointDetail',
-            component:appointDetail
-        },{
-            path:'/consultType',
-            component:consultType
-        },{
-            path:'/therapistList',
-            component:therapistList
-        },{
             path:'/therapistListWithTransfer',
             component:therapistListWithTransfer
-        },{
-            path:'/therapistDetail',
-            component:therapistDetail
-        },
-        {
-            path:'/appointTime',
-            component:appointTime
         },
         {
             path:'/continueTime',

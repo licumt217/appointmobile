@@ -30,12 +30,12 @@
 </template>
 
 <script>
-    import {Util} from '../assets/js/Util'
-    import {PayUtil} from '../assets/js/PayUtil'
-    const ORDER_STATE_DESC = require('../assets/js/constants/ORDER_STATE_DESC')
-    const ORDER_STATE = require('../assets/js/constants/ORDER_STATE')
-    import ComplainModal from './components/ComplainModal'
-    import FeedbackModal from './components/FeedbackModal'
+    import {Util} from '../../assets/js/Util'
+    import {PayUtil} from '../../assets/js/PayUtil'
+    const ORDER_STATE_DESC = require('../../assets/js/constants/ORDER_STATE_DESC')
+    const ORDER_STATE = require('../../assets/js/constants/ORDER_STATE')
+    import ComplainModal from '../components/ComplainModal'
+    import FeedbackModal from '../components/FeedbackModal'
 
     export default {
         components: {
