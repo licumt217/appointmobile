@@ -7,6 +7,7 @@ const state={
     //防止页面刷新状态丢失
     isLogin:sessionStorage.getItem("isLogin")==='true'?true:false,
     user_id:sessionStorage.getItem("user_id")||'',
+    message:sessionStorage.getItem("message")||'',
     activeMenuName:sessionStorage.getItem("activeMenuName")||'1-1',
     username:sessionStorage.getItem("username")||'',
     userInfo:sessionStorage.getItem("userInfo")?JSON.parse(sessionStorage.getItem("userInfo")):{},
@@ -17,7 +18,6 @@ const state={
 const getters={
     isLogin:(state)=>{
 
-        console.log(1)
 
         return sessionStorage.getItem("isLogin")==='yes';
     },
@@ -25,10 +25,18 @@ const getters={
 
         return sessionStorage.getItem("user_id")||'';
     },
+    message:(state)=>{
+
+        return sessionStorage.getItem("message")||'';
+    },
 
 }
 
 const mutations={
+    message:(state,value)=>{
+        sessionStorage.setItem("message",value)
+        state.message=value
+    },
     isLogin:(state,value)=>{
         sessionStorage.setItem("isLogin",value)
         state.isLogin=value

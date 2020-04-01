@@ -106,7 +106,7 @@
                     this.$Message.warning("您有进行中的预约！")
                     return;
                 }
-                this.$router.push('/steps/step1')
+                this.$router.push('/therapist/search')
             },
 
 

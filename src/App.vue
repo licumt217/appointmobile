@@ -1,5 +1,6 @@
 <template>
     <div class="total_container ">
+        {{message}}
 
         <div class="login" v-if="!isLogin">
             <router-view></router-view>
@@ -47,6 +48,9 @@
 
 
             },
+            message(val){
+                alert(val)
+            }
         },
         computed: {
 
@@ -61,6 +65,14 @@
             },
             isLogin() {
                 return this.$store.state.isLogin;
+            },
+            message() {
+                if(this.$store.state.message){
+                    let msg=String(this.$store.state.message)
+                    this.$Message.warning(msg)
+                    this.$store.commit('message','')
+                }
+                return this.$store.state.message;
             },
         },
         methods: {

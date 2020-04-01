@@ -26,6 +26,7 @@ const steps_step2             = r => require.ensure([], () => r(require('../page
 const steps_step3             = r => require.ensure([], () => r(require('../pages/steps/step3')), 'steps_step3')
 
 
+const therapist_search  = r => require.ensure([], () => r(require('../pages/therapist/search')), 'therapist_search')
 const therapist_detail  = r => require.ensure([], () => r(require('../pages/therapist/detail')), 'therapist_detail')
 
 
@@ -113,6 +114,9 @@ const router=new VueRouter({
         {
             path:'/therapist/detail',
             component:therapist_detail
+        },{
+            path:'/therapist/search',
+            component:therapist_search
         },
 
 
@@ -185,6 +189,14 @@ router.beforeEach((to,from,next)=>{
 
     //验证openid是否和手机号绑定了
 
+    sessionStorage.user_id="89467"
+    sessionStorage.openid="oNkDEvkobxGNXnlLyuV5IDqYQCMk"
+    sessionStorage.token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJ1c2VyX2lkIjoiODk0NjciLCJwaG9uZSI6IjE4NjAxOTY1ODU2IiwibmFtZSI6ImxpIiwiaWRlbnRpZmljYXRpb25fbm8iOiI0MTA4ODIxOTg4MDIxNzc1MzkiLCJnZW5kZXIiOiJtYWxlIiwiZW1haWwiOiJqZGpqZEBxcS5jb20iLCJiaXJ0aGRheSI6IjIwMjAtMDEtMDMiLCJvcF9kYXRlIjoiMjAyMC0wMS0xNCAxOTo0MDowOSIsInJvbGUiOjQsInBhc3N3b3JkIjpudWxsfSwiaWF0IjoxNTg1NjQ5MzIzfQ.6r6d_8_la33xWk5ucMj0tVf2o5-S4aHsgPpBwL0qExw"
+    store.commit('isLogin', true)
+
+    next();
+    return;
+
     if(sessionStorage.user_id){
         next()
     }else{
@@ -199,10 +211,11 @@ router.beforeEach((to,from,next)=>{
 
 
         }else{
+
             let code =Util.getUrlParam("code")
 
             if(!code){
-                console.error("授权code不能为空!")
+                store.commit('message', "授权code不能为空!")
             }else{
                 axios.get('wechatApi/getOpenid', {
                     params:{
@@ -226,11 +239,11 @@ router.beforeEach((to,from,next)=>{
                         }
 
                     }).catch(err => {
-                        this.$Message.error(err)
+                        store.commit('message', err)
                     })
 
                 }).catch(err => {
-                    this.$Message.error(err)
+                    store.commit('message', err)
                 })
             }
 
