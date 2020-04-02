@@ -1,8 +1,8 @@
 <template>
 
 
-    <section class="">
-        <Card style="margin-bottom: 0.5em;">
+    <section style="width: 98%;margin:0 auto;padding-top: .5em;">
+        <Card >
             <p slot="title">
                 {{person.name}}
             </p>

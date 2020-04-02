@@ -147,6 +147,9 @@
     .vux-table td:before, .vux-table th:before{
         border-bottom: none!important;
     }
+    header, nav, section, footer {
+        min-width: 310px!important;
+    }
 
 
 

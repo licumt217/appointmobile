@@ -46,6 +46,9 @@
                         </Row>
 
                     </Card>
+                    <p v-if="listData.totalPages>listData.currentPage" style="text-align: center;color:gray">
+                        <span @click="loadMore">加载更多</span>
+                    </p>
                 </template>
                 <template v-else>
                     <p style="text-align: center;margin-top: 2em;">未找到符合条件的咨询师</p>
@@ -116,6 +119,7 @@
                 therapistList: [],
                 consult_type_id: this.$route.query.consult_type_id,
                 manner_type_id: this.$route.query.manner_type_id,
+                listData:{}
 
 
             }
@@ -136,6 +140,9 @@
                 return array;
             },
             init() {
+                this.getBaseInfo()
+            },
+            getBaseInfo(){
                 Promise.all([
                     this.http.post('qualificationtype/list', {}),
                     this.http.post('schooltype/list', {})
@@ -161,7 +168,7 @@
                 //TODO 后续流程呢？
             },
 
-            getList(page) {
+            getList(page,isLoadmore) {
 
 
                 page = page || 1;
@@ -171,17 +178,25 @@
                 let whereObj = {
                     role: Role.therapist,
                     page,
-                    pageSize,
+                    pageSize:2,
                 }
 
                 this.http.post('user/list', whereObj).then((data) => {
 
-                    this.therapistList = data.data;
-                    console.log(this.therapistList.length)
+                    this.listData=data;
+                    if(isLoadmore){
+                        this.therapistList=this.therapistList.concat(data.data)
+                    }else{
+                        this.therapistList=data.data
+                    }
+
 
                 }).catch(err => {
                     this.$Message.error(err)
                 })
+            },
+            loadMore(){
+                this.getList(this.listData.currentPage+1,true);
             },
 
             detail(item) {
@@ -208,7 +223,7 @@
 
                 } else {
                     this.$router.push({
-                        path: '/steps/step3',
+                        path: '/appoint/selectDate',
                         query: {
                             therapist_id: item.therapist_id,
                             consult_type_id: this.consult_type_id,
@@ -227,8 +242,10 @@
 <style scoped>
 
     .mainContent {
+        /*overflow: hidden;*/
         width: 98%;
-        margin-left: 1%;
+        margin:0 auto;
+
         margin-bottom: 5%;
     }
 

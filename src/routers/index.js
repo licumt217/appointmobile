@@ -18,6 +18,7 @@ const appoint_myAppoint         = r => require.ensure([], () => r(require('../pa
 const appoint_history           = r => require.ensure([], () => r(require('../pages/appoint/history')), 'appoint_history')
 const appoint_setting           = r => require.ensure([], () => r(require('../pages/appoint/setting')), 'appoint_setting')
 const appoint_detail            = r => require.ensure([], () => r(require('../pages/appoint/detail')), 'appoint_detail')
+const appoint_selectDate            = r => require.ensure([], () => r(require('../pages/appoint/selectDate')), 'appoint_selectDate')
 
 
 
@@ -95,6 +96,9 @@ const router=new VueRouter({
         },{
             path:'/appoint/detail',
             component:appoint_detail
+        },{
+            path:'/appoint/selectDate',
+            component:appoint_selectDate
         },
 
 
