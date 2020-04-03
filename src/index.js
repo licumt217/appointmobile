@@ -8,7 +8,7 @@ require('./assets/js/StringPrototype')
 
 
 import  { ToastPlugin,Group, XInput, XButton, Badge, Confirm,Selector,Datetime,
-  PopupPicker,XTable,Actionsheet,ConfirmPlugin,XHeader,Flexbox, FlexboxItem,LoadingPlugin,XAddress} from 'vux'
+  PopupPicker,XTable,Actionsheet,ConfirmPlugin,XHeader,Flexbox, FlexboxItem,LoadingPlugin,XAddress,Step, StepItem,Divider,Popup} from 'vux'
 
 Vue.use(ToastPlugin)
 Vue.component('x-button', XButton)
@@ -26,6 +26,10 @@ Vue.component('x-header', XHeader)
 Vue.component('flexbox', Flexbox)
 Vue.component('flexbox-item', FlexboxItem)
 Vue.component('x-address', XAddress)
+Vue.component('step', Step)
+Vue.component('step-item', StepItem)
+Vue.component('divider', Divider)
+Vue.component('popup', Popup)
 
 Vue.use(ConfirmPlugin)
 Vue.use(LoadingPlugin)

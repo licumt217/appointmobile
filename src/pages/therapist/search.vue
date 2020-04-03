@@ -58,6 +58,7 @@
 
         </div>
         <EmergencyConsultModal ref="emergencyConsult" @consult="consult"></EmergencyConsultModal>
+        <Agreement ref="agreement"></Agreement>
 
 
     </section>
@@ -71,11 +72,13 @@
     import {SEX} from "../../assets/js/constants/constant"
     import EmergencyConsultModal from '../components/EmergencyConsultModal'
     import MyPopupPicker from '../../components/MyPopupPicker'
+    import Agreement from '../../components/Agreement'
 
     export default {
         components: {
             EmergencyConsultModal,
-            MyPopupPicker
+            MyPopupPicker,
+            Agreement
         },
         data() {
             return {
@@ -160,6 +163,8 @@
             },
             query() {
                 console.log(this.formItem)
+
+                // this.$refs.agreement.show();
 
                 this.getList();
             },

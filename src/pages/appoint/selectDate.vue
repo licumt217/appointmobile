@@ -3,62 +3,9 @@
 
     <section class="" style="width:98%;margin: 0 auto;padding-top: .5em;">
 
-        <section style="margin:.5em auto .8em 1em;">
-            <span >咨询师可预约时间：</span>
-        </section>
-        <DateSelector :therapist_id="therapist_id"></DateSelector>
+        <PeriodSelect :therapist_id="therapist_id"></PeriodSelect>
 
 
-        <section style="" v-if="appoint_date && availablePeriodArray">
-
-            <p style="font-weight: bold;margin-bottom: 1em;">请选择预约时段：</p>
-
-            <template v-if="availablePeriodArray.length>0">
-                <CheckboxGroup v-model="periodArray" style="margin-left: 1em;" >
-
-                    <template v-for="(period,index) in availablePeriodArray">
-
-                        <Checkbox :label="period" style="margin-right: 3em;">
-                            {{`${period}:00-${period}:50`}}
-                        </Checkbox>
-                        <template v-if="index%2!==0">
-                            <br/>
-                            <br/>
-                        </template>
-
-                    </template>
-
-                </CheckboxGroup>
-            </template>
-
-            <template v-else>
-                <p style="color:red;font-size: 12px;margin-bottom: .5em;">所选日期无可用时段，是否仍要选择时段，选择后在咨询师此时段可用时优先通知您！</p>
-                <CheckboxGroup v-model="myPeriodArray" style="margin-left: 1em;" >
-
-                    <template v-for="(period,index) in myAvailablePeriodArray">
-
-                        <Checkbox :label="period" style="margin-right: 3em;">
-                            {{`${period}:00-${period}:50`}}
-                        </Checkbox>
-                        <template v-if="index%2!==0">
-                            <br/>
-                            <br/>
-                        </template>
-
-                    </template>
-
-                </CheckboxGroup>
-            </template>
-
-        </section>
-
-        <section class="mainContent">
-
-            <div style="margin-top: 1em;">
-                <x-button class="long_btn" plain type="primary" @click.native="next">下一步</x-button>
-            </div>
-
-        </section>
 
     </section>
 
@@ -68,7 +15,7 @@
     import {Util} from '../../assets/js/Util'
     import DateUtil from '../../assets/js/DateUtil'
     import TimePeriod from "../components/TimePeriod";
-    import DateSelector from "../../components/DateSelector";
+    import PeriodSelect from "../../components/PeriodSelect";
 
     export default {
         data() {
@@ -106,7 +53,7 @@
         },
         components: {
             TimePeriod,
-            DateSelector
+            PeriodSelect
         },
         watch:{
             appoint_date(newValue,oldValue){

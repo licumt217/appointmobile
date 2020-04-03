@@ -148,7 +148,7 @@
         border-bottom: none!important;
     }
     header, nav, section, footer {
-        min-width: 310px!important;
+        min-width: 200px!important;
     }
 
 
