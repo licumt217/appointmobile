@@ -4,6 +4,7 @@
                    :show-name="showName" style="color:red;">
             <div slot="title" >
                 <slot></slot>
+                <span class="must" v-if="isMust">*</span>
             </div>
 
     </popup-picker>
@@ -20,8 +21,13 @@
             model (val) {
                 if(Array.isArray(val) && val.length>0){
                     this.$emit('input',val[0])
+                }else if(val){
+                    alert(1)
                 }
             },
+            value(val){
+                this.model=[val]
+            }
 
         },
         computed:{
@@ -52,6 +58,10 @@
                 type: String,
                 default:''
             },
+            isMust:{
+                type:Boolean,
+                default:false
+            }
         },
         methods:{
             scroll(){
@@ -67,5 +77,8 @@
 <style>
     .total_container *{
         font-size: 12px!important;
+    }
+    .must{
+        color:red;
     }
 </style>

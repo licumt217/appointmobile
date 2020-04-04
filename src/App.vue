@@ -114,7 +114,7 @@
                         this.$router.push('/appoint/history')
                         break;
                     case 'setting':
-                        this.$router.push('/appoint/setting')
+                        this.$router.push('/user/setting')
                         break;
 
 

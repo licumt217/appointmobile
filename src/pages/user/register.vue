@@ -34,13 +34,7 @@
                                     </div>
                                 </x-input>
 
-                                <popup-picker :data="sexOptions" :placeholder="'请选择性别'" placeholder-align="right" ref="sex" @on-show="scroll"
-                                              v-model="formItem.sex"
-                                              :options="sexOptions" :show-name="true">
-                                    <div slot="title" style="width:5em;">
-                                        性别<span style="color:red;">*</span>
-                                    </div>
-                                </popup-picker>
+                                <my-popup-picker placeholder="请选择性别" :data="sexOptions" :is-must="true" v-model="formItem.sex">性别</my-popup-picker>
 
                                 <x-input ref="email" :placeholder="'请输入电子邮箱'" placeholder-align="right"
                                          v-model="formItem.email">
@@ -91,10 +85,14 @@
 <script>
     const md5=require('md5')
     import {Util} from '../../assets/js/Util'
+    import MyPopupPicker from '../../components/MyPopupPicker'
     export default {
+        components:{
+            MyPopupPicker
+        },
         data() {
             return {
-                sexOptions: [[
+                sexOptions: [
                     {
                         value: 'male',
                         name: '男'
@@ -103,7 +101,7 @@
                         value: 'female',
                         name: '女'
                     },
-                ]],
+                ],
                 formItem: {
                 },
                 loginFormItem: {
