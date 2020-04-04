@@ -27,16 +27,6 @@
                 periodArray: [],
                 myPeriodArray: ['period1','period3'],
                 availablePeriodArray:null,
-                myAvailablePeriodArray:[
-                    'period1',
-                    'period2',
-                    'period3',
-                    'period4',
-                    'period5',
-                    'period6',
-                    'period7',
-                    'period8',
-                ],
                 appointType: 'family',
                 mannerType: '1',
                 roomId: '359baf4a6e1f4cc5a10ad31d1b2f5317',
@@ -65,55 +55,6 @@
         },
         methods: {
 
-            getPeriodSet() {
-                this.http.post('therapist/getUseablePeriodSet', {
-                    therapist_id:this.therapist_id
-                }).then((data) => {
-                    this.allAvailablePeriodArray=data.period.split(',')
-                    this.getAvailablePeriod()
-
-                }).catch(err => {
-                    this.$Message.error(err)
-                })
-
-            },
-            /**
-             * 获取咨询师在某天的可预约时段
-             */
-            getAvailablePeriod(){
-                if(!this.appoint_date){
-                    return;
-                }
-
-                this.periodArray=[]
-                this.http.post('therapistperiod/list', {
-                    therapist_id:this.therapist_id,
-                    appoint_date:DateUtil.format(this.appoint_date)
-                }).then((data) => {
-
-                    if(data.length===0){
-                        this.availablePeriodArray=this.allAvailablePeriodArray
-                    }else{
-
-                        this.availablePeriodArray=this.allAvailablePeriodArray.filter((item)=>{
-
-                            let flag=true;
-
-                            data.forEach((obj)=>{
-                                if(obj.period.includes(item)){
-                                    flag=false;
-                                }
-                            })
-
-                            return flag;
-                        })
-
-                    }
-
-                }).catch(err => {
-                    this.$Message.error(err)
-                })
-            },
             isBeforeToday(date) {
                 return date.valueOf() < (Date.now() - 86400000);
             },

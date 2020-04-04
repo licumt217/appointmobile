@@ -32,7 +32,7 @@
                 showMenus:false,
                 menus:{
                     'myAppoint':'我的预约',
-                    'appointHistory':'预约历史',
+                    'appointHistory':'预约记录',
                     'setting':'设置',
                     'personalCenter':'个人信息',
                     'logout':'退出登录',

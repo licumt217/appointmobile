@@ -3,79 +3,48 @@
 
     <div class="login-wrap">
         <transition name="slideT">
-            <div class="mainContent" >
-                <div class="">
+            <div class="mainContent">
 
-                    <Tabs type="card">
-                        <Tab-pane label="用户注册" name="account" >
-
-                            <Form :model="formItem" ref="registerForm" :label-width="80" class="demo-ruleForm">
-
-                                <x-input :max=11 :placeholder="'请输入手机号'"
-                                         placeholder-align="right" ref="phone"
-                                         v-model="formItem.phone">
-
-                                    <div slot="label" style="width:5em;">
-                                        手机号<span style="color:red;">*</span>
-                                    </div>
-                                </x-input>
-
-                                <x-input ref="" :placeholder="'请输入身份证号'" placeholder-align="right"
-                                         v-model="formItem.identification_no">
-                                    <div slot="label" style="width:5em;">
-                                        身份证号<span style="color:red;">*</span>
-                                    </div>
-                                </x-input>
-
-                                <x-input ref="" :placeholder="'请输入姓名'" placeholder-align="right"
-                                         v-model="formItem.name">
-                                    <div slot="label" style="width:5em;">
-                                        姓名<span style="color:red;">*</span>
-                                    </div>
-                                </x-input>
-
-                                <my-popup-picker placeholder="请选择性别" :data="sexOptions" :is-must="true" v-model="formItem.sex">性别</my-popup-picker>
-
-                                <x-input ref="email" :placeholder="'请输入电子邮箱'" placeholder-align="right"
-                                         v-model="formItem.email">
-                                    <div slot="label" style="width:5em;">
-                                        电子邮箱<span style="color:red;">*</span>
-                                    </div>
-                                </x-input>
-
-                                <datetime :min-year="1900" v-model="formItem.birthday" ref="birthday" @on-show="scroll"
-                                          :placeholder="'请选择出生日期'" placeholder-align="left">
-                                    <div slot="title" style="width:5em;">
-                                        出生日期<span style="color:red;">*</span>
-                                    </div>
-                                </datetime>
-
-                            </Form>
-                            <x-button class="long_btn" text="注册" type="primary" @click.native="register"></x-button>
-
-                        </Tab-pane>
-                        <Tab-pane label="咨询师登录" name="therapist" >
-
-                            <Form :model="loginFormItem" :rules="loginRules" ref="loginForm" :label-width="80" class="demo-ruleForm">
-
-                                <Form-item prop="phone" label="手机号">
-                                    <Input  type="number" placeholder="请输入手机号" v-model="loginFormItem.phone"></Input>
-                                </Form-item>
-
-                                <Form-item prop="password" label="密码">
-                                    <Input  type="password" placeholder="请输入密码" v-model="loginFormItem.password"></Input>
-                                </Form-item>
+                <Tabs type="card">
+                    <Tab-pane label="用户注册" name="account">
 
 
-                            </Form>
-                            <div class="login-btn">
-                                <Button type="primary" @click="login">登录</Button>
-                            </div>
-                        </Tab-pane>
-                    </Tabs>
+                        <MyInput :max=11 :placeholder="'请输入手机号'" is-must v-model="formItem.phone">手机号</MyInput>
+
+                        <MyInput :placeholder="'请输入身份证号'" is-must v-model="formItem.identification_no">身份证号
+                        </MyInput>
+
+                        <MyInput :placeholder="'请输入姓名'" is-must v-model="formItem.name">姓名</MyInput>
+
+                        <my-popup-picker placeholder="请选择性别" :data="sexOptions" :is-must="true"
+                                         v-model="formItem.sex">性别
+                        </my-popup-picker>
+
+                        <MyInput :placeholder="'请输入电子邮箱'" is-must v-model="formItem.email">电子邮箱</MyInput>
+
+                        <MyDatetime v-model="formItem.birthday" :placeholder="'请选择出生日期'" is-must>出生日期
+                        </MyDatetime>
 
 
-                </div>
+                        <x-button class="long_btn" type="primary" @click.native="register">注册</x-button>
+
+                    </Tab-pane>
+
+                    <Tab-pane label="咨询师登录" name="therapist">
+
+
+                        <MyInput :max=11 :placeholder="'请输入手机号'" is-must v-model="loginFormItem.phone">手机号
+                        </MyInput>
+
+                        <MyInput :max=5 :placeholder="'请输入密码'" is-password is-must v-model="loginFormItem.password">密码
+                        </MyInput>
+
+                        <x-button class="long_btn" type="primary" @click.native="login">登录</x-button>
+                    </Tab-pane>
+
+                </Tabs>
+
+
             </div>
         </transition>
     </div>
@@ -83,12 +52,17 @@
 </template>
 
 <script>
-    const md5=require('md5')
+    const md5 = require('md5')
     import {Util} from '../../assets/js/Util'
     import MyPopupPicker from '../../components/MyPopupPicker'
+    import MyDatetime from '../../components/MyDatetime'
+    import MyInput from '../../components/MyInput'
+
     export default {
-        components:{
-            MyPopupPicker
+        components: {
+            MyPopupPicker,
+            MyInput,
+            MyDatetime
         },
         data() {
             return {
@@ -102,10 +76,8 @@
                         name: '女'
                     },
                 ],
-                formItem: {
-                },
-                loginFormItem: {
-                },
+                formItem: {},
+                loginFormItem: {},
                 loginRules: {
                     phone: [
                         {required: true, message: "手机号不能为空", trigger: "blur"},
@@ -128,45 +100,54 @@
             }
         },
         methods: {
-            scroll(){
-                document.body.scrollTop='1px'
-                setTimeout(()=>{
-                    document.body.scrollTop='2px'
-                },200)
+            scroll() {
+                document.body.scrollTop = '1px'
+                setTimeout(() => {
+                    document.body.scrollTop = '2px'
+                }, 200)
             },
-            hideKbd(e){
+            hideKbd(e) {
                 e.target.blur()
+            },
+            isValidWhenLogin() {
+                if (!(this.loginFormItem.phone && Util.isValidPhone(this.loginFormItem.phone))) {
+                    this.$vux.toast.text('请输入正确的手机号')
+                    return false;
+                }
+
+                if (!(this.loginFormItem.password)) {
+                    this.$vux.toast.text('请输入密码')
+                    return false;
+                }
+
+
+                return true;
             },
             /**
              * 已在pc端注册过的咨询师登录，进行账号关联
              */
-            login(){
-                this.$refs.loginForm.validate((valid) => {
-                    if (valid) {
+            login() {
+                if (this.isValidWhenLogin()) {
 
-                        if(!Util.isValidPhone(this.loginFormItem.phone)){
-                            this.$Message.warning("请输入合法的手机号！")
-                            return;
-                        }
+                    return;
 
-                        this.loginFormItem.openid=sessionStorage.openid;
+                    this.loginFormItem.openid = sessionStorage.openid;
 
-                        this.http.post('login/bind', this.loginFormItem).then((data) => {
+                    this.http.post('login/bind', this.loginFormItem).then((data) => {
 
-                            this.$Message.success("登录成功")
+                        this.$Message.success("登录成功")
 
-                            sessionStorage.user_id=data.userInfo.user_id;
-                            sessionStorage.token=data.token;
+                        sessionStorage.user_id = data.userInfo.user_id;
+                        sessionStorage.token = data.token;
 
-                            this.$router.push('/appoint/myAppoint')
+                        this.$router.push('/appoint/myAppoint')
 
-                        }).catch(err => {
-                            this.$Message.error(err)
-                        })
+                    }).catch(err => {
+                        this.$Message.error(err)
+                    })
 
-                    }
+                }
 
-                })
             },
             isValid() {
                 if (!(this.formItem.phone && Util.isValidPhone(this.formItem.phone))) {
@@ -205,14 +186,14 @@
                     this.$router.push('/appoint/myAppoint')
                     return;
 
-                    this.formItem.openid=sessionStorage.openid;
+                    this.formItem.openid = sessionStorage.openid;
 
                     this.http.post('login/registerAndBind', this.formItem).then((data) => {
 
                         this.$Message.success("注册成功")
 
-                        sessionStorage.user_id=data.userInfo.user_id;
-                        sessionStorage.token=data.token;
+                        sessionStorage.user_id = data.userInfo.user_id;
+                        sessionStorage.token = data.token;
 
                         //TODO 入口是哪个菜单，注册后需要跳转到具体菜单。
 
@@ -222,7 +203,6 @@
                         this.$Message.error(err)
                     })
                 }
-
 
 
             },
@@ -238,12 +218,11 @@
     }
 
     .mainContent {
-        width:98%;
+        width: 98%;
         margin-left: 1%;
         padding-top: 2em;
-        height:100%;
+        height: 100%;
     }
-
 
 
     .ms-login {
@@ -265,7 +244,6 @@
         width: 100%;
         height: 36px;
     }
-
 
 
 </style>

@@ -3,37 +3,42 @@
 
     <section class="">
         <div class="mainContent">
-            <Card>
-                <p slot="title">当前预约</p>
-                <template v-if="curAppoint">
-                    <p>预约日期：{{curAppoint.appoint_date}}</p>
-                    <p>预约时段：{{Util.getAppointPeriodStrFromArray(curAppoint)}}</p>
-                    <p>咨询师：{{curAppoint.name}}</p>
-                    <div style="margin-top: 1em;">
-                        <Button @click="go2Detail(curAppoint)" style="margin-right: 2em;">查看详情</Button>
-                        <Button type="error" @click="cancel">取消预约</Button>
-                    </div>
-                </template>
-                <template v-else>
-                    <h3>暂无预约</h3>
-                </template>
-            </Card>
+            <section style="padding: .5em 0 1em 0;">
 
-            <div style="margin-top: 1em;" >
-                <Row>
-                    <Col span="7" offset="1">
-                        <Button type="primary" long @click="appoint">立即预约</Button>
-                    </Col>
-                    <Col span="7" offset="1">
-                        <Button type="success" long @click="emergencyConsult">紧急咨询</Button>
-                    </Col>
+                <Card>
+                    <p slot="title">当前预约</p>
+                    <template v-if="curAppoint">
+                        <p>预约日期：{{curAppoint.appoint_date}}</p>
+                        <p>预约时段：{{Util.getAppointPeriodStrFromArray(curAppoint)}}</p>
+                        <p>咨询师：{{curAppoint.name}}</p>
+                        <flexbox style="margin-top: .8em;">
+                            <flexbox-item>
+                                <x-button class="long_btn" plain type="primary" @click.native="go2Detail(curAppoint)">查看详情</x-button>
+                            </flexbox-item>
+                            <flexbox-item>
+                                <x-button class="long_btn" plain type="warn" @click.native="cancel">取消预约</x-button>
+                            </flexbox-item>
+                        </flexbox>
 
-                    <Col span="7" offset="1">
-                        <Button type="warning" long @click="transfer">转介</Button>
-                    </Col>
+                    </template>
+                    <template v-else>
+                        <h3>暂无预约</h3>
+                    </template>
+                </Card>
+            </section>
 
-                </Row>
-            </div>
+            <flexbox>
+                <flexbox-item>
+                    <x-button class="long_btn" plain type="primary" @click.native="appoint">立即预约</x-button>
+                </flexbox-item>
+                <flexbox-item>
+                    <x-button class="long_btn" plain type="warn" @click.native="emergencyConsult">紧急咨询</x-button>
+                </flexbox-item>
+                <flexbox-item>
+                    <x-button class="long_btn" plain  @click.native="transfer">转介</x-button>
+                </flexbox-item>
+            </flexbox>
+
 
 
 
@@ -151,8 +156,9 @@
 <style scoped>
 
     .mainContent {
-        width: 97%;
+        width: 98%;
         margin:0 auto;
+        position: relative;
     }
 
 

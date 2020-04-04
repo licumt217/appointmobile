@@ -1,7 +1,7 @@
 <template>
 
 
-    <div class="">
+    <div class="mainContent">
         <Card>
 
             <p slot="title">预约详情</p>
@@ -12,12 +12,32 @@
 
         </Card>
         <div style="margin:1em auto 0 auto;">
-            <Button v-if="order.state===ORDER_STATE.AUDITED" type="primary" @click="pay">立即支付</Button>
-            <Button v-if="order.state===ORDER_STATE.COMMIT || order.state===ORDER_STATE.AUDITED || order.state===ORDER_STATE.PAYED" type="success"
-                    @click="cancel">取消预约
-            </Button>
-            <Button v-if="order.state===ORDER_STATE.DONE " type="warning" @click="showFeedbackModal">咨询效果反馈</Button>
-            <Button v-if="order.state===ORDER_STATE.DONE " :order_id="order.order_id" type="error" @click="showComplainModal">投诉咨询师</Button>
+            <flexbox >
+                <template v-if="order.state===ORDER_STATE.AUDITED">
+                    <flexbox-item>
+                        <x-button class="long_btn" plain type="primary" @click.native="pay">立即支付</x-button>
+                    </flexbox-item>
+
+                </template>
+
+                <template v-if="order.state===ORDER_STATE.COMMIT || order.state===ORDER_STATE.AUDITED || order.state===ORDER_STATE.PAYED">
+                    <flexbox-item>
+                        <x-button class="long_btn" plain type="warn" @click.native="cancel">取消预约</x-button>
+                    </flexbox-item>
+
+                </template>
+
+                <template v-if="order.state===ORDER_STATE.DONE">
+                    <flexbox-item>
+                        <x-button class="long_btn" plain type="warn" @click.native="showFeedbackModal">咨询效果反馈</x-button>
+                    </flexbox-item>
+                    <flexbox-item>
+                        <x-button class="long_btn" plain type="warn" @click.native="showComplainModal">投诉咨询师</x-button>
+                    </flexbox-item>
+                </template>
+
+
+            </flexbox>
 
         </div>
 
@@ -86,7 +106,7 @@
                     PayUtil.pay(data.secuParam,this.init,this.init)
 
                 }).catch(err => {
-                    this.$Message.error(err)
+                    this.$vux.toast.text(err)
                 })
             },
             getAppointDetail() {
@@ -97,7 +117,7 @@
                     this.order = data;
 
                 }).catch(err => {
-                    this.$Message.error(err)
+                    this.$vux.toast.text(err)
                 })
             },
             feedback() {
@@ -114,23 +134,23 @@
              * 24小时外不能退款）
              */
             cancel() {
-                this.$Modal.confirm({
-                    title: '您确定取消吗？',
-                    content: '',
-                    onOk: () => {
+                this.$vux.confirm.show({
+                    content:'您确定取消吗',
+                    onCancel () {
+                    },
+                    onConfirm :()=>{
                         this.http.post('order/cancelOrder', {
                             order_id:this.order.order_id
                         }).then(() => {
-                            this.$Message.success('操作成功')
+                            this.$vux.toast.text('操作成功')
                             this.init()
 
                         }).catch(err => {
-                            this.$Message.error(err)
+                            this.$vux.toast.text(err)
                         })
-                    },
-                    onCancel: () => {
                     }
                 })
+
             },
 
 
@@ -141,6 +161,10 @@
 </script>
 
 <style scoped>
-
+    .mainContent {
+        width: 98%;
+        margin:0 auto;
+        padding-top:.5em;
+    }
 
 </style>

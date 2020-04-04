@@ -87,7 +87,8 @@
                 canAppointDate: {},
                 allAvailablePeriodArray: [],
                 availablePeriodArray: [],
-                selectPeriodArray: []
+                selectPeriodArray: [],
+                appoint_date:{}
             }
         },
         props: {
@@ -111,11 +112,32 @@
                 this.selectPeriodArray = []
             },
             next() {
-                if(this.selectPeriodArray.length>0){
 
-                }else{
-                    this.$vux.toast.text('请选择预约时段！', 'middle')
+                if(!this.selectPeriodArray || this.selectPeriodArray.length===0){
+                    this.$vux.toast.text('请选择预约时段!')
+                    return;
                 }
+
+                this.http.post('order/unifiedOrder', {
+                    openid:sessionStorage.openid,
+                    amount:0.01,
+                    therapist_id:this.therapist_id,
+                    appoint_date:DateUtil.format(this.appoint_date),
+                    periodArray:this.selectPeriodArray,
+                    // consult_type_id:this.consult_type_id,
+                    // manner_type_id:this.manner_type_id,
+                }).then((data) => {
+                    this.$vux.toast.text('预约成功!')
+                    this.$router.push({
+                        path:'/appoint/myAppoint',
+                        query:{
+                        }
+                    })
+
+                }).catch(err => {
+                    this.$vux.toast.text(err)
+                })
+
             },
             init() {
 
@@ -133,6 +155,8 @@
              * 根据给定日期查询当日此咨询师的可预约时段。
              * */
             queryPeriodsByDate(item, index2) {
+
+                this.appoint_date=item.date;
 
                 this.resetBtnStatus();
                 this.resetSelectArray()
@@ -388,11 +412,9 @@
 
     .btn {
         display: inline-block;
-        box-shadow: 1px 1px 1px 1px green;
     }
 
     .btn_active {
-        box-shadow: 0px 0px 0px 0px transparent;
         background: cadetblue;
         color: #FFF;
     }

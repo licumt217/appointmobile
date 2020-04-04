@@ -1,4 +1,4 @@
-class Util{
+class Util {
 
 
     /**
@@ -6,7 +6,7 @@ class Util{
      * @param temp
      * @returns {Boolean}
      */
-    static isChinese (s) {
+    static isChinese(s) {
         var patrn = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi
         var flag = true
         if (!patrn.exec(s)) {
@@ -18,7 +18,7 @@ class Util{
     /**
      * 验证给定字符是否是A-Za-z之间的英文字母
      */
-    static isEnglish (value) {
+    static isEnglish(value) {
         var str = /^[A-Za-z]*$/
         var flag = false
         if (str.test(value)) {
@@ -33,32 +33,35 @@ class Util{
      * @param p
      * @returns
      */
-    static isAllNum (p) {
+    static isAllNum(p) {
         var re = /^\d*$/
         return re.test(p)
     }
+
     /**
      * 验证手机号
      */
-    static isValidPhone (p) {
+    static isValidPhone(p) {
         var re = /^1\d{10}$/
         return re.test(p)
     }
+
     /**
      * 验证身份证号
      */
-    static isValidID (p) {
+    static isValidID(p) {
         p = String(p).toUpperCase()
         var re = /(^\d{15}$)|(^\d{17}([0-9]|X$))/
         return re.test(p)
     }
+
     /**
      * 验证邮箱地址合法性
      * @param temp
      * @returns {Boolean}
      */
-    static isValidEmail (s){
-        var re=/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+    static isValidEmail(s) {
+        var re = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
         return re.test(s);
     }
 
@@ -74,23 +77,24 @@ class Util{
         return null
     }
 
-    static uuid () {
-        return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    static uuid() {
+        return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
             var r = (Math.random() * 16) | 0,
                 v = c == 'x' ? r : (r & 0x3) | 0x8
             return v.toString(16)
         })
     }
+
     /**
      * 数组转对象
      * @param array
      * @param key
      */
-    static array2Object(array,key='id'){
-        let obj={}
+    static array2Object(array, key = 'id') {
+        let obj = {}
 
-        array.forEach(item=>{
-            obj[item[key]]=item;
+        array.forEach(item => {
+            obj[item[key]] = item;
         })
 
         return obj;
@@ -103,7 +107,7 @@ class Util{
      * @returns {number}
      */
     static getDaysOfMonth(year, month) {
-        month+=1;
+        month += 1;
         let d = new Date(year, month, 0);
         return d.getDate();
     }
@@ -116,17 +120,38 @@ class Util{
         }
     }
 
-    static getAppointPeriodStrFromArray(appoint){
-        let str='';
-        appoint.period.split(',').forEach(item=>{
-            str+=(`${Util.fixZero(item)}:00-${Util.fixZero(item)}:50 `)
+    static getAppointPeriodStrFromArray(appoint) {
+        let str = '';
+        if(!appoint.period){
+            return str;
+        }
+        appoint.period.split(',').forEach(item => {
+            str += (`${Util.fixZero(item)}:00-${Util.fixZero(item)}:50 `)
         })
-
 
 
         return str;
     }
 
+    /**
+     * 将下拉选择后台数据转为下拉列表需要的数组格式
+     * @param dataArray
+     * @param valueKey
+     * @param nameKey
+     * @returns {[]}
+     */
+    static getPopupPickerOptions(dataArray, valueKey, nameKey) {
+        let array = [];
+        dataArray.forEach(item => {
+            array.push({
+                value: item[valueKey],
+                name: item[nameKey],
+            })
+        })
+        return array;
+    }
+
 }
-Util.pageSize=10;
+
+Util.pageSize = 10;
 export {Util}

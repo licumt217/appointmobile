@@ -10,21 +10,21 @@
                 </group>
                 <flexbox style="margin-bottom: -1.2em;">
                     <flexbox-item>
-                        <my-popup-picker :data="sexOptions" v-model="formItem.sex">性别</my-popup-picker>
+                        <my-popup-picker :data="genderOptions" v-model="formItem.gender">性别</my-popup-picker>
                     </flexbox-item>
                     <flexbox-item>
-                        <my-popup-picker :data="qualificationOptions" v-model="formItem.zizhi">资质</my-popup-picker>
+                        <my-popup-picker :data="qualificationOptions" v-model="formItem.qualification_type_id">资质</my-popup-picker>
                     </flexbox-item>
                 </flexbox>
                 <flexbox>
                     <flexbox-item>
-                        <my-popup-picker :data="lingyuOptions" v-model="formItem.lingyu">领域</my-popup-picker>
+                        <my-popup-picker :data="schoolTypeOptions" v-model="formItem.school_type_id">学派</my-popup-picker>
                     </flexbox-item>
                     <flexbox-item>
-                        <my-popup-picker :data="mannerOptions" v-model="formItem.manner">咨询方式</my-popup-picker>
+                        <my-popup-picker :data="mannerTypeOptions" v-model="formItem.manner_type_id">咨询方式</my-popup-picker>
                     </flexbox-item>
                 </flexbox>
-                <x-button class="long_btn" plain text="查询" type="primary" @click.native="query"></x-button>
+                <x-button class="long_btn" plain text="查询" type="primary" @click.native="getList"></x-button>
             </section>
 
             <section style="margin-top: 1em;">
@@ -36,6 +36,7 @@
                         <p>性别：{{SEX[item.gender]}}</p>
                         <p>流派：{{schoolTypeObj[item.school_type_id]?schoolTypeObj[item.school_type_id].school_type_name:''}}</p>
                         <p>资历：{{qualificationTypeObj[item.qualification_type_id]?qualificationTypeObj[item.qualification_type_id].qualification_type_name:''}}</p>
+                        <p>咨询方式：{{mannerTypeObj[item.manner_type_id]?mannerTypeObj[item.manner_type_id].manner_type_name:''}}</p>
                         <Row style="margin-top: .5em;" justify="space-between" type="flex">
                             <Col span="10">
                                 <x-button class="long_btn" plain type="primary" @click.native="next(item)">选择此咨询师</x-button>
@@ -59,6 +60,7 @@
         </div>
         <EmergencyConsultModal ref="emergencyConsult" @consult="consult"></EmergencyConsultModal>
         <Agreement ref="agreement"></Agreement>
+        <loading :show="isLoading" ></loading>
 
 
     </section>
@@ -66,6 +68,7 @@
 </template>
 
 <script>
+    //TODO 需要添加领域
     import {ChinaAddressV4Data} from 'vux'
     import {Util} from '../../assets/js/Util'
     import Role from '../../assets/js/Role'
@@ -85,7 +88,7 @@
                 addressData: ChinaAddressV4Data,
                 address: [],
                 formItem: {},
-                sexOptions: [{
+                genderOptions: [{
                     value: 'male',
                     name: '男'
                 }, {
@@ -93,36 +96,20 @@
                     name: '女'
                 },],
                 qualificationOptions: undefined,
-                lingyuOptions: [
-                    {
-                        value: 'male',
-                        name: '亲子'
-                    },
-                    {
-                        value: 'female',
-                        name: '家庭'
-                    },
-                ],
-                mannerOptions: [
-                    {
-                        value: 'male',
-                        name: '线上'
-                    },
-                    {
-                        value: 'female',
-                        name: '线下'
-                    },
-                ],
+                schoolTypeOptions: undefined,
+                mannerTypeOptions: undefined,
                 defaultValue: [],
                 list: [{key: 'gd', value: '广东'}, {key: 'gx', value: '广西'}],
                 qualificationTypeObj: {},
                 schoolTypeObj: {},
+                mannerTypeObj: {},
                 isEmergency: this.$route.query.isEmergency ? true : false,
                 SEX,
                 therapistList: [],
                 consult_type_id: this.$route.query.consult_type_id,
                 manner_type_id: this.$route.query.manner_type_id,
-                listData:{}
+                listData:{},
+                isLoading:false,
 
 
             }
@@ -132,41 +119,30 @@
             this.init();
         },
         methods: {
-            getOptions(dataArray, valueKey, nameKey) {
-                let array = [];
-                dataArray.forEach(item => {
-                    array.push({
-                        value: item[valueKey],
-                        name: item[nameKey],
-                    })
-                })
-                return array;
-            },
             init() {
                 this.getBaseInfo()
             },
             getBaseInfo(){
+                this.isLoading=true;
                 Promise.all([
                     this.http.post('qualificationtype/list', {}),
-                    this.http.post('schooltype/list', {})
+                    this.http.post('schooltype/list', {}),
+                    this.http.post('mannertype/list', {})
                 ]).then((data) => {
+                    this.isLoading=false;
                     this.qualificationTypeObj = Util.array2Object(data[0], 'qualification_type_id')
                     this.schoolTypeObj = Util.array2Object(data[1], 'school_type_id')
+                    this.mannerTypeObj = Util.array2Object(data[2], 'manner_type_id')
 
-                    this.qualificationOptions = this.getOptions(data[0], 'qualification_type_id', 'qualification_type_name')
+                    this.qualificationOptions = Util.getPopupPickerOptions(data[0], 'qualification_type_id', 'qualification_type_name')
+                    this.schoolTypeOptions = Util.getPopupPickerOptions(data[1], 'school_type_id', 'school_type_name')
+                    this.mannerTypeOptions = Util.getPopupPickerOptions(data[2], 'manner_type_id', 'manner_type_name')
 
 
-                    this.getList();
-                }).catch(error => {
-                    this.$Message.error(error)
+                }).catch(err => {
+                    this.$vux.toast.text(err)
+                    this.isLoading=false;
                 });
-            },
-            query() {
-                console.log(this.formItem)
-
-                // this.$refs.agreement.show();
-
-                this.getList();
             },
             //紧急咨询回调
             consult() {
@@ -186,6 +162,10 @@
                     pageSize:2,
                 }
 
+                Object.assign(whereObj,this.formItem)
+
+                this.isLoading=true;
+
                 this.http.post('user/list', whereObj).then((data) => {
 
                     this.listData=data;
@@ -194,10 +174,11 @@
                     }else{
                         this.therapistList=data.data
                     }
-
+                    this.isLoading=false;
 
                 }).catch(err => {
-                    this.$Message.error(err)
+                    this.$vux.toast.text(err)
+                    this.isLoading=false;
                 })
             },
             loadMore(){
@@ -227,6 +208,9 @@
                     this.$refs.emergencyConsult.show()
 
                 } else {
+                    let obj={
+                        therapist_id: item.therapist_id
+                    }
                     this.$router.push({
                         path: '/appoint/selectDate',
                         query: {

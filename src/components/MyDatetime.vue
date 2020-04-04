@@ -1,15 +1,15 @@
 <template>
-    <x-input :placeholder="placeholder" :placeholder-align="placeholderAlign" :max="max" :type="isPassword?'password':''" autocomplete="new-password"
-             v-model="model">
-        <div slot="label" style="width: 5em;">
+    <datetime :min-year="1900" v-model="model" @on-show="scroll"
+              :placeholder="placeholder" :placeholder-align="placeholderAlign">
+        <div slot="title" >
             <slot></slot>
             <span class="must" v-if="isMust">*</span>
         </div>
-    </x-input>
+    </datetime>
+
 </template>
 
 <script>
-
     export default {
         data(){
             return {
@@ -18,35 +18,27 @@
         },
         watch: {
             model (val) {
-                if(val){
-                    this.$emit('input',val)
-                }
+                this.$emit('input',val)
             },
             value(val){
                 this.model=val
             }
 
         },
-        created() {
-        },
         computed:{
         },
         props:{
-            isPassword:{
-                type:Boolean,
-                default:false
-            },
-            max:{
-                type:Number
-
-            },
             placeholder:{
                 type:String,
-                default: '请输入'
+                default: '请选择'
             },
             placeholderAlign:{
                 type:String,
                 default: 'right'
+            },
+            showName:{
+                type:Boolean,
+                default:true
             },
             value: {
                 type: String,
@@ -58,6 +50,12 @@
             }
         },
         methods:{
+            scroll(){
+                document.body.scrollTop='1px'
+                setTimeout(()=>{
+                    document.body.scrollTop='2px'
+                },200)
+            }
         }
 
     }
