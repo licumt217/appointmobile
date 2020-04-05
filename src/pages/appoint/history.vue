@@ -2,7 +2,7 @@
 
 
     <section class="">
-        <div class="mainContent">
+        <div >
 
             <template v-if="appointList.length>0">
                 <Divider>预约记录</Divider>
@@ -96,12 +96,6 @@
 </script>
 
 <style scoped>
-
-    .mainContent {
-        width: 97%;
-        margin:0 auto;
-        padding-top: .5em;
-    }
 
 
 

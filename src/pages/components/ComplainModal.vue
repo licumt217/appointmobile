@@ -2,7 +2,7 @@
 
     <popup v-model="isShow" height="45%">
 
-        <Divider>投诉咨询师</Divider>
+        <Divider>{{user_type==='therapist'?'投诉用户':'投诉咨询师'}}</Divider>
 
         <x-textarea :max="200" :rows="6" v-model="form.content" placeholder="请输入投诉内容"></x-textarea>
 
@@ -25,39 +25,41 @@
         name: '',
         data() {
             return {
-                isShow:false,
-                form:{},
+                isShow: false,
+                form: {},
                 rules: {
                     content: [
                         {required: true, message: "请输入投诉内容", trigger: "blur"}
                     ],
                 },
+                user_type: ''
             }
         },
         props: {
-            order_id:{
-                type:String,
-                default:''
+            order_id: {
+                type: String,
+                default: ''
             }
         },
         computed: {},
-        watch:{
-        },
+        watch: {},
         methods: {
-            show(){
-              this.isShow=true;
+            show(user_type) {
+                this.user_type = user_type
+                this.isShow = true;
             },
-            hide(){
-              this.isShow=false;
+            hide() {
+                this.isShow = false;
             },
             complain() {
                 //TODO 投诉接口。弹窗时是否需要回显？
 
-                if(this.form.content){
+                if (this.form.content) {
 
                     this.http.post('complaint/add', {
                         order_id: this.order_id,
-                        content:this.form.content
+                        content: this.form.content,
+                        user_type: this.user_type
                     }).then((data) => {
                         this.$vux.toast.text('投诉成功')
                         this.hide();
@@ -68,7 +70,7 @@
                     })
 
 
-                }else{
+                } else {
                     this.$vux.toast.text('请输入投诉内容')
                 }
 

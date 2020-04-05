@@ -3,7 +3,7 @@
 
     <div class="">
         <transition name="slideT">
-            <div class="mainContent" >
+            <div  >
                 <div class="ms-login">
 
                     <Tabs >
@@ -86,11 +86,7 @@
         background-size: 100% 100%;
     }
 
-    .mainContent {
-        width:98%;
-        margin-left: 1%;
-        margin-bottom: 5%;
-    }
+
 
     .ms-login {
         overflow: hidden;

@@ -38,6 +38,9 @@ const therapistListWithTransfer = r => require.ensure([], () => r(require('../pa
 const continueTime = r => require.ensure([], () => r(require('../pages/continueTime')), 'continueTime')
 const selectRoom = r => require.ensure([], () => r(require('../pages/selectRoom')), 'selectRoom')
 
+
+const push_appointDetail = r => require.ensure([], () => r(require('../pages/push/appointDetail')), 'push_appointDetail')
+
 const userFeedbackPush = r => require.ensure([], () => r(require('../pages/push/user/feedback')), 'userFeedbackPush')
 const userRoomAgreePush = r => require.ensure([], () => r(require('../pages/push/user/roomAgree')), 'userRoomAgreePush')
 const userAppointDenyPush = r => require.ensure([], () => r(require('../pages/push/user/appointDeny')), 'userAppointDenyPush')
@@ -48,7 +51,7 @@ const caseManagerRoomConfirmPush = r => require.ensure([], () => r(require('../p
 
 const therapistRoomAgreePush = r => require.ensure([], () => r(require('../pages/push/therapist/roomAgree')), 'therapistRoomAgreePush')
 const therapistRoomDenyPush = r => require.ensure([], () => r(require('../pages/push/therapist/roomDeny')), 'therapistRoomDenyPush')
-const therapistAppointConfirmPush = r => require.ensure([], () => r(require('../pages/push/therapist/appointConfirm')), 'therapistAppointConfirmPush')
+
 const therapistAppointFinishConfirmPush = r => require.ensure([], () => r(require('../pages/push/therapist/appointFinishConfirm')), 'therapistAppointFinishConfirmPush')
 const therapistEmergencyAppointPush = r => require.ensure([], () => r(require('../pages/push/therapist/emergencyAppoint')), 'therapistEmergencyAppointPush')
 const therapistPaySuccessPush = r => require.ensure([], () => r(require('../pages/push/therapist/paySuccess')), 'therapistPaySuccessPush')
@@ -165,8 +168,8 @@ const router=new VueRouter({
             path:'/therapistRoomDenyPush',
             component:therapistRoomDenyPush
         },{
-            path:'/therapistAppointConfirmPush',
-            component:therapistAppointConfirmPush
+            path:'/push/appointDetail',
+            component:push_appointDetail
         },{
             path:'/therapistAppointFinishConfirmPush',
             component:therapistAppointFinishConfirmPush
@@ -236,6 +239,7 @@ router.beforeEach((to,from,next)=>{
                         if(data){
                             sessionStorage.user_id=data.userInfo.user_id
                             sessionStorage.token=data.token
+                            sessionStorage.user_type=data.userInfo.user_type;
                             store.commit('isLogin', true)
                             next()
                         }else{

@@ -111,10 +111,6 @@
 
 <style scoped lang="less">
 
-    .mainContent {
-        width: 97%;
-        margin: 0 auto;
-    }
 
     .base_info {
         p {

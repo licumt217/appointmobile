@@ -1,14 +1,14 @@
 <template>
 
 
-    <div class="mainContent">
+    <div >
         <Card>
 
             <p slot="title">预约详情</p>
             <p>预约日期：{{order.appoint_date}}</p>
             <p>预约时段：{{Util.getAppointPeriodStrFromArray(order)}}</p>
             <p>咨询师：{{order.name}}</p>
-            <p>预约状态：{{ORDER_STATE_DESC[order.state]}}</p>
+            <p>订单状态：{{ORDER_STATE_DESC[order.state]}}</p>
 
         </Card>
         <div style="margin:1em auto 0 auto;">
@@ -160,10 +160,6 @@
 </script>
 
 <style scoped>
-    .mainContent {
-        width: 98%;
-        margin:0 auto;
-        padding-top:.5em;
-    }
+
 
 </style>

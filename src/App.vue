@@ -9,7 +9,7 @@
         <div v-else>
 
             <x-header style="position: fixed;top:0;width:100%;z-index: 1;height: 48px;" :right-options="{showMore: true}" @on-click-more="showMenus = true"></x-header>
-            <section class="content" style="margin-top:48px; ">
+            <section class="content mainContent" style="margin-top:48px; " >
                 <router-view></router-view>
             </section>
 
@@ -150,6 +150,13 @@
     header, nav, section, footer {
         min-width: 200px!important;
     }
+
+    .mainContent {
+        width: 98%;
+        margin:0 auto;
+        padding-top:.5em;
+    }
+
 
 
 

@@ -195,12 +195,7 @@
         background-size: 100% 100%;
     }
 
-    .mainContent {
-        width: 98%;
-        margin-left: 1%;
-        padding-top: 2em;
-        height: 100%;
-    }
+
 
 
     .ms-login {

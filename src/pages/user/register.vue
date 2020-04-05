@@ -3,7 +3,7 @@
 
     <div class="login-wrap">
         <transition name="slideT">
-            <div class="mainContent">
+            <div >
 
                 <Tabs type="card">
                     <Tab-pane label="用户注册" name="account">
@@ -26,7 +26,7 @@
                         </MyDatetime>
 
 
-                        <x-button class="long_btn" type="primary" @click.native="register">注册</x-button>
+                        <x-button class="long_btn" plain type="primary" @click.native="register">注册</x-button>
 
                     </Tab-pane>
 
@@ -39,7 +39,7 @@
                         <MyInput :max=5 :placeholder="'请输入密码'" is-password is-must v-model="loginFormItem.password">密码
                         </MyInput>
 
-                        <x-button class="long_btn" type="primary" @click.native="login">登录</x-button>
+                        <x-button class="long_btn" plain type="primary" @click.native="login">登录</x-button>
                     </Tab-pane>
 
                 </Tabs>
@@ -217,12 +217,7 @@
         background-size: 100% 100%;
     }
 
-    .mainContent {
-        width: 98%;
-        margin-left: 1%;
-        padding-top: 2em;
-        height: 100%;
-    }
+
 
 
     .ms-login {

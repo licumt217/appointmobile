@@ -2,7 +2,7 @@
 
 
     <section class="">
-        <div class="mainContent">
+        <div >
             <div class="ms-login">
 
                 <Tabs :value="cityList[0]" v-if="cityList.length>0" @on-click="changeTab">

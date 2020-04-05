@@ -2,7 +2,7 @@
 
 
     <section class="">
-        <div class="mainContent">
+        <div>
             <section>
                 <group>
                     <x-address title="请选择咨询师所在区域" v-model="address" :hide-district="true"
@@ -230,13 +230,6 @@
 
 <style scoped>
 
-    .mainContent {
-        /*overflow: hidden;*/
-        width: 98%;
-        margin:0 auto;
-
-        margin-bottom: 5%;
-    }
 
 
 </style>

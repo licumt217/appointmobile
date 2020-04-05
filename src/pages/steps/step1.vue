@@ -2,7 +2,7 @@
 
 
     <section class="">
-        <div class="mainContent">
+        <div >
             <div class="appointType" style="margin-left: 0.5em;">
                 <p style="font-size: 14px;font-weight:bold;margin-bottom: 5px;">咨询类型</p>
                 <RadioGroup v-model="consult_type_id" vertical style="margin-left: 1em;">
@@ -116,10 +116,6 @@
 
 <style scoped>
 
-    .mainContent {
-        width: 98%;
-        margin-left: 1%;
-    }
 
 
 

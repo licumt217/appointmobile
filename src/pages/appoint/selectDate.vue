@@ -106,11 +106,6 @@
 
 <style scoped>
 
-    .mainContent {
-        width: 98%;
-        margin-left: 1%;
-        margin-bottom: 5%;
-    }
 
 
 </style>

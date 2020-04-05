@@ -2,7 +2,7 @@
 
 
     <section class="">
-        <div class="mainContent">
+        <div >
             <template v-if="therapistList.length>0">
                 <Card v-for="item in therapistList" style="margin-bottom: 0.5em;">
                     <p slot="title">
@@ -162,12 +162,6 @@
 </script>
 
 <style scoped>
-
-    .mainContent {
-        width: 98%;
-        margin-left: 1%;
-        margin-bottom: 5%;
-    }
 
 
 

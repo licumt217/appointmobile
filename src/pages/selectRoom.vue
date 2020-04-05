@@ -2,7 +2,7 @@
 
 
     <section class="">
-        <div class="mainContent" style="padding:1em;">
+        <div style="padding:1em;">
 
             <h3 style="margin-bottom: 1em;">选择房间</h3>
 
@@ -78,11 +78,6 @@
         background-size: 100% 100%;
     }
 
-    .mainContent {
-        width: 98%;
-        margin-left: 1%;
-        margin-bottom: 5%;
-    }
 
     .ms-login {
         overflow: hidden;

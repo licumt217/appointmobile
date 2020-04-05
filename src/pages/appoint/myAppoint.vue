@@ -2,7 +2,7 @@
 
 
     <section class="">
-        <div class="mainContent">
+        <div >
             <section style="padding: .5em 0 1em 0;">
 
                 <Card>
@@ -155,11 +155,6 @@
 
 <style scoped>
 
-    .mainContent {
-        width: 98%;
-        margin:0 auto;
-        position: relative;
-    }
 
 
 
