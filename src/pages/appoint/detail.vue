@@ -41,7 +41,7 @@
 
         </div>
 
-        <ComplainModal ref="complainModal" ></ComplainModal>
+        <ComplainModal ref="complainModal" :order_id="order_id"></ComplainModal>
         <FeedbackModal ref="feedbackModal" @feedback="feedback"></FeedbackModal>
 
 
@@ -121,7 +121,6 @@
                 })
             },
             feedback() {
-                alert(2)
             },
             showComplainModal() {
                 this.$refs.complainModal.show();

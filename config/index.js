@@ -8,7 +8,7 @@ module.exports={
         env: {
             NODE_ENV: '"local"'
         },
-        port: 8080,
+        port: 8085,
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         proxyTable: {},

@@ -45,7 +45,7 @@
             </datetime>
 
         </Form>
-        <x-button class="long_btn" type="primary" @click.native="update">修改</x-button>
+        <x-button class="long_btn" plain type="primary" @click.native="update">修改</x-button>
     </div>
 
 </template>
