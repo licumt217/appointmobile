@@ -127,7 +127,7 @@
                     // consult_type_id:this.consult_type_id,
                     // manner_type_id:this.manner_type_id,
                 }).then((data) => {
-                    this.$vux.toast.text('预约成功!')
+                    this.$vux.toast.text('提交成功，请等待咨询师审核')
                     this.$router.push({
                         path:'/appoint/myAppoint',
                         query:{
