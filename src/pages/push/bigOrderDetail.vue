@@ -7,15 +7,17 @@
             <p slot="title">预约详情</p>
             <p>预约日期：{{order.appoint_date}}</p>
             <p>预约时段：{{Util.getAppointPeriodStrFromArray(order)}}</p>
-            <p>咨询师：{{order.name}}</p>
+            <p>咨询师：{{order.therapist_name}}</p>
+            <p>用户：{{order.user_name}}</p>
             <p>订单状态：{{ORDER_STATE_DESC[order.state]}}</p>
             <!--            可能需要用户的一些基本信息-->
 
         </Card>
 
 <!--        普通用户-->
+<!--        咨询前单次支付的可以支付-->
         <template v-if="user_type==='user'">
-            <section style="margin-top: .5em;">
+            <section v-if="order.fee_type===0" style="margin-top: .5em;">
                 <div v-if="order.state===ORDER_STATE.AUDITED">
                     <x-button plain type="primary" @click.native="pay">立即支付</x-button>
                 </div>
@@ -23,7 +25,7 @@
         </template>
 
 <!--        咨询师-->
-        <template>
+        <template v-else>
             <section style="margin-top: .5em;">
                 <div v-if="order.state===ORDER_STATE.COMMIT">
                     <x-button plain type="primary" @click.native="accept">接受咨询</x-button>
@@ -65,22 +67,39 @@
                 ORDER_STATE_DESC,
                 ORDER_STATE,
                 Util,
-                order_id: this.$route.query.order_id,
+                big_order_id: this.$route.query.big_order_id,
                 order: {},
-                user_type:sessionStorage.user_type
+                user_type:''
             }
         },
 
         computed: {},
         mounted() {
+            // this.user_type='user'
             this.init()
         },
         methods: {
             init() {
-                this.getAppointDetail()
+                this.getBigOrderDetail()
             },
             showComplainModal() {
                 this.$refs.complainModal.show('therapist');
+            },
+
+            getBigOrderDetail() {
+                this.http.post('bigOrder/getDetail', {
+                    big_order_id: this.big_order_id
+                }).then((data) => {
+                    if(data){
+                        this.order = data;
+                    }else{
+                        this.$vux.toast.text('订单不存在')
+                    }
+
+
+                }).catch(err => {
+                    this.$vux.toast.text(err)
+                })
             },
 
             getAppointDetail() {
@@ -110,8 +129,8 @@
                 })
             },
             accept(){
-                this.http.post('order/accept', {
-                    order_id: this.order_id
+                this.http.post('bigOrder/accept', {
+                    big_order_id: this.big_order_id
                 }).then((data) => {
                     this.$vux.toast.text("操作成功")
                     this.init()
@@ -127,8 +146,8 @@
                     onCancel () {
                     },
                     onConfirm :()=>{
-                        this.http.post('order/deny', {
-                            order_id: this.order_id
+                        this.http.post('bigOrder/deny', {
+                            big_order_id: this.big_order_id
                         }).then((data) => {
                             this.$vux.toast.text("操作成功")
                             this.init()

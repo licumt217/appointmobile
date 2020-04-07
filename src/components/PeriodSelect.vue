@@ -66,6 +66,9 @@
                 </template>
 
             </CheckboxGroup>
+            <group >
+                <x-number v-model="weeks" min=1 max="10" style="line-height: 2em;color:red;" title="预约周数"></x-number>
+            </group>
             <div style="margin-top: 1em;">
                 <x-button class="long_btn" plain type="primary" @click.native="next">确定</x-button>
             </div>
@@ -79,6 +82,7 @@
     export default {
         data() {
             return {
+                weeks:1,
                 weekArray: ['日', '一', '二', '三', '四', '五', '六'],
                 dataList: [],
                 selectMonth: '',
@@ -118,12 +122,13 @@
                     return;
                 }
 
-                this.http.post('order/unifiedOrder', {
+                this.http.post('bigOrder/unifiedOrder', {
                     openid:sessionStorage.openid,
                     amount:0.01,
                     therapist_id:this.therapist_id,
                     appoint_date:DateUtil.format(this.appoint_date),
                     periodArray:this.selectPeriodArray,
+                    weeks:this.weeks
                     // consult_type_id:this.consult_type_id,
                     // manner_type_id:this.manner_type_id,
                 }).then((data) => {
@@ -417,5 +422,12 @@
     .btn_active {
         background: cadetblue;
         color: #FFF;
+    }
+
+    .vux-number-selector{
+        height:28px!important;
+    }
+    .vux-number-input{
+        height:28px!important;
     }
 </style>
