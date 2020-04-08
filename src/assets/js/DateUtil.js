@@ -42,6 +42,15 @@ let DateUtil = {
      */
     isBefore(date1, date2) {
         return date1.getTime() < date2.getTime()
+    },
+    /**
+     * 获取给定日期是周几
+     * @param date
+     * @returns {number}
+     */
+    getWeekOfDate(date){
+        debugger
+        return date.getDay();
     }
 
 

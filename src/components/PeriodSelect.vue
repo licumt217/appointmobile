@@ -66,13 +66,14 @@
                 </template>
 
             </CheckboxGroup>
-            <group >
+            <group>
                 <x-number v-model="weeks" min=1 max="10" style="line-height: 2em;color:red;" title="预约周数"></x-number>
             </group>
             <div style="margin-top: 1em;">
                 <x-button class="long_btn" plain type="primary" @click.native="next">确定</x-button>
             </div>
         </Card>
+        <loading :show="isLoading" ></loading>
     </section>
 </template>
 
@@ -82,7 +83,8 @@
     export default {
         data() {
             return {
-                weeks:1,
+                isLoading:false,
+                weeks: 1,
                 weekArray: ['日', '一', '二', '三', '四', '五', '六'],
                 dataList: [],
                 selectMonth: '',
@@ -92,7 +94,7 @@
                 allAvailablePeriodArray: [],
                 availablePeriodArray: [],
                 selectPeriodArray: [],
-                appoint_date:{}
+                appoint_date: {}
             }
         },
         props: {
@@ -117,26 +119,25 @@
             },
             next() {
 
-                if(!this.selectPeriodArray || this.selectPeriodArray.length===0){
+                if (!this.selectPeriodArray || this.selectPeriodArray.length === 0) {
                     this.$vux.toast.text('请选择预约时段!')
                     return;
                 }
 
                 this.http.post('bigOrder/unifiedOrder', {
-                    openid:sessionStorage.openid,
-                    amount:0.01,
-                    therapist_id:this.therapist_id,
-                    appoint_date:DateUtil.format(this.appoint_date),
-                    periodArray:this.selectPeriodArray,
-                    weeks:this.weeks
+                    openid: sessionStorage.openid,
+                    amount: 0.01,
+                    therapist_id: this.therapist_id,
+                    appoint_date: DateUtil.format(this.appoint_date),
+                    periodArray: this.selectPeriodArray,
+                    weeks: this.weeks
                     // consult_type_id:this.consult_type_id,
                     // manner_type_id:this.manner_type_id,
                 }).then((data) => {
                     this.$vux.toast.text('提交成功，请等待咨询师审核')
                     this.$router.push({
-                        path:'/appoint/myAppoint',
-                        query:{
-                        }
+                        path: '/appoint/myAppoint',
+                        query: {}
                     })
 
                 }).catch(err => {
@@ -161,7 +162,7 @@
              * */
             queryPeriodsByDate(item, index2) {
 
-                this.appoint_date=item.date;
+                this.appoint_date = item.date;
 
                 this.resetBtnStatus();
                 this.resetSelectArray()
@@ -234,7 +235,7 @@
             },
             /**
              * 获取咨询师可预约到的日期
-             * TODO 需要后台添加个接口
+             * TODO 需要后台添加个接口。按照现有需求，此限制应该可以去掉了。
              * */
             getCanAppointDate() {
 
@@ -242,6 +243,9 @@
                     resolve(new Date(2020, 7, 21))
                 })
             },
+            /**
+             * 咨询师设置的可用时段列表
+             * */
             getPeriodSet() {
                 return new Promise(resolve => {
                     this.http.post('therapist/getUseablePeriodSet', {
@@ -258,6 +262,7 @@
             },
             /**
              * 计算某日具体的剩余可预约时段
+             * isAppointedBefore 某日之前一次也没预约过
              * */
             calAvailablePeriod(item, isAppointedBefore = false, occupiedPeriodArray) {
                 if (isAppointedBefore) {
@@ -286,16 +291,16 @@
              * 根据给定日期获取此日期所在月份此咨询师已经有了哪些预约。
              */
             getOccupyedPeriod() {
-                console.log(this.date)
-                console.log(DateUtil.format(this.date))
+                this.isLoading=true;
 
-                this.http.post('therapistperiod/listByMonth', {
+                this.http.post('bigOrder/getListOfUsing', {
                     therapist_id: this.therapist_id,
-                    appoint_date: DateUtil.format(this.date)
                 }).then((data) => {
-                    this.availablePeriodArray=[]
+                    this.isLoading=false;
 
-                    //说明没有别占用的，所有日期都可以预约
+                    this.availablePeriodArray = []
+
+                    //说明没有别人占用的，所有日期都可以预约
                     if (data.length === 0) {
                         this.dataList.forEach((item, index) => {
                             if (item.date) {
@@ -310,36 +315,66 @@
                         })
                     } else {
 
-                        let map = {}
+                        let weekMap = {}
+                        let singleMap = {}
                         data.forEach(item => {
-                            if (map[new Date(item.appoint_date)]) {
-                                map[new Date(item.appoint_date)].push(item.period)
-                            } else {
-                                map[new Date(item.appoint_date)] = [item.period]
+
+                            let date = new Date(item.appoint_date)
+
+                            let week = DateUtil.getWeekOfDate(date)
+
+                            let periodArray = item.period.split(',')
+
+                            //持续的预约
+                            if (item.ismulti === 1) {
+                                if (weekMap[week]) {
+                                    weekMap[week] = weekMap[week].concat(periodArray);
+                                } else {
+                                    weekMap[week] = periodArray
+                                }
+                            } else {//单次预约
+                                if (singleMap[date]) {
+                                    singleMap[date].concat(periodArray);
+                                } else {
+                                    singleMap[date] = periodArray
+                                }
                             }
                         })
 
-                        console.log('map', map)
 
                         this.dataList.forEach((item, index) => {
                             if (item.date) {
-                                if (!map[item.date]) {
+                                let week = DateUtil.getWeekOfDate(item.date);
+
+                                if (!weekMap[week]) {
                                     if (DateUtil.isBefore(item.date, this.canAppointDate) && this.allAvailablePeriodArray.length > 0) {
-                                        item.canAppoint = true;
-                                        item = this.calAvailablePeriod(item)
-                                        this.dataList.splice(index, 1, item);
+
+                                        //当前所在的周几的第几个时段，必须要当前日期大于最大的已占用日期
+                                        let period2 = this.getCanAppointPeriod(item.date,singleMap)
+
+                                        if (period2.length > 0) {
+                                            console.log(111)
+                                            item.canAppoint = true;
+                                            item.periods = period2;
+                                            this.dataList.splice(index, 1, item);
+                                        }
+
                                     }
                                 } else {
-
                                     if (DateUtil.isBefore(item.date, this.canAppointDate) && this.allAvailablePeriodArray.length > 0) {
-                                        if (!this.isPeriodHasBeenUsed(map[item.date])) {
+
+                                        //当前所在的周几的第几个时段，必须要当前日期大于最大的已占用日期
+                                        let period2 = this.getCanAppointPeriod(item.date,singleMap,weekMap[week])
+                                        if (period2.length > 0) {
+                                            console.log(222)
                                             item.canAppoint = true;
-                                            item = this.calAvailablePeriod(item, true, map[item.date])
+                                            item.periods = period2;
                                             this.dataList.splice(index, 1, item);
                                         }
 
                                     }
                                 }
+
                             }
 
 
@@ -352,8 +387,63 @@
 
 
                 }).catch(err => {
+                    this.isLoading=false;
                     this.$Message.error(err)
                 })
+            },
+            /**
+             * 获取给定日期能预约的时段
+             * @param date
+             * @param usedPeriodArray 已经长期预约的时段，此时不可用
+             * @returns {[]}
+             */
+            getCanAppointPeriod(date, singleMap, usedPeriodArray) {
+
+                let periodDateMap = {}
+
+                for (let date2 in singleMap) {
+                    date2=new Date(date2)
+                    let w = DateUtil.getWeekOfDate(date2)
+
+                    let dateWeek = DateUtil.getWeekOfDate(date)
+                    let period2 = singleMap[date2]
+                    if (w === dateWeek) {
+                        period2.forEach(item => {
+                            if (periodDateMap[item]) {
+                                if (periodDateMap[item].getTime() < date2.getTime()) {
+                                    periodDateMap[item] = date2;
+                                }
+                            } else {
+                                periodDateMap[item] = date2;
+                            }
+                        })
+                    }
+                }
+
+                let array = []
+
+                let tempAllArray = JSON.parse(JSON.stringify(this.allAvailablePeriodArray))
+                if(usedPeriodArray && usedPeriodArray.length>0){
+                    usedPeriodArray.forEach(item=>{
+                        if(tempAllArray.includes(item)){
+                            let index=tempAllArray.findIndex(d=>d===item);
+                            tempAllArray.splice(index,1);
+                        }
+                    })
+                }
+
+                tempAllArray.forEach(item => {
+                    if (periodDateMap[item]) {
+                        if (date.getTime() > periodDateMap[item].getTime()) {
+                            array.push(item);
+                        }
+                    } else {
+                        array.push(item);
+                    }
+                })
+                return array;
+
+
             },
             isPeriodHasBeenUsed(curPeriodArray) {
 
@@ -365,7 +455,7 @@
 </script>
 
 <style lang="less">
-    @btn-size:2.5em;
+    @btn-size: 2.5em;
     .week, .num {
         display: inline-block;
         width: 14.2%;
@@ -389,7 +479,7 @@
     }
 
     .week {
-        span{
+        span {
             display: inline-block;
             line-height: @btn-size;
             width: @btn-size;
@@ -424,10 +514,11 @@
         color: #FFF;
     }
 
-    .vux-number-selector{
-        height:28px!important;
+    .vux-number-selector {
+        height: 28px !important;
     }
-    .vux-number-input{
-        height:28px!important;
+
+    .vux-number-input {
+        height: 28px !important;
     }
 </style>
