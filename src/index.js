@@ -9,7 +9,7 @@ require('./assets/js/StringPrototype')
 
 import  { ToastPlugin,Group, XInput, XButton, Badge, Confirm,Selector,Datetime,
   PopupPicker,XTable,Actionsheet,ConfirmPlugin,XHeader,Flexbox, FlexboxItem,LoadingPlugin,XAddress,
-  Step, StepItem,Divider,Popup,Loading,XTextarea,XNumber} from 'vux'
+  Step, StepItem,Divider,Popup,Loading,XTextarea,XNumber,Checker, CheckerItem } from 'vux'
 
 Vue.use(ToastPlugin)
 Vue.component('x-button', XButton)
@@ -34,6 +34,8 @@ Vue.component('popup', Popup)
 Vue.component('loading', Loading)
 Vue.component('x-textarea', XTextarea)
 Vue.component('x-number', XNumber)
+Vue.component('checker', Checker)
+Vue.component('checker-item', CheckerItem)
 Vue.use(ConfirmPlugin)
 Vue.use(LoadingPlugin)
 

@@ -47,7 +47,7 @@
 
 
         <ComplainModal ref="complainModal" :order_id="order.order_id"></ComplainModal>
-
+        <AcceptAppointmentModal @callback="init" ref="acceptAppointmentModal"></AcceptAppointmentModal>
 
     </div>
 
@@ -60,14 +60,18 @@
     const ORDER_STATE = require('../../assets/js/constants/ORDER_STATE')
     import ComplainModal from '../components/ComplainModal'
     import {PayUtil} from "../../assets/js/PayUtil";
+    import AcceptAppointmentModal from "../components/AcceptAppointmentModal";
     export default {
-        components: {ComplainModal},
+        components: {
+            ComplainModal,
+            AcceptAppointmentModal
+        },
         data() {
             return {
                 ORDER_STATE_DESC,
                 ORDER_STATE,
                 Util,
-                big_order_id: this.$route.query.big_order_id,
+                appointment_id: this.$route.query.appointment_id,
                 order: {},
                 user_type:''
             }
@@ -80,20 +84,20 @@
         },
         methods: {
             init() {
-                this.getBigOrderDetail()
+                this.getAppointmentDetail()
             },
             showComplainModal() {
                 this.$refs.complainModal.show('therapist');
             },
 
-            getBigOrderDetail() {
-                this.http.post('bigOrder/getDetail', {
-                    big_order_id: this.big_order_id
+            getAppointmentDetail() {
+                this.http.post('appointment/getDetail', {
+                    appointment_id: this.appointment_id
                 }).then((data) => {
                     if(data){
                         this.order = data;
                     }else{
-                        this.$vux.toast.text('订单不存在')
+                        this.$vux.toast.text('预约不存在')
                     }
 
 
@@ -129,15 +133,8 @@
                 })
             },
             accept(){
-                this.http.post('bigOrder/accept', {
-                    big_order_id: this.big_order_id
-                }).then((data) => {
-                    this.$vux.toast.text("操作成功")
-                    this.init()
 
-                }).catch(err => {
-                    this.$vux.toast.text(err)
-                })
+                this.$refs.acceptAppointmentModal.show(this.order);
             },
             deny(){
                 console.log(1)
@@ -146,8 +143,8 @@
                     onCancel () {
                     },
                     onConfirm :()=>{
-                        this.http.post('bigOrder/deny', {
-                            big_order_id: this.big_order_id
+                        this.http.post('appointment/deny', {
+                            appointment_id: this.appointment_id
                         }).then((data) => {
                             this.$vux.toast.text("操作成功")
                             this.init()

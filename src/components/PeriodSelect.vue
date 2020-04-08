@@ -58,17 +58,26 @@
                     <Checkbox :label="period" style="width:48%;margin-right: 1%;">
                         {{`${period}:00-${period}:50`}}
                     </Checkbox>
+                    <template v-if="index%2===0 && index===availablePeriodArray.length-1">
+                        <br/>
+                        <br/>
+                    </template>
+
                     <template v-if="index%2!==0">
                         <br/>
                         <br/>
                     </template>
 
+
                 </template>
 
             </CheckboxGroup>
-            <group>
-                <x-number v-model="weeks" min=1 max="10" style="line-height: 2em;color:red;" title="预约周数"></x-number>
-            </group>
+            <section >
+                <checker v-model="isMulti" default-item-class="demo1-item" selected-item-class="demo1-item-selected">
+                    <checker-item :value="0" :key="0">单次</checker-item>
+                    <checker-item :value="1" :key="1">多次</checker-item>
+                </checker>
+            </section>
             <div style="margin-top: 1em;">
                 <x-button class="long_btn" plain type="primary" @click.native="next">确定</x-button>
             </div>
@@ -84,7 +93,7 @@
         data() {
             return {
                 isLoading:false,
-                weeks: 1,
+                isMulti: 0,
                 weekArray: ['日', '一', '二', '三', '四', '五', '六'],
                 dataList: [],
                 selectMonth: '',
@@ -124,13 +133,13 @@
                     return;
                 }
 
-                this.http.post('bigOrder/unifiedOrder', {
+                this.http.post('appointment/add', {
                     openid: sessionStorage.openid,
                     amount: 0.01,
                     therapist_id: this.therapist_id,
                     appoint_date: DateUtil.format(this.appoint_date),
                     periodArray: this.selectPeriodArray,
-                    weeks: this.weeks
+                    isMulti: this.isMulti
                     // consult_type_id:this.consult_type_id,
                     // manner_type_id:this.manner_type_id,
                 }).then((data) => {
@@ -248,12 +257,17 @@
              * */
             getPeriodSet() {
                 return new Promise(resolve => {
+
+                    this.isLoading=true;
+
                     this.http.post('therapist/getUseablePeriodSet', {
                         therapist_id: this.therapist_id
                     }).then((data) => {
+                        this.isLoading=false
                         this.allAvailablePeriodArray = data.period.split(',')
                         resolve()
                     }).catch(err => {
+                        this.isLoading=false
                         this.$Message.error(err)
                     })
                 })
@@ -291,12 +305,10 @@
              * 根据给定日期获取此日期所在月份此咨询师已经有了哪些预约。
              */
             getOccupyedPeriod() {
-                this.isLoading=true;
 
-                this.http.post('bigOrder/getListOfUsing', {
+                this.http.post('appointment/getListOfUsing', {
                     therapist_id: this.therapist_id,
                 }).then((data) => {
-                    this.isLoading=false;
 
                     this.availablePeriodArray = []
 
@@ -304,11 +316,14 @@
                     if (data.length === 0) {
                         this.dataList.forEach((item, index) => {
                             if (item.date) {
-                                if (DateUtil.isBefore(item.date, this.canAppointDate) && this.allAvailablePeriodArray.length > 0) {
+                                console.log(1111111)
+                                if (DateUtil.isBefore(item.date, this.canAppointDate) && !DateUtil.isBefore(item.date, this.nowDate) && this.allAvailablePeriodArray.length > 0) {
                                     item.canAppoint = true;
                                     item = this.calAvailablePeriod(item)
                                     this.dataList.splice(index, 1, item);
                                 }
+                            }else{
+                                console.log(123)
                             }
 
 
@@ -347,7 +362,7 @@
                                 let week = DateUtil.getWeekOfDate(item.date);
 
                                 if (!weekMap[week]) {
-                                    if (DateUtil.isBefore(item.date, this.canAppointDate) && this.allAvailablePeriodArray.length > 0) {
+                                    if (DateUtil.isBefore(item.date, this.canAppointDate) && !DateUtil.isBefore(item.date, this.nowDate) && this.allAvailablePeriodArray.length > 0) {
 
                                         //当前所在的周几的第几个时段，必须要当前日期大于最大的已占用日期
                                         let period2 = this.getCanAppointPeriod(item.date,singleMap)
@@ -361,12 +376,11 @@
 
                                     }
                                 } else {
-                                    if (DateUtil.isBefore(item.date, this.canAppointDate) && this.allAvailablePeriodArray.length > 0) {
+                                    if (DateUtil.isBefore(item.date, this.canAppointDate) && !DateUtil.isBefore(item.date, this.nowDate) && this.allAvailablePeriodArray.length > 0) {
 
                                         //当前所在的周几的第几个时段，必须要当前日期大于最大的已占用日期
                                         let period2 = this.getCanAppointPeriod(item.date,singleMap,weekMap[week])
                                         if (period2.length > 0) {
-                                            console.log(222)
                                             item.canAppoint = true;
                                             item.periods = period2;
                                             this.dataList.splice(index, 1, item);
@@ -387,7 +401,6 @@
 
 
                 }).catch(err => {
-                    this.isLoading=false;
                     this.$Message.error(err)
                 })
             },
@@ -520,5 +533,12 @@
 
     .vux-number-input {
         height: 28px !important;
+    }
+    .demo1-item {
+        border: 1px solid #ececec;
+        padding: 5px 15px;
+    }
+    .demo1-item-selected {
+        border: 1px solid green;
     }
 </style>
