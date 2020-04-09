@@ -133,7 +133,6 @@
                 })
             },
             accept(){
-
                 this.$refs.acceptAppointmentModal.show(this.order);
             },
             deny(){

@@ -306,7 +306,7 @@
              */
             getOccupyedPeriod() {
 
-                this.http.post('appointment/getListOfUsing', {
+                this.http.post('appointment/getListOfUsingByTherapistId', {
                     therapist_id: this.therapist_id,
                 }).then((data) => {
 
@@ -316,14 +316,11 @@
                     if (data.length === 0) {
                         this.dataList.forEach((item, index) => {
                             if (item.date) {
-                                console.log(1111111)
                                 if (DateUtil.isBefore(item.date, this.canAppointDate) && !DateUtil.isBefore(item.date, this.nowDate) && this.allAvailablePeriodArray.length > 0) {
                                     item.canAppoint = true;
                                     item = this.calAvailablePeriod(item)
                                     this.dataList.splice(index, 1, item);
                                 }
-                            }else{
-                                console.log(123)
                             }
 
 

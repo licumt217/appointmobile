@@ -49,7 +49,9 @@ let DateUtil = {
      * @returns {number}
      */
     getWeekOfDate(date){
-        debugger
+        if(typeof date==='string'){
+            date=new Date(date);
+        }
         return date.getDay();
     }
 
