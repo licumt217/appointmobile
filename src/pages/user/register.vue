@@ -3,12 +3,14 @@
 
     <div class="login-wrap">
         <transition name="slideT">
-            <div >
-
-                <Tabs type="card">
-                    <Tab-pane label="用户注册" name="account">
-
-
+            <div>
+                <div>
+                    <tab v-model="index">
+                        <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list"
+                                  @click="demo2 = item" :key="index">{{item}}
+                        </tab-item>
+                    </tab>
+                    <div v-if="index===0">
                         <MyInput :max=11 :placeholder="'请输入手机号'" is-must v-model="formItem.phone">手机号</MyInput>
 
                         <MyInput :placeholder="'请输入身份证号'" is-must v-model="formItem.identification_no">身份证号
@@ -17,32 +19,28 @@
                         <MyInput :placeholder="'请输入姓名'" is-must v-model="formItem.name">姓名</MyInput>
 
                         <my-popup-picker placeholder="请选择性别" :data="sexOptions" :is-must="true"
-                                         v-model="formItem.sex">性别
+                                         v-model="formItem.gender">性别
                         </my-popup-picker>
 
                         <MyInput :placeholder="'请输入电子邮箱'" is-must v-model="formItem.email">电子邮箱</MyInput>
 
-                        <MyDatetime v-model="formItem.birthday" :placeholder="'请选择出生日期'" is-must>出生日期
-                        </MyDatetime>
+                        <MyDatetime v-model="formItem.birthday" :placeholder="'请选择出生日期'" is-must>出生日期</MyDatetime>
 
 
                         <x-button class="long_btn" plain type="primary" @click.native="register">注册</x-button>
+                    </div>
 
-                    </Tab-pane>
-
-                    <Tab-pane label="咨询师登录" name="therapist">
-
-
+                    <div v-else>
                         <MyInput :max=11 :placeholder="'请输入手机号'" is-must v-model="loginFormItem.phone">手机号
                         </MyInput>
 
-                        <MyInput :max=5 :placeholder="'请输入密码'" is-password is-must v-model="loginFormItem.password">密码
+                        <MyInput :max=30 :placeholder="'请输入密码'" is-password is-must v-model="loginFormItem.password">密码
                         </MyInput>
 
                         <x-button class="long_btn" plain type="primary" @click.native="login">登录</x-button>
-                    </Tab-pane>
+                    </div>
 
-                </Tabs>
+                </div>
 
 
             </div>
@@ -66,6 +64,9 @@
         },
         data() {
             return {
+                index: 0,
+                demo2: '用户注册',
+                list: ['用户注册', '咨询师登录'],
                 sexOptions: [
                     {
                         value: 'male',
@@ -97,6 +98,12 @@
         mounted() {
             if (this.isLogin) {
                 // this.$router.push('/')
+
+            }
+
+            //性别默认值
+            this.formItem = {
+                gender: 'male'
             }
         },
         methods: {
@@ -150,6 +157,7 @@
 
             },
             isValid() {
+                alert(JSON.stringify(this.formItem))
                 if (!(this.formItem.phone && Util.isValidPhone(this.formItem.phone))) {
                     this.$vux.toast.text('请输入正确的手机号')
                     return false;
@@ -164,7 +172,7 @@
                     this.$vux.toast.text('请输入姓名')
                     return false;
                 }
-                if (!(this.formItem.sex)) {
+                if (!(this.formItem.gender)) {
                     this.$vux.toast.text('请选择性别')
                     return false;
                 }
@@ -183,8 +191,8 @@
             },
             register() {
                 if (this.isValid()) {
-                    this.$router.push('/appoint/myAppoint')
-                    return;
+                    // this.$router.push('/appoint/myAppoint')
+                    // return;
 
                     this.formItem.openid = sessionStorage.openid;
 
@@ -215,29 +223,6 @@
         width: 100%;
         /*background: url("../../assets/images/bg-image.jpg");*/
         background-size: 100% 100%;
-    }
-
-
-
-
-    .ms-login {
-        width: 100%;
-        overflow: scroll;
-        padding: 5px;
-        border-radius: 5px;
-        background: #fff;
-        box-sizing: border-box;
-        position: relative
-    }
-
-    .login-btn {
-        text-align: center;
-    }
-
-
-    .login-btn button {
-        width: 100%;
-        height: 36px;
     }
 
 

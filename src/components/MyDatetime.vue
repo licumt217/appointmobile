@@ -1,11 +1,11 @@
 <template>
-    <datetime :min-year="1900" v-model="model" @on-show="scroll"
-              :placeholder="placeholder" :placeholder-align="placeholderAlign">
-        <div slot="title" >
-            <slot></slot>
-            <span class="must" v-if="isMust">*</span>
-        </div>
-    </datetime>
+        <datetime :min-year="1900" v-model="model" @on-show="scroll"
+                  :placeholder="placeholder" :placeholder-align="placeholderAlign">
+            <div slot="title" >
+                <slot></slot>
+                <span class="must" v-if="isMust">*</span>
+            </div>
+        </datetime>
 
 </template>
 
