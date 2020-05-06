@@ -5,11 +5,12 @@ let username='root';
 let password='y2pe2NF7'
 let project_name='appointmobile'
 
+
 let assets = process.cwd() + `/build`,
     remoteServer1Prep = {
         host: '47.92.74.29',
         port: 22444,
-        remotePath: `/server/nginx/html/${project_name}`,
+        remotePath: `/server/html/${project_name}`,
         user: username,
         pass: password
     }
