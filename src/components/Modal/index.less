@@ -1,0 +1,198 @@
+.modal_hidden {
+  display: none;
+}
+
+@import '../../assets/css/reset.less';
+
+.tjd-dialog-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+
+
+.tjd-dialog-window {
+  padding: 20px 0 0;
+  background: #fff;
+  border-radius: 2px;
+  width: 78%;
+  overflow: hidden;
+  z-index: 999;
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  justify-content: center;
+
+}
+
+
+.tjd-dialog-header {
+  width: 100%;
+  height: 12vw;
+  margin: 0 auto;
+  background: url("../../assets/images/dialog/failNew.png") no-repeat 0 0;
+  background-size: auto 100%;
+  background-position: 50% 50%;
+}
+
+.tjd-dialog-header.ok {
+  background: url("../../assets/images/dialog/successNew.png") no-repeat 0 0;
+  background-size: auto 100%;
+  background-position: 50% 50%;
+}
+
+.tjd-dialog-header.fail {
+  background: url("../../assets/images/dialog/failNew.png") no-repeat 0 0;
+  background-size: auto 100%;
+  background-position: 50% 50%;
+}
+
+.tjd-dialog-header.confirm {
+  background: url("../../assets/images/dialog/confirmNew.png") no-repeat 0 0;
+  background-size: auto 100%;
+  background-position: 50% 50%;
+}
+
+.tjd-dialog-header.alert {
+  background: url("../../assets/images/dialog/alertNew.png") no-repeat 0 0;
+  background-size: auto 100%;
+  background-position: 50% 50%;
+}
+
+.tjd-dialog-content {
+  padding: 22px 7% 28px;
+  /*line-height: 140%;*/
+  text-align: center;
+  font-size: 14px;
+  line-height: 22px;
+  color: #666;
+}
+
+.tjd-dialog-footer {
+  width: 100%;
+  margin-top: -8px;
+  text-align: center;
+  display: -webkit-flex;
+  display: -webkit-box;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-lines: single;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+}
+
+.tjd-dialog-footer button {
+  -webkit-appearance: normal;
+  width: 100%;
+  line-height: 48px;
+  overflow: hidden;
+  outline: none;
+  background: #fff;
+  border: none;
+  font-size: 16px;
+  color: #222;
+  border-top: 1px solid #F0F0F0;
+}
+
+.tjd-dialog-footer button:last-child, .tjd_cancel.same {
+  color: #07c4dd;
+}
+
+.tjd-dialog-footer button.only {
+  color: #07c4dd;
+}
+
+
+.ease-enter-active {
+  opacity: 0;
+  animation: tjdEaseIn .2s linear;
+  animation-fill-mode: both;
+}
+
+.ease-leave-active {
+  animation: tjdEaseOut .2s linear;
+  animation-fill-mode: both;
+}
+
+.fade-enter-active {
+  opacity: 0;
+  animation: tjdFadeIn .2s linear;
+  animation-fill-mode: both;
+}
+
+.fade-leave-active {
+  animation: tjdFadeOut .3s linear;
+  animation-fill-mode: both;
+}
+
+@keyframes tjdEaseIn {
+  0% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes tjdEaseOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes tjdFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes tjdFadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+@media screen and (max-width: 320px) {
+  .tjd-dialog-window {
+    padding: 1.2em 0 0;
+    top: 168px;
+  }
+
+  .tjd-dialog-content {
+    padding: 1em 1.5em 1.2em;
+  }
+
+
+}
+
+@media screen and (min-width: 1000px) {
+  .tjd-dialog-window {
+    width: 40%;
+  }
+
+  .tjd-dialog-header {
+    height: 10vw;
+  }
+}
