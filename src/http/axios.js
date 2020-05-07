@@ -1,6 +1,7 @@
 import axios from 'axios'
 import Modal from '../components/Modal'
 import qs from 'qs'
+import store from "../store";
 // axios 配置
 let baseURL = 'http://www.zhuancaiqian.com/appoint_wx/'
 
@@ -13,7 +14,7 @@ axios.interceptors.request.use(
 
         config.url = baseURL + config.url
         config.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-        config.headers.token = sessionStorage.getItem("token")||'';
+        config.headers.token = store.getState().token;
 
         return config;
     },

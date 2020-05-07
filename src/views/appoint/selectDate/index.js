@@ -428,7 +428,6 @@ class Index extends Component {
         }
 
         addAppointment( {
-            openid: sessionStorage.openid,
             amount: 0.01,
             therapist_id: this.therapist_id,
             appoint_date: DateUtil.format(this.state.appoint_date),

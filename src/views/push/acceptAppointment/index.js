@@ -15,7 +15,6 @@ class Index extends Component {
         super(props);
 
         this.appointment={}
-        // this.appointment=JSON.parse(sessionStorage.appointment)
 
         this.state = {
             allRoomList:[],

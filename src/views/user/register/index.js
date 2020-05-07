@@ -5,6 +5,7 @@ import Util from '../../../assets/js/Util'
 import {Tabs, WhiteSpace, SegmentedControl, List, InputItem, Picker, DatePicker, Button, WingBlank} from 'antd-mobile';
 import {bindUser, registerAndBind} from '../../../http/service'
 import store from "../../../store";
+import Role from "../../../assets/js/Role";
 
 
 class Index extends Component {
@@ -20,12 +21,10 @@ class Index extends Component {
                 gender: 'male',
                 email: '',
                 birthday: '',
-                openid: sessionStorage.openid
             },
             loginForm: {
                 phone: '',
                 password: '',
-                openid: sessionStorage.openid
             }
         }
     }
@@ -63,10 +62,25 @@ class Index extends Component {
         return true;
     }
 
-    storeLogin=()=>{
+    dispatchLoginInfo=(data)=>{
         store.dispatch({
             type:'login',
             payload:true
+        })
+
+        store.dispatch({
+            type:'user_id',
+            payload:data.userInfo.user_id
+        })
+
+        store.dispatch({
+            type:'token',
+            payload:data.token
+        })
+
+        store.dispatch({
+            type:'role',
+            payload:Role.client
         })
     }
 
@@ -74,17 +88,12 @@ class Index extends Component {
 
 
         if (this.isValid()) {
-            // this.$router.push('/appoint/myAppoint')
-            // return;
 
             registerAndBind(this.state.form).then((data) => {
 
-                this.storeLogin()
-
                 Util.success("注册成功")
 
-                sessionStorage.user_id = data.userInfo.user_id;
-                sessionStorage.token = data.token;
+                this.dispatchLoginInfo();
 
                 //TODO 入口是哪个菜单，注册后需要跳转到具体菜单。
 
@@ -112,6 +121,29 @@ class Index extends Component {
 
         return true;
     }
+
+    dispatchLoginInfoOfTherapist=(data)=>{
+        store.dispatch({
+            type:'login',
+            payload:true
+        })
+
+        store.dispatch({
+            type:'user_id',
+            payload:data.userInfo.user_id
+        })
+
+        store.dispatch({
+            type:'token',
+            payload:data.token
+        })
+
+        store.dispatch({
+            type:'role',
+            payload:Role.therapist
+        })
+    }
+
     /**
      * 已在pc端注册过的咨询师登录，进行账号关联
      */
@@ -120,13 +152,11 @@ class Index extends Component {
 
             bindUser(this.state.loginForm).then((data) => {
 
-                this.storeLogin()
                 Util.success('登录成功')
 
-                sessionStorage.user_id = data.userInfo.user_id;
-                sessionStorage.token = data.token;
+                this.dispatchLoginInfoOfTherapist(data)
 
-                this.$router.push('/appoint/myAppoint')
+                this.props.history.push('/appoint/myAppoint')
 
             }).catch(err => {
                 Util.fail(err)

@@ -9,41 +9,48 @@ const login = (state = false, action) => {
 
 };
 
-const username = (state = '', action) => {
-    if(action.type==='username'){
+const user_id = (state = '', action) => {
+    if(action.type==='user_id'){
         return action.payload;
     }else{
         return state;
     }
 };
 
-const balance = (state = 0, action) => {
-    if(action.type==='plusBalance'){
-        return state+(isNaN(action.payload)?0:action.payload)
-    }else if(action.type==='minusBalance'){
-        return state-(isNaN(action.payload)?0:action.payload)
+const openid = (state = '', action) => {
+    if(action.type==='openid'){
+        return action.payload;
+    }else{
+        return state;
+    }
+};
+
+const token = (state = '', action) => {
+    if(action.type==='token'){
+        return action.payload;
+    }else{
+        return state;
+    }
+};
+
+const role = (state = 4, action) => {
+    if(action.type==='role'){
+        return action.payload;
     }else{
         return state;
     }
 };
 
 
-const isloading = (state = false, action) => {
-    if(action.type==='loading'){
-        return true;
-    }else if(action.type==='notloading'){
-        return false;
-    }else{
-        return state;
-    }
-};
+
 
 
 let reducers=combineReducers({
     login,
-    username,
-    balance,
-    isloading
+    openid,
+    user_id,
+    role,
+    token,
 })
 
 export default reducers;

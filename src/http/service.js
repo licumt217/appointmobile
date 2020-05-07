@@ -3,11 +3,7 @@ import Util from '../assets/js/Util'
 
 export function getCurAppoint() {
 
-    let obj = {
-        openid: sessionStorage.openid
-    }
-
-    return axios.post('order/getCurAppoint', obj)
+    return axios.post('order/getCurAppoint', {})
 
 
 }
@@ -16,7 +12,6 @@ export function getCurAppoint() {
 export function getAppointHistory(params) {
 
     let obj = {
-        openid:sessionStorage.openid,
         pageSize:Util.pageSize,
         page:1
     }
@@ -89,11 +84,7 @@ export function bindUser(params) {
 
 export function getEmergencyContackList() {
 
-    let params={
-        user_id: sessionStorage.user_id
-    }
-
-    return axios.post('emergencyContack/list', params)
+    return axios.post('emergencyContack/list', {})
 
 
 }

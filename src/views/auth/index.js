@@ -35,7 +35,11 @@ class Index extends Component {
             code: code
         }).then((openid) => {
 
-            sessionStorage.openid = openid;
+            store.dispatch({
+                type:'openid',
+                payload: openid
+            })
+
 
             getUserByOpenid({
                 openid
@@ -43,9 +47,20 @@ class Index extends Component {
 
                 if (data) {
 
-                    sessionStorage.user_id = data.userInfo.user_id
-                    sessionStorage.token = data.token
-                    sessionStorage.user_type = data.userInfo.user_type;
+                    store.dispatch({
+                        type:'user_id',
+                        payload: data.userInfo.user_id
+                    })
+
+                    store.dispatch({
+                        type:'token',
+                        payload: data.token
+                    })
+
+                    store.dispatch({
+                        type:'role',
+                        payload: data.userInfo.role
+                    })
 
                     store.dispatch({
                         type:'login',

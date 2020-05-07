@@ -6,6 +6,8 @@ import {WhiteSpace, WingBlank, Badge, List, InputItem, Picker, DatePicker, Butto
 
 import {getUserById, updateUser} from '../../../http/service'
 
+import store from "../../../store";
+
 
 class Index extends Component {
 
@@ -19,7 +21,7 @@ class Index extends Component {
                 gender: 'male',
                 email: '',
                 birthday: '',
-                openid: sessionStorage.openid
+                openid: store.getState().openid
             },
         }
 
