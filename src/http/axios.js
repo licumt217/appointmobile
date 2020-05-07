@@ -12,9 +12,19 @@ if(window.location.href.includes('localhost')){
 axios.interceptors.request.use(
     config => {
 
+
+
         config.url = baseURL + config.url
         config.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
         config.headers.token = store.getState().token;
+
+        let commonObj={
+            openid:store.getState().openid,
+            user_id:store.getState().user_id,
+
+        }
+
+        Object.assign(config.data,commonObj);
 
         return config;
     },
