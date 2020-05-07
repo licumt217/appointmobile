@@ -3,6 +3,7 @@ import {Redirect} from "react-router-dom";
 import {ActivityIndicator,Flex} from 'antd-mobile'
 import Util from "../../assets/js/Util";
 import {getOpenid, getUserByOpenid} from "../../http/service";
+import store from "../../store";
 
 class Index extends Component {
 
@@ -40,11 +41,16 @@ class Index extends Component {
                 openid
             }).then((data) => {
 
-                if (data===1) {
+                if (data) {
 
                     sessionStorage.user_id = data.userInfo.user_id
                     sessionStorage.token = data.token
                     sessionStorage.user_type = data.userInfo.user_type;
+
+                    store.dispatch({
+                        type:'login',
+                        payload:true
+                    })
 
                     this.props.history.push(this.props.path)
 

@@ -1,10 +1,8 @@
 import {combineReducers} from "redux";
 
-const islogin = (state = false, action) => {
+const login = (state = false, action) => {
     if(action.type==='login'){
-        return true;
-    }else if(action.type==='logout'){
-        return false
+        return action.payload||false;
     }else{
         return state;
     }
@@ -42,7 +40,7 @@ const isloading = (state = false, action) => {
 
 
 let reducers=combineReducers({
-    islogin,
+    login,
     username,
     balance,
     isloading

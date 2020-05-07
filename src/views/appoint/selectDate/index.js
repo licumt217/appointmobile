@@ -552,7 +552,7 @@ class Index extends Component {
                                             是否连续预约
                                         </List.Item>
                                         <WhiteSpace/>
-                                        <Button type='ghost' size={"small"} onClick={this.next}>确定</Button>
+                                        <Button type='primary' onClick={this.next}>确定</Button>
                                     </section>
                                 </React.Fragment>
                                 : null

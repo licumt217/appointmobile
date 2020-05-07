@@ -4,7 +4,7 @@ import Util from '../../../assets/js/Util'
 
 import {WhiteSpace, WingBlank, Badge, List, InputItem, Picker, DatePicker, Button} from 'antd-mobile';
 
-import {getUserById,updateUser} from '../../../http/service'
+import {getUserById, updateUser} from '../../../http/service'
 
 
 class Index extends Component {
@@ -66,12 +66,12 @@ class Index extends Component {
             // this.$router.push('/appoint/myAppoint')
             // return;
 
-            updateUser( this.state.form).then((data) => {
+            updateUser(this.state.form).then((data) => {
 
                 Util.success("修改成功")
 
                 this.props.history.push({
-                    pathname:'/appoint/myAppoint'
+                    pathname: '/appoint/myAppoint'
                 })
 
             }).catch(err => {
@@ -81,8 +81,6 @@ class Index extends Component {
 
 
     }
-
-
 
 
     handleFormChange = (type, value) => {
@@ -100,11 +98,11 @@ class Index extends Component {
     }
 
 
-    getById=()=> {
+    getById = () => {
         getUserById().then((data) => {
 
             this.setState({
-                form:data
+                form: data
             })
 
         }).catch(err => {
@@ -134,7 +132,7 @@ class Index extends Component {
                             extra="请选择"
                             value={[this.state.form.gender]}
                             onOk={this.handleFormChange.bind(this, 'gender')}>
-                        <List.Item arrow="horizontal">性别</List.Item>
+                        <List.Item arrow="horizontal" style={{height: '44px'}}>性别</List.Item>
                     </Picker>
 
                     <InputItem value={this.state.form.email}
@@ -147,7 +145,7 @@ class Index extends Component {
                         value={new Date(this.state.form.birthday)}
                         onOk={this.handleFormChange.bind(this, 'birthday')}
                     >
-                        <List.Item arrow="horizontal">出生日期</List.Item>
+                        <List.Item arrow="horizontal" style={{height: '44px'}}>出生日期</List.Item>
                     </DatePicker>
 
                     <WhiteSpace/>

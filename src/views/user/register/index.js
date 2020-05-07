@@ -4,6 +4,7 @@ import Util from '../../../assets/js/Util'
 
 import {Tabs, WhiteSpace, SegmentedControl, List, InputItem, Picker, DatePicker, Button, WingBlank} from 'antd-mobile';
 import {bindUser, registerAndBind} from '../../../http/service'
+import store from "../../../store";
 
 
 class Index extends Component {
@@ -62,6 +63,13 @@ class Index extends Component {
         return true;
     }
 
+    storeLogin=()=>{
+        store.dispatch({
+            type:'login',
+            payload:true
+        })
+    }
+
     register = () => {
 
 
@@ -70,6 +78,8 @@ class Index extends Component {
             // return;
 
             registerAndBind(this.state.form).then((data) => {
+
+                this.storeLogin()
 
                 Util.success("注册成功")
 
@@ -110,6 +120,7 @@ class Index extends Component {
 
             bindUser(this.state.loginForm).then((data) => {
 
+                this.storeLogin()
                 Util.success('登录成功')
 
                 sessionStorage.user_id = data.userInfo.user_id;

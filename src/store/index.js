@@ -1,24 +1,31 @@
 
 import {createStore,combineReducers,applyMiddleware} from 'redux'
 
+import {persistStore,persistReducer} from "redux-persist";
+
+import storage from "redux-persist/lib/storage/session";
+
 import {createLogger} from 'redux-logger'
 
 import thunk from "redux-thunk";
 
 import reducers from "./reducers";
 
-
-function a() {
-    return function () {
-
-    }
+const persistConfig={
+    key:'root',
+    storage
 }
 
-const store=createStore(reducers,{
-    islogin:true
+const persistedReducer=persistReducer(persistConfig,reducers)
+
+
+
+const store=createStore(persistedReducer,{
 },applyMiddleware(thunk,createLogger()))
 
+const persistor=persistStore(store)
 
+export {store,persistor}
 
+export default store
 
-export default store;
