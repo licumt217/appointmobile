@@ -30,7 +30,7 @@ export {Error,Home,Register,UserCenter,Appoint_History,MyAppoint,Appoint_Detail,
 
 
 const routers = [
-    {path: '/', component: MyAppoint},
+    {path: '/', component: Home},
     {path: '/user/register', component: Register},
     {path: '/user/center', component: UserCenter},
     {path: '/user/setting', component: Setting},

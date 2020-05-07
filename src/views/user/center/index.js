@@ -11,10 +11,6 @@ class Index extends Component {
 
     constructor(props) {
         super(props);
-
-        let a=this.props;
-
-        debugger
         this.state = {
             form: {
                 phone: '',
@@ -156,7 +152,7 @@ class Index extends Component {
 
                     <WhiteSpace/>
 
-                    <Button type="ghost" size={"small"} onClick={this.update}>修改</Button>
+                    <Button type="primary" onClick={this.update}>修改</Button>
 
                 </List>
             </WingBlank>

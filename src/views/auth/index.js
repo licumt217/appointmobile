@@ -40,7 +40,7 @@ class Index extends Component {
                 openid
             }).then((data) => {
 
-                if (data) {
+                if (data===1) {
 
                     sessionStorage.user_id = data.userInfo.user_id
                     sessionStorage.token = data.token

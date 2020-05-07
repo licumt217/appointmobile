@@ -139,7 +139,6 @@ class Index extends Component {
 
     detail=(item)=> {
 
-        debugger
         this.props.history.push({
             pathname: '/therapist/detail',
             state:{
@@ -183,9 +182,15 @@ class Index extends Component {
 
 
     handleFormChange = (type, value) => {
+
         let form = this.state.form;
         if (value.length > 0) {
-            form[type] = value[0];
+            if(type==='zone'){
+                form[type] = value
+            }else{form[type] = value[0];
+
+            }
+
         }
 
 
@@ -206,9 +211,8 @@ class Index extends Component {
                         data={this.state.provinces}
                         title="区域"
                         value={this.state.form.zone}
-                        onChange={v => this.setState({zone: v})}
-                        onOk={e => console.log('ok', e)}
-                        onDismiss={e => console.log('dismiss', e)}
+                        // onChange={v => console.log(v)}
+                        onOk={this.handleFormChange.bind(this, 'zone')}
                 >
                     <List.Item arrow="horizontal" key={1}>咨询师所在区域</List.Item>
                 </Picker>

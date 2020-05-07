@@ -2,14 +2,16 @@ import React, {Component} from 'react';
 
 import Util from '../../../assets/js/Util'
 
-import {Tabs, WhiteSpace, Badge, List, InputItem, Picker, DatePicker, Button,WingBlank} from 'antd-mobile';
-import {bindUser,registerAndBind} from '../../../http/service'
+import {Tabs, WhiteSpace, SegmentedControl, List, InputItem, Picker, DatePicker, Button, WingBlank} from 'antd-mobile';
+import {bindUser, registerAndBind} from '../../../http/service'
+
 
 class Index extends Component {
 
     constructor() {
         super();
         this.state = {
+            tabIndex: 0,
             form: {
                 phone: '',
                 identification_no: '',
@@ -67,7 +69,7 @@ class Index extends Component {
             // this.$router.push('/appoint/myAppoint')
             // return;
 
-            registerAndBind( this.state.form).then((data) => {
+            registerAndBind(this.state.form).then((data) => {
 
                 Util.success("注册成功")
 
@@ -106,7 +108,7 @@ class Index extends Component {
     login = () => {
         if (this.isValidWhenLogin()) {
 
-            bindUser( this.state.loginForm).then((data) => {
+            bindUser(this.state.loginForm).then((data) => {
 
                 Util.success('登录成功')
 
@@ -139,10 +141,10 @@ class Index extends Component {
     }
 
     handleTherapistFormChange = (type, value) => {
-        let form = this.state.form;
-        form[type] = value;
+        let loginForm = this.state.loginForm;
+        loginForm[type] = value;
         this.setState({
-            form
+            loginForm
         })
     }
 
@@ -155,68 +157,69 @@ class Index extends Component {
         ];
 
         return (
-            <div className="login-wrap">
+            <div>
+                <SegmentedControl values={['用户注册', '咨询师登录']}
+                                  style={{height: '32px', width: '90vw', margin: '10px auto'}} onChange={(e) => {
+                    this.setState({tabIndex: e.nativeEvent.selectedSegmentIndex})
+                }}/>
 
-                <Tabs tabs={tabs}
-                      initialPage={0}
-                >
-                    <div>
-                        <WingBlank>
-                            <List>
 
-                                <InputItem value={this.state.form.phone} maxLength={11}
-                                           onChange={this.handleFormChange.bind(this, 'phone')}>手机号</InputItem>
+                <WingBlank>
+                    {
+                        this.state.tabIndex === 0 ?
+                            (
+                                <List>
 
-                                <InputItem value={this.state.form.identification_no}
-                                           onChange={this.handleFormChange.bind(this, 'identification_no')}>身份证号</InputItem>
+                                    <InputItem value={this.state.form.phone} type={"phone"} placeholder={'请输入手机号'}
+                                               onChange={this.handleFormChange.bind(this, 'phone')}>手机号</InputItem>
 
-                                <InputItem value={this.state.form.name}
-                                           onChange={this.handleFormChange.bind(this, 'name')}>姓名</InputItem>
+                                    <InputItem value={this.state.form.identification_no} placeholder={'请输入身份证号'}
+                                               onChange={this.handleFormChange.bind(this, 'identification_no')}>身份证号</InputItem>
 
-                                <Picker data={Util.genderOptions} cols={1}
-                                        extra="请选择"
-                                        value={[this.state.form.gender]}
-                                        onOk={this.handleFormChange.bind(this, 'gender')}>
-                                    <List.Item arrow="horizontal">性别</List.Item>
-                                </Picker>
+                                    <InputItem value={this.state.form.name} placeholder={'请输入姓名'}
+                                               onChange={this.handleFormChange.bind(this, 'name')}>姓名</InputItem>
 
-                                <InputItem value={this.state.form.email}
-                                           onChange={this.handleFormChange.bind(this, 'email')}>电子邮箱</InputItem>
+                                    <Picker data={Util.genderOptions} cols={1}
+                                            extra="请选择性别"
+                                            value={[this.state.form.gender]}
+                                            onOk={this.handleFormChange.bind(this, 'gender')}>
+                                        <List.Item arrow="horizontal" style={{height:'44px'}}>性别</List.Item>
+                                    </Picker>
 
-                                <DatePicker
-                                    mode="date"
-                                    title="出生日期"
-                                    extra="请选择"
-                                    value={this.state.form.birthday}
-                                    onOk={this.handleFormChange.bind(this, 'birthday')}
-                                >
-                                    <List.Item arrow="horizontal">出生日期</List.Item>
-                                </DatePicker>
+                                    <InputItem value={this.state.form.email} placeholder={'请输入电子邮箱'}
+                                               onChange={this.handleFormChange.bind(this, 'email')}>电子邮箱</InputItem>
 
-                                <WhiteSpace/>
-                                <Button size={"small"} type="ghost" onClick={this.register}>注册</Button>
+                                    <DatePicker className={'abc'}
+                                                mode="date"
+                                                title="出生日期"
+                                                extra="请选择出生日期"
+                                                value={this.state.form.birthday}
+                                                onOk={this.handleFormChange.bind(this, 'birthday')}
+                                    >
+                                        <List.Item arrow="horizontal" style={{height:'44px'}}>出生日期</List.Item>
+                                    </DatePicker>
 
-                            </List>
-                        </WingBlank>
-                    </div>
+                                    <WhiteSpace/>
+                                    <Button type="primary" onClick={this.register}>注册</Button>
 
-                    <div>
+                                </List>
+                            )
+                            :
+                            (
+                                <List>
+                                    <InputItem value={this.state.loginForm.phone} type={"phone"} placeholder={'请输入手机号'}
+                                               onChange={this.handleTherapistFormChange.bind(this, 'phone')}>手机号</InputItem>
 
-                        <WingBlank>
-                            <List>
-                                <InputItem value={this.state.loginForm.phone} maxLength={11}
-                                           onChange={this.handleTherapistFormChange.bind(this, 'phone')}>手机号</InputItem>
+                                    <InputItem type="password" value={this.state.loginForm.password}
+                                               placeholder={'请输入密码'}
+                                               onChange={this.handleTherapistFormChange.bind(this, 'password')}>密码</InputItem>
+                                    <WhiteSpace/>
+                                    <Button type="primary" onClick={this.register}>登录</Button>
+                                </List>
+                            )
+                    }
 
-                                <InputItem type="password" value={this.state.loginForm.password}
-                                           onChange={this.handleTherapistFormChange.bind(this, 'password')}>密码</InputItem>
-                                <WhiteSpace/>
-                                <Button size={"small"} type="ghost" onClick={this.register}>登录</Button>
-                            </List>
-                        </WingBlank>
-
-                    </div>
-
-                </Tabs>
+                </WingBlank>
 
 
             </div>
