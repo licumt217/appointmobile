@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 
-import {Button, Card, List, WhiteSpace} from 'antd-mobile'
+import {Button, Card, List, WhiteSpace,WingBlank} from 'antd-mobile'
 
 import Util from '../../../assets/js/Util'
 
-import {getAppointHistory} from '../../../http/service'
+import {getAppointmentListByUserId} from '../../../http/service'
 
-const ORDER_STATE_DESC = require('../../../assets/js/constants/ORDER_STATE_DESC')
+import ORDER_STATE_DESC from "../../../assets/js/constants/ORDER_STATE_DESC";
 
 
 class Index extends Component {
@@ -14,34 +14,18 @@ class Index extends Component {
     constructor() {
         super();
         this.state = {
-            response:{
-                data:[]
-            }
+            list: []
         }
 
-        this.getAppointList(1)
+        this.getAppointmentListByUserId(1)
     }
 
-    getAppointList=(page,isLoadMore=false)=>{
-        getAppointHistory({
-            pageSize:Util.pageSize,
-            page
-        }).then((response) => {
+    getAppointmentListByUserId = (page) => {
+        getAppointmentListByUserId({}).then((data) => {
 
-            if(isLoadMore){
-
-                let {data}=this.state.data;
-
-                data=data.concat(response.data)
-
-                response.data=data;
-                this.setState({
-                    response
-                })
-
-            }else{
-                this.setState({response})
-            }
+            this.setState({
+                list: data
+            })
 
 
         }).catch(err => {
@@ -49,58 +33,53 @@ class Index extends Component {
         })
     }
 
-    go2Detail=(order)=> {
+    go2Detail = (order) => {
 
         this.props.history.push({
-            pathname:'/appoint/detail',
-            order_id:order.order_id
+            pathname: '/appoint/detail',
+            order_id: order.order_id
         })
     }
-    loadMore=()=>{
-        this.getAppointList(this.state.response.currentPage+1,true)
+    loadMore = () => {
+        this.getAppointList(this.state.response.currentPage + 1, true)
     }
-
 
 
     render() {
         return (
             <div>
                 {
-                    this.state.response.data.length === 0 ?
-                        <List>
-                            <List.Item><h3>暂无数据</h3></List.Item>
-                        </List>
+                    this.state.list.length === 0 ?
+                        <List.Item><h3>暂无数据</h3></List.Item>
                         :
 
                         <div>
-                            <p>预约记录</p>
+                            <List.Item><h3>预约记录</h3></List.Item>
 
                             {
-                                this.state.response.data.map(item => {
+                                this.state.list.map((item, index) => {
                                     return (
-                                        <Card>
+                                        <WingBlank key={index}>
+                                            <WhiteSpace/>
+                                            <Card >
 
-                                            <p>咨询师：{item.name}</p>
-                                            <p>预约日期：{item.therapist_period.appoint_date}</p>
-                                            <p>预约时段：{Util.getAppointPeriodStrFromArray(item.therapist_period)}</p>
-                                            <p>预约状态：{ORDER_STATE_DESC[item.state]}</p>
-                                            <div>
-                                                <Button onClick={this.go2Detail(item)}>查看详情</Button>
-                                            </div>
-                                        </Card>
+                                                <Card.Body>
+                                                    <p>咨询师：{item.therapist_name}</p>
+                                                    <p>操作日期：{item.op_date.split(' ')[0]}</p>
+                                                    <p>预约开始日期：{item.appoint_date.split(' ')[0]}</p>
+                                                    <p>预约类型：{item.ismulti===0?'单次':'持续'}</p>
+                                                    <p>预约时段：{Util.getAppointPeriodStrFromArray(item)}</p>
+                                                    <p>预约状态：{ORDER_STATE_DESC[item.state]}</p>
+                                                    <WhiteSpace/>
+                                                    <div>
+                                                        <Button type={"ghost"} onClick={this.go2Detail}>订单记录</Button>
+                                                    </div>
+                                                </Card.Body>
+                                            </Card>
+                                        </WingBlank>
                                     )
                                 })
                             }
-
-                            {
-                                this.state.response.totalPages>this.state.response.currentPage?
-                                    <span onClick={this.loadMore}>加载更多</span>
-                                    :
-                                    <React.Fragment/>
-
-                            }
-
-
 
 
                         </div>

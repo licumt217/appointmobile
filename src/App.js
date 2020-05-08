@@ -56,7 +56,39 @@ class App extends Component {
 
     }
 
+    mock=()=>{
+        store.dispatch({
+            type:'user_id',
+            payload: '0ca990eb46074e34a896edbeba3039ff'
+        })
+
+        store.dispatch({
+            type:'openid',
+            payload: 'oNkDEvkobxGNXnlLyuV5IDqYQCMk'
+        })
+
+        store.dispatch({
+            type:'token',
+            payload: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJ1c2VyX2lkIjoiMGNhOTkwZWI0NjA3NGUzNGE4OTZlZGJlYmEzMDM5ZmYiLCJwaG9uZSI6IjE1OTAwMDAwMDAzIiwibmFtZSI6IuWSqOivouW4iDAwMyIsImlkZW50aWZpY2F0aW9uX25vIjoiNDEwODgyMTk4ODAyMTc4ODgxIiwiZ2VuZGVyIjoibWFsZSIsImVtYWlsIjoiMjMyM0AxMjYuY29tIiwiYmlydGhkYXkiOiIyMDI3LTA0LTA2Iiwib3BfZGF0ZSI6IjIwMjAtMDUtMDcgMTg6MzY6MzgiLCJyb2xlIjozLCJwYXNzd29yZCI6ImUxMGFkYzM5NDliYTU5YWJiZTU2ZTA1N2YyMGY4ODNlIn0sImlhdCI6MTU4ODkwNDk5NX0.nYEPye1FYL4Jm-DDyNCCuBrEE2OrRFiaU2kxLAABEmg'
+        })
+
+        store.dispatch({
+            type:'role',
+            payload: 3
+        })
+
+
+
+        store.dispatch({
+            type:'login',
+            payload:true
+        })
+    }
     render() {
+
+
+        // this.mock();
+
 
 
         //验证openid是否和手机号绑定了
@@ -75,7 +107,7 @@ class App extends Component {
 
 
         return (
-            <section >
+            <section className='base-container'>
 
                 <Router basename={'/appointmobile/'}>
                     <Navigator history={this.props.history}/>

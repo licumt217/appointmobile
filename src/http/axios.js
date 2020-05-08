@@ -24,7 +24,7 @@ axios.interceptors.request.use(
 
         }
 
-        Object.assign(config.data,commonObj);
+        config.data=Object.assign(commonObj,config.data);
 
         return config;
     },

@@ -106,7 +106,7 @@ class Index extends Component {
         let whereObj = {
             role: Role.therapist,
             page,
-            pageSize: 1,
+            pageSize: 3,
         }
 
         Object.assign(whereObj, this.state.form)
@@ -310,8 +310,7 @@ class Index extends Component {
                     {
                         this.state.listData.totalPages > this.state.listData.currentPage ?
                             <React.Fragment>
-                                <WhiteSpace/>
-                                <p className={'center'}>
+                                <p className={'center'} style={{margin:'1.5em'}}>
                                     <span onClick={this.loadMore}>加载更多</span>
                                 </p>
                             </React.Fragment>

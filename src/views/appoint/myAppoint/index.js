@@ -102,7 +102,9 @@ class Index extends Component {
                         />
                         <Card.Body>
                             {this.state.curAppoint===null?
-                                <h3>暂无预约</h3>
+                                <div className='center'>
+                                    暂无预约
+                                </div>
                                 :
                                 <div>
                                     <p>预约日期：{this.state.curAppoint.appoint_date}</p>

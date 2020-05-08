@@ -90,16 +90,18 @@ class Index extends Component {
         if (this.isValid()) {
 
             registerAndBind(this.state.form).then((data) => {
+                debugger
 
                 Util.success("注册成功")
 
-                this.dispatchLoginInfo();
+                this.dispatchLoginInfo(data);
 
                 //TODO 入口是哪个菜单，注册后需要跳转到具体菜单。
 
-                this.$router.push('/appoint/myAppoint')
+                this.props.history.push('/appoint/myAppoint')
 
             }).catch(err => {
+                debugger
                 Util.fail(err)
             })
         }
@@ -211,7 +213,7 @@ class Index extends Component {
                             (
                                 <List>
 
-                                    <InputItem value={this.state.form.phone} type={"phone"} placeholder={'请输入手机号'}
+                                    <InputItem value={this.state.form.phone} maxLength={11} placeholder={'请输入手机号'}
                                                onChange={this.handleFormChange.bind(this, 'phone')}>手机号</InputItem>
 
                                     <InputItem value={this.state.form.identification_no} placeholder={'请输入身份证号'}

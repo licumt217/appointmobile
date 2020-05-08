@@ -14,9 +14,7 @@ class Index extends Component {
         super();
 
         this.state={
-            emergency_list:[{
-                name:'fslfs'
-            }]
+            emergency_list:[]
         }
 
         this.getList()
@@ -85,15 +83,10 @@ class Index extends Component {
                                                         <Button size={"small"} type={"warning"} onClick={this.deleteEmergencyPerson.bind(this,item)}>删除联系人</Button>
                                                     </Flex.Item>
                                                     <Flex.Item>
-                                                        <Button size={"small"} type={"ghost"} onClick={this.addOrUpdateEmergency.bind(this,item)}>修改联系人</Button>
+                                                        <Button size={"small"} type={"primary"} onClick={this.addOrUpdateEmergency.bind(this,item)}>修改联系人</Button>
                                                     </Flex.Item>
                                                 </Flex>
-                                                <Flex>
-                                                    <Flex.Item>
-                                                        <WhiteSpace/>
-                                                        <Button size={"small"} type={"ghost"} onClick={this.addOrUpdateEmergency.bind(this,null)}>添加联系人</Button>
-                                                    </Flex.Item>
-                                                </Flex>
+
                                             </Card.Body>
 
                                         </Card>
@@ -103,6 +96,12 @@ class Index extends Component {
                                 )
                             })
                         }
+                        <Flex>
+                            <Flex.Item>
+                                <WhiteSpace/>
+                                <Button type={"primary"} onClick={this.addOrUpdateEmergency.bind(this,null)}>添加联系人</Button>
+                            </Flex.Item>
+                        </Flex>
                     </Accordion.Panel>
                     <Accordion.Panel header="其它设置" className="pad">
                         text text text text text text text text text text text text text text text

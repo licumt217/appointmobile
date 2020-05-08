@@ -9,16 +9,9 @@ export function getCurAppoint() {
 }
 
 
-export function getAppointHistory(params) {
+export function getAppointmentListByUserId(params={}) {
 
-    let obj = {
-        pageSize:Util.pageSize,
-        page:1
-    }
-
-    Object.assign(obj,params)
-
-    return axios.post('order/getAppointHistory', obj)
+    return axios.post('appointment/getListByUserId', params)
 
 
 }
@@ -124,21 +117,21 @@ export function getUserList(params) {
 
 }
 
-export function getQualificationtypeList(params) {
+export function getQualificationtypeList(params={}) {
 
     return axios.post('qualificationtype/list', params)
 
 
 }
 
-export function getSchooltypeList(params) {
+export function getSchooltypeList(params={}) {
 
     return axios.post('schooltype/list', params)
 
 
 }
 
-export function getMannertypeList(params) {
+export function getMannertypeList(params={}) {
 
     return axios.post('mannertype/list', params)
 
