@@ -167,7 +167,7 @@ export function getUseablePeriodSet(params) {
 
 }
 
-export function getListOfUsingByTherapistId(params) {
+export function getAppointmentsOfUsingByTherapistId(params) {
 
     return axios.post('appointment/getListOfUsingByTherapistId', params)
 

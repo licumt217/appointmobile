@@ -6,7 +6,7 @@ import Util from "../../../assets/js/Util";
 
 import DateUtil from "../../../assets/js/DateUtil";
 
-import {getUseablePeriodSet, getListOfUsingByTherapistId,addAppointment} from "../../../http/service";
+import {getUseablePeriodSet, getAppointmentsOfUsingByTherapistId,addAppointment} from "../../../http/service";
 
 import './index.less'
 
@@ -133,7 +133,7 @@ class Index extends Component {
      */
     getOccupyedPeriod = () => {
 
-        getListOfUsingByTherapistId({
+        getAppointmentsOfUsingByTherapistId({
             therapist_id: this.therapist_id,
         }).then((data) => {
 
@@ -225,6 +225,7 @@ class Index extends Component {
 
 
                 })
+
 
                 this.setState({
                     dataList
@@ -508,7 +509,7 @@ class Index extends Component {
                                                         }
 
                                                     </p>
-                                                    : null
+                                                    : <p className={'center num'}></p>
                                             }
                                         </React.Fragment>
                                     )
