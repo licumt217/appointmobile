@@ -1,13 +1,28 @@
 import axios from './axios'
 import Util from '../assets/js/Util'
 
-export function getCurAppoint() {
+/**
+ * 根据用户id获取进行中的预约
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function getAppointmentsOfUsingByUserId() {
 
-    return axios.post('order/getCurAppoint', {})
+    return axios.post('appointment/getListOfUsingByUserId', {})
 
 
 }
 
+/**
+ * 根据预约id获取订单记录
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function getOrdersByAppointmentId(params={}) {
+
+    return axios.post('order/getListByAppointmentId', params)
+
+
+}
 
 export function getAppointmentListByUserId(params={}) {
 

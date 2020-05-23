@@ -1,34 +1,31 @@
 import React, {Component} from 'react';
 
-import {Button, Card, Flex,WhiteSpace,WingBlank} from 'antd-mobile'
+import {Button, Card, Flex, WhiteSpace, WingBlank} from 'antd-mobile'
 
 import Util from '../../../assets/js/Util'
 
-import {getCurAppoint} from '../../../http/service'
-
-
+import {getAppointmentsOfUsingByUserId} from '../../../http/service'
 
 
 class Index extends Component {
 
     constructor() {
         super();
-        this.state={
-            curAppoint:{},
+        this.state = {
+            appointments: [],
 
         }
-
-        this.getCurAppoint();
+        //
+        this.getAppointmentsOfUsingByUserId();
     }
 
     /**
-     * 获取当前预约
      * */
-    getCurAppoint=()=>{
-        getCurAppoint().then((data) => {
+    getAppointmentsOfUsingByUserId = () => {
+        getAppointmentsOfUsingByUserId().then((data) => {
 
             this.setState({
-                curAppoint:data
+                appointments: data
             })
 
         }).catch(err => {
@@ -36,23 +33,25 @@ class Index extends Component {
         })
     }
 
-    go2Detail=(order)=>{
+    go2OrderList = (appointment) => {
         this.props.history.push({
-            pathname:'/appoint/detail',
-            order_id:order.order_id
+            pathname: '/order/list',
+            state:{
+                appointment_id:appointment.appointment_id
+            }
         })
 
     }
 
-    cancel=()=>{
+    cancel = () => {
         this.$Modal.confirm({
             title: '您确定取消吗？',
             content: '',
             onOk: () => {
                 this.http.post('order/cancelOrder', {
-                    order_id:this.curAppoint.order_id
+                    order_id: this.curAppoint.order_id
                 }).then((data) => {
-                    this.curAppoint=data;
+                    this.curAppoint = data;
                     Util.success("操作成功")
                     this.init()
 
@@ -65,29 +64,29 @@ class Index extends Component {
         })
     }
 
-    appoint=()=>{
-        if(this.curAppoint){
+    appoint = () => {
+        if (this.curAppoint) {
             Util.info("您有进行中的预约！")
             return;
         }
         this.props.history.push({
-            pathname:'/therapist/search',
+            pathname: '/therapist/search',
         })
     }
 
-    emergencyConsult=()=>{
+    emergencyConsult = () => {
         this.props.history.push({
-            pathname:'/therapistList',
-            isEmergency:true
+            pathname: '/therapistList',
+            isEmergency: true
         })
     }
     /**
      * 转介
      */
-    transfer=()=>{
+    transfer = () => {
 
         this.props.history.push({
-            pathname:'/therapistListWithTransfer',
+            pathname: '/therapistListWithTransfer',
         })
     }
 
@@ -95,33 +94,47 @@ class Index extends Component {
     render() {
         return (
             <div>
-                <section >
+                <section>
                     <Card>
                         <Card.Header
-                            title="当前预约"
+                            title="进行中预约"
                         />
                         <Card.Body>
-                            {this.state.curAppoint===null?
+                            {this.state.appointments.length === 0 ?
                                 <div className='center'>
                                     暂无预约
                                 </div>
                                 :
-                                <div>
-                                    <p>预约日期：{this.state.curAppoint.appoint_date}</p>
-                                    <p>预约时段：{Util.getAppointPeriodStrFromArray(this.state.curAppoint)}</p>
-                                    <p>咨询师：{this.state.curAppoint.name}</p>
-                                    <Flex>
-                                        <Flex.Item><Button type="primary" size={"small"} onClick={this.go2Detail}>查看详情</Button></Flex.Item>
-                                        <Flex.Item><Button type="warning" size={"small"} onClick={this.cancel}>取消预约</Button></Flex.Item>
-                                    </Flex>
-                                </div>
+                                (
+                                    this.state.appointments.map((appointment, index) => {
+                                        return (
+                                            <div key={index}>
+                                                <p>预约开始日期：{appointment.appoint_date.split(" ")[0]}</p>
+                                                <p>预约时段：{Util.getAppointPeriodStrFromArray(appointment)}</p>
+                                                <p>咨询师：{appointment.therapist_name}</p>
+                                                <WhiteSpace/>
+                                                <Flex>
+                                                    <Flex.Item><Button type="ghost" size={"small"}
+                                                                       onClick={this.go2OrderList.bind(this,appointment)}>订单记录</Button></Flex.Item>
+                                                    <Flex.Item><Button type="warning" size={"small"}
+                                                                       onClick={this.cancel}>取消预约</Button></Flex.Item>
+                                                </Flex>
+                                                <br/>
+                                            </div>
+                                        )
+                                    })
+                                )
+
                             }
 
                             <WhiteSpace size={"xl"}/>
                             <Flex>
-                                <Flex.Item><Button type="primary" size={"small"} onClick={this.appoint}>立即预约</Button></Flex.Item>
-                                <Flex.Item><Button type="warning" size={"small"} onClick={this.emergencyConsult}>紧急咨询</Button></Flex.Item>
-                                <Flex.Item><Button type="ghost" size={"small"} onClick={this.transfer}>转介</Button></Flex.Item>
+                                <Flex.Item><Button type="primary" size={"small"}
+                                                   onClick={this.appoint}>立即预约</Button></Flex.Item>
+                                <Flex.Item><Button type="warning" size={"small"}
+                                                   onClick={this.emergencyConsult}>紧急咨询</Button></Flex.Item>
+                                <Flex.Item><Button type="ghost" size={"small"}
+                                                   onClick={this.transfer}>转介</Button></Flex.Item>
                             </Flex>
 
                         </Card.Body>

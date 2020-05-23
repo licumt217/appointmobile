@@ -17,6 +17,14 @@ const user_id = (state = '', action) => {
     }
 };
 
+const station_id = (state = '', action) => {
+    if(action.type==='station_id'){
+        return action.payload;
+    }else{
+        return state;
+    }
+};
+
 const openid = (state = '', action) => {
     if(action.type==='openid'){
         return action.payload;
@@ -51,6 +59,7 @@ let reducers=combineReducers({
     user_id,
     role,
     token,
+    station_id
 })
 
 export default reducers;

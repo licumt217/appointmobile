@@ -24,9 +24,11 @@ import AcceptAppointment from '../views/push/acceptAppointment'
 import Error from '../views/error'
 import Auth from '../views/auth'
 
+import Order_List from '../views/order/list'
+
 
 export {Error,Home,Register,UserCenter,Appoint_History,MyAppoint,Appoint_Detail,Select_Date,Setting,EmergencyPerson,Modifypass,
-    Therapist_Search,Therapist_Detail,Agreement,Auth}
+    Therapist_Search,Therapist_Detail,Agreement,Auth,Order_List}
 
 
 const routers = [
@@ -50,6 +52,8 @@ const routers = [
 
     {path: '/push/appointmentDetail', component: Push_Appointment_Detail},
     {path: '/push/acceptAppointment', component: AcceptAppointment},
+
+    {path: '/order/list', component: Order_List},
 
 
 ]

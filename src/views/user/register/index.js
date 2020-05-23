@@ -189,6 +189,7 @@ class Index extends Component {
         this.setState({
             loginForm
         })
+
     }
 
 
@@ -201,7 +202,7 @@ class Index extends Component {
 
         return (
             <div>
-                <SegmentedControl values={['用户注册', '咨询师登录']}
+                <SegmentedControl values={['用户注册', '咨询师登录']} selectedIndex={this.state.tabIndex}
                                   style={{height: '32px', width: '90vw', margin: '10px auto'}} onChange={(e) => {
                     this.setState({tabIndex: e.nativeEvent.selectedSegmentIndex})
                 }}/>
@@ -250,14 +251,14 @@ class Index extends Component {
                             :
                             (
                                 <List>
-                                    <InputItem value={this.state.loginForm.phone} type={"phone"} placeholder={'请输入手机号'}
+                                    <InputItem value={this.state.loginForm.phone} maxLength={11} placeholder={'请输入手机号'}
                                                onChange={this.handleTherapistFormChange.bind(this, 'phone')}>手机号</InputItem>
 
                                     <InputItem type="password" value={this.state.loginForm.password}
                                                placeholder={'请输入密码'}
                                                onChange={this.handleTherapistFormChange.bind(this, 'password')}>密码</InputItem>
                                     <WhiteSpace/>
-                                    <Button type="primary" onClick={this.register}>登录</Button>
+                                    <Button type="primary" onClick={this.login}>登录</Button>
                                 </List>
                             )
                     }

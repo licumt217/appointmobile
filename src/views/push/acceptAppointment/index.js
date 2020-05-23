@@ -5,7 +5,7 @@ import { Flex, List, Switch, Radio, WhiteSpace, Button, WingBlank} from "antd-mo
 import {getRoomPeriodSetByStationId,getRoomListByTherapistNoPage,getAppointmentListOfUsingByStationId,acceptAppointment} from "../../../http/service";
 
 import Util from "../../../assets/js/Util";
-
+import store from "../../../store";
 import DateUtil from "../../../assets/js/DateUtil";
 
 
@@ -14,27 +14,15 @@ class Index extends Component {
     constructor(props) {
         super(props);
 
-        this.appointment={}
+        this.appointment=this.props.location.state.appointment;
 
         this.state = {
             allRoomList:[],
             allAvailablePeriodArray:[],
             assign_room_type: "1",
             roomList: [
-                {
-                    room_id:1,
-                    name:'房间1'
-                },
-                {
-                    room_id:2,
-                    name:'房间2'
-                },
-                {
-                    room_id:3,
-                    name:'房间3'
-                },
             ],
-            room_id: 1
+            room_id: ''
         }
     }
 
@@ -84,7 +72,8 @@ class Index extends Component {
         }).then((data) => {
 
             this.setState({
-                allRoomList:data
+                allRoomList:data,
+                // room_id:data[0].room_id
             })
 
         }).then(() => {
@@ -95,7 +84,7 @@ class Index extends Component {
                 //说明没有别人占用的，所有都可以预约
                 if (data.length === 0 && this.isRoomPeriodsContainsAppointPeriods()) {
                     this.setState({
-                        roomList:this.state.this.allRoomList
+                        roomList:this.state.allRoomList
                     })
                 } else {
 
@@ -165,6 +154,7 @@ class Index extends Component {
         let dateWeek = DateUtil.getWeekOfDate(appointment.appoint_date)
 
         for (let date2 in singleMap) {
+
             date2=new Date(date2)
             let w = DateUtil.getWeekOfDate(date2)
 
@@ -172,6 +162,7 @@ class Index extends Component {
             let period2 = singleMap[date2]
             if (w === dateWeek) {
                 period2.forEach(item => {
+
                     if (periodDateMap[item]) {
                         if (periodDateMap[item].getTime() < date2.getTime()) {
                             periodDateMap[item] = date2;
@@ -182,6 +173,7 @@ class Index extends Component {
                 })
             }
         }
+
 
         let appoint_periods=this.appointment.period.split(',');
         let flag=true;
@@ -218,7 +210,7 @@ class Index extends Component {
             assign_room_type: this.state.assign_room_type,
         }).then((data) => {
             Util.success('操作成功')
-            // this.$emit('callback')
+            this.back();
 
         }).catch(err => {
             Util.fail(err)

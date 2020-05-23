@@ -29,7 +29,6 @@ class Index extends Component {
     login = () => {
 
 
-
         let code = Util.getUrlParam("code")
         getOpenid({
             code: code
@@ -67,7 +66,7 @@ class Index extends Component {
                         payload:true
                     })
 
-                    this.props.history.push(this.props.path)
+                    this.props.history.push(this.props.path+this.props.location.search)
 
                 } else {
 

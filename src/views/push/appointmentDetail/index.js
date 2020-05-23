@@ -17,8 +17,8 @@ class Index extends Component {
     constructor(props) {
         super(props);
 
-        // this.appointment_id = this.props.location.state.appointment_id
-        this.appointment_id = ''
+        this.appointment_id = Util.getUrlParam('appointment_id')
+        // this.appointment_id = '0e6753b508314087982f95f4279441a7'
 
         this.state = {
             isShowComplain:false,
@@ -102,9 +102,14 @@ class Index extends Component {
     }
 
     accept = () => {
-        sessionStorage.appointment=JSON.stringify(this.state.order)
+        // sessionStorage.appointment=JSON.stringify(this.state.order)
 
-        this.props.history.push('/push/acceptAppointment')
+        this.props.history.push({
+            pathname:'/push/acceptAppointment',
+            state:{
+                appointment:this.state.order
+            }
+        })
     }
 
 
@@ -132,7 +137,7 @@ class Index extends Component {
         return (
             <div>
                 <Card>
-                    <Card.Header title={'预约详情'}/>
+                    <Card.Header title={'预约详情2'}/>
                     <Card.Body>
                         <List>
                             <List.Item>
@@ -148,7 +153,7 @@ class Index extends Component {
                                 <p>用户：{this.state.order.user_name}</p>
                             </List.Item>
                             <List.Item>
-                                <p>订单状态：{ORDER_STATE_DESC[this.state.order.state]}</p>
+                                <p>订单状态2：{ORDER_STATE_DESC[this.state.order.state]}</p>
                             </List.Item>
                         </List>
                     </Card.Body>
