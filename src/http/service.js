@@ -31,6 +31,32 @@ export function getAppointmentListByUserId(params={}) {
 
 }
 
+export function cancelAppointment(params={}) {
+
+    return axios.post('appointment/cancel', params)
+
+
+}
+
+/**
+ * 根据工作室ID获取正在生效中的预约列表
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function getAppointmentListOfUsingByStationId(params) {
+
+    return axios.post('appointment/getListOfUsingByStationId', params)
+
+
+}
+
+export function acceptAppointment(params) {
+
+    return axios.post('appointment/accept', params)
+
+
+}
+
 export function getAppointDetail(params) {
 
     return axios.post('order/getAppointDetail', params)
@@ -231,19 +257,7 @@ export function getRoomListByTherapistNoPage(params) {
 
 }
 
-export function getAppointmentListOfUsingByStationId(params) {
 
-    return axios.post('appointment/getListOfUsingByStationId', params)
-
-
-}
-
-export function acceptAppointment(params) {
-
-    return axios.post('appointment/accept', params)
-
-
-}
 
 
 

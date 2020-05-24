@@ -4,7 +4,9 @@ import {Button, Card, Flex, WhiteSpace, WingBlank} from 'antd-mobile'
 
 import Util from '../../../assets/js/Util'
 
-import {getAppointmentsOfUsingByUserId} from '../../../http/service'
+import {getAppointmentsOfUsingByUserId,cancelAppointment} from '../../../http/service'
+import ORDER_STATE from "../../../assets/js/constants/ORDER_STATE";
+import ORDER_STATE_DESC from "../../../assets/js/constants/ORDER_STATE_DESC";
 
 
 class Index extends Component {
@@ -43,17 +45,16 @@ class Index extends Component {
 
     }
 
-    cancel = () => {
-        this.$Modal.confirm({
+    cancel = (appointment) => {
+        Util.confirm({
             title: '您确定取消吗？',
-            content: '',
-            onOk: () => {
-                this.http.post('order/cancelOrder', {
-                    order_id: this.curAppoint.order_id
+            msg: '',
+            onConfirm: () => {
+                cancelAppointment( {
+                    appointment_id: appointment.appointment_id
                 }).then((data) => {
-                    this.curAppoint = data;
                     Util.success("操作成功")
-                    this.init()
+                    this.getAppointmentsOfUsingByUserId()
 
                 }).catch(err => {
                     Util.fail(err)
@@ -112,12 +113,21 @@ class Index extends Component {
                                                 <p>预约开始日期：{appointment.appoint_date.split(" ")[0]}</p>
                                                 <p>预约时段：{Util.getAppointPeriodStrFromArray(appointment)}</p>
                                                 <p>咨询师：{appointment.therapist_name}</p>
+                                                <p>预约状态：{ORDER_STATE_DESC[appointment.state]}</p>
                                                 <WhiteSpace/>
                                                 <Flex>
                                                     <Flex.Item><Button type="ghost" size={"small"}
                                                                        onClick={this.go2OrderList.bind(this,appointment)}>订单记录</Button></Flex.Item>
-                                                    <Flex.Item><Button type="warning" size={"small"}
-                                                                       onClick={this.cancel}>取消预约</Button></Flex.Item>
+                                                    {
+                                                        appointment.state===ORDER_STATE.COMMIT?
+                                                            <Flex.Item>
+                                                                <Button type="warning" size={"small"}
+                                                                        onClick={this.cancel.bind(this,appointment)}>取消预约</Button>
+                                                            </Flex.Item>
+                                                            :
+                                                            null
+                                                    }
+
                                                 </Flex>
                                                 <br/>
                                             </div>

@@ -109,7 +109,7 @@ class Index extends Component {
                                     this.state.orders.map((item, index) => {
                                         return (
                                             <div>
-                                                <p>咨询师：{item.name}</p>
+                                                <p>咨询师：{item.therapist_name}</p>
                                                 <p>预约时段：{Util.getAppointPeriodStrFromArray(item)}</p>
                                                 <p>订单费用：{item.amount}</p>
                                                 <p>订单状态：{ORDER_STATE_DESC[item.state]}</p>

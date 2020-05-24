@@ -101,26 +101,37 @@ class Index extends Component {
                         //持续的预约
                         if (item.ismulti === 1) {
                             if (weekMap[week]) {
-                                weekMap[week] = weekMap[week].concat(periodArray);
+                                weekMap[week].push({
+                                    periodArray,
+                                    room_id:item.room_id
+                                })
                             } else {
-                                weekMap[week] = periodArray
+                                weekMap[week] = [{
+                                    periodArray,
+                                    room_id:item.room_id
+                                }]
                             }
                         } else {//单次预约
                             if (singleMap[date]) {
-                                singleMap[date].concat(periodArray);
+                                singleMap[date].push({
+                                    periodArray,
+                                    room_id:item.room_id
+                                })
                             } else {
-                                singleMap[date] = periodArray
+                                singleMap[date] = [{
+                                    periodArray,
+                                    room_id:item.room_id
+                                }]
                             }
                         }
                     })
 
-
-                    let roomList=this.state.roomList;
+                    let roomList=[];
                     this.state.allRoomList.forEach((item, index) => {
 
                         let week = DateUtil.getWeekOfDate(this.appointment.appoint_date);
 
-                        if(this.canAppointRoom(this.appointment,singleMap,weekMap[week])){
+                        if(this.canAppointRoom(item,this.appointment,singleMap,weekMap[week])){
                             roomList.push(item);
                         }
 
@@ -142,55 +153,68 @@ class Index extends Component {
     }
 
     /**
+     * 判断数据是否包含另一个数组中的任意一个元素
+     * @param array
+     * @param anotherArray
+     */
+    arrayContainsAnotherArray=(array,anotherArray)=>{
+        return anotherArray.some((item)=>{
+            return array.includes(item);
+        })
+    }
+
+    /**
      * 看给定日期能否预约房间
      * @param date
      * @param usedPeriodArray 已经长期预约的时段，此时不可用
      * @returns {[]}
      */
-    canAppointRoom=(appointment, singleMap, usedPeriodArray)=> {
+    canAppointRoom=(room,appointment, singleMap, usedPeriodArray)=> {
 
-        let periodDateMap = {}
+        let appoint_periodArray=appointment.period.split(',');
+
+        let appoint_date=new Date(appointment.appoint_date)
+
+        //如果当前房间的当前周几有持续预约，直接不可用
+        let flag=true;
+        usedPeriodArray && usedPeriodArray.forEach(item=>{
+            if(item.room_id===room.room_id){
+                if(this.arrayContainsAnotherArray(item.periodArray,appoint_periodArray)){
+                    flag=false;
+                }
+            }
+        })
+
+        if(flag===false){
+            return flag;
+        }
+
+        //单次预约。1、房间号是否相同。2、预约时段是否有重叠。3、日期先后比对
 
         let dateWeek = DateUtil.getWeekOfDate(appointment.appoint_date)
 
         for (let date2 in singleMap) {
-
             date2=new Date(date2)
             let w = DateUtil.getWeekOfDate(date2)
 
+            let singleArray = singleMap[date2]
 
-            let period2 = singleMap[date2]
-            if (w === dateWeek) {
-                period2.forEach(item => {
-
-                    if (periodDateMap[item]) {
-                        if (periodDateMap[item].getTime() < date2.getTime()) {
-                            periodDateMap[item] = date2;
+            singleArray.forEach(item=>{
+                if(item.room_id===room.room_id){
+                    if(this.arrayContainsAnotherArray(item.periodArray,appoint_periodArray)){
+                        if(date2.getTime()>appoint_date.getTime() && w===dateWeek){
+                            flag=false;
                         }
-                    } else {
-                        periodDateMap[item] = date2;
                     }
-                })
-            }
-        }
-
-
-        let appoint_periods=this.appointment.period.split(',');
-        let flag=true;
-        for(let m=0;m<appoint_periods.length;m++){
-            let the_period=appoint_periods[m];
-
-            if(usedPeriodArray && usedPeriodArray.includes(the_period)){
-                flag=false;
-                break;
-            }
-
-            if(periodDateMap[the_period] && new Date(this.appointment.appoint_date).getTime() < periodDateMap[the_period].getTime()){
-                flag=false;
-                break;
-            }
+                }
+            })
 
         }
+
+        if(flag===false){
+            return flag;
+        }
+
 
         return flag && this.isRoomPeriodsContainsAppointPeriods();
 

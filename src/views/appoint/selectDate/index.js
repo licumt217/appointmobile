@@ -182,12 +182,13 @@ class Index extends Component {
                         }
                     } else {//单次预约
                         if (singleMap[date]) {
-                            singleMap[date].concat(periodArray);
+                            singleMap[date]=singleMap[date].concat(periodArray);
                         } else {
                             singleMap[date] = periodArray
                         }
                     }
                 })
+
 
 
                 dataList.forEach((item, index) => {
