@@ -109,35 +109,39 @@ class Index extends Component {
                                 (
                                     this.state.appointments.map((appointment, index) => {
                                         return (
-                                            <div key={index}>
-                                                <p>预约开始日期：{appointment.appoint_date.split(" ")[0]}</p>
-                                                <p>预约时段：{Util.getAppointPeriodStrFromArray(appointment)}</p>
-                                                <p>咨询师：{appointment.therapist_name}</p>
-                                                <p>预约状态：{ORDER_STATE_DESC[appointment.state]}</p>
-                                                <WhiteSpace/>
-                                                <Flex>
-                                                    <Flex.Item><Button type="ghost" size={"small"}
-                                                                       onClick={this.go2OrderList.bind(this,appointment)}>订单记录</Button></Flex.Item>
-                                                    {
-                                                        appointment.state===ORDER_STATE.COMMIT?
-                                                            <Flex.Item>
-                                                                <Button type="warning" size={"small"}
-                                                                        onClick={this.cancel.bind(this,appointment)}>取消预约</Button>
-                                                            </Flex.Item>
-                                                            :
-                                                            null
-                                                    }
+                                            <Card key={index} style={{marginBottom:'.5em'}}>
+                                                <Card.Body>
+                                                    <p>预约开始日期：{appointment.appoint_date.split(" ")[0]}</p>
+                                                    <p>预约时段：{Util.getAppointPeriodStrFromArray(appointment)}</p>
+                                                    <p>咨询师：{appointment.therapist_name}</p>
+                                                    <p>房间：{appointment.room_name}</p>
+                                                    <p>预约类型：{appointment.ismulti===1?'持续预约':'单次预约'}</p>
+                                                    <p>预约状态：{ORDER_STATE_DESC[appointment.state]}</p>
+                                                    <WhiteSpace/>
+                                                    <Flex justify={"around"} align={"center"} alignContent={"center"}>
+                                                        <Flex.Item style={{textAlign:'center'}}><Button type="ghost" size={"small"}
+                                                                                                        onClick={this.go2OrderList.bind(this,appointment)}>订单记录</Button></Flex.Item>
 
-                                                </Flex>
-                                                <br/>
-                                            </div>
+                                                        {
+                                                            appointment.state===ORDER_STATE.COMMIT?
+                                                                <Flex.Item>
+                                                                    <Button type="warning" size={"small"}
+                                                                            onClick={this.cancel.bind(this,appointment)}>取消预约</Button>
+                                                                </Flex.Item>
+                                                                :
+                                                                null
+                                                        }
+
+                                                    </Flex>
+                                                </Card.Body>
+                                            </Card>
                                         )
                                     })
                                 )
 
                             }
 
-                            <WhiteSpace size={"xl"}/>
+                            <WhiteSpace />
                             <Flex>
                                 <Flex.Item><Button type="primary" size={"small"}
                                                    onClick={this.appoint}>立即预约</Button></Flex.Item>

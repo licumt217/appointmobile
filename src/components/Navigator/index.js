@@ -11,7 +11,6 @@ class Index extends Component {
         super(props);
 
         this.state = {
-            selectedIndex: 0,
             hidden: false,
             fullScreen: false,
             login:store.getState().login
@@ -26,22 +25,14 @@ class Index extends Component {
         })
     }
 
-    clickHandler=(index)=>{
-        this.setState({
-            selectedIndex: index
-        });
+    clickHandler=(url)=>{
 
-        switch (index) {
-            case 0:
-                this.props.history.push('/appoint/myAppoint')
-                break;
-            case 1:
-                this.props.history.push('/appoint/history')
-                break;
-            case 2:
-                this.props.history.push('/user/center')
-                break;
-        }
+        store.dispatch({
+            type:'menu_selected_index',
+            payload: url
+        })
+
+        this.props.history.push(url)
 
 
     }
@@ -65,8 +56,8 @@ class Index extends Component {
                                         key="1"
                                         icon={<div className='icon icon-myappoint'/>}
                                         selectedIcon={<div className='icon icon-myappoint-selected'/>}
-                                        selected={this.state.selectedIndex===0}
-                                        onPress={this.clickHandler.bind(this,0)}
+                                        selected={!store.getState().menu_selected_index || store.getState().menu_selected_index==='/appoint/myAppoint'}
+                                        onPress={this.clickHandler.bind(this,'/appoint/myAppoint')}
                                     >
                                     </TabBar.Item>
                                     <TabBar.Item
@@ -74,8 +65,8 @@ class Index extends Component {
                                         key="2"
                                         icon={<div className='icon icon-record'/>}
                                         selectedIcon={<div className='icon icon-record-selected'/>}
-                                        selected={this.state.selectedIndex===1}
-                                        onPress={this.clickHandler.bind(this,1)}
+                                        selected={store.getState().menu_selected_index==='/appoint/history'}
+                                        onPress={this.clickHandler.bind(this,'/appoint/history')}
                                     >
                                     </TabBar.Item>
                                     <TabBar.Item
@@ -83,8 +74,8 @@ class Index extends Component {
                                         key="3"
                                         icon={<div className='icon icon-center'/>}
                                         selectedIcon={<div className='icon icon-center-selected'/>}
-                                        selected={this.state.selectedIndex===2}
-                                        onPress={this.clickHandler.bind(this,2)}
+                                        selected={store.getState().menu_selected_index==='/user/center'}
+                                        onPress={this.clickHandler.bind(this,'/user/center')}
                                     >
                                     </TabBar.Item>
 

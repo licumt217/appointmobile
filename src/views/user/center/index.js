@@ -152,7 +152,7 @@ class Index extends Component {
 
                     <WhiteSpace/>
 
-                    <Button type="primary" onClick={this.update}>修改</Button>
+                    <Button type={"primary"} size={"small"} onClick={this.update}>修改</Button>
 
                 </List>
             </WingBlank>

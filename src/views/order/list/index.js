@@ -108,39 +108,41 @@ class Index extends Component {
                                 (
                                     this.state.orders.map((item, index) => {
                                         return (
-                                            <div>
-                                                <p>咨询师：{item.therapist_name}</p>
-                                                <p>预约时段：{Util.getAppointPeriodStrFromArray(item)}</p>
-                                                <p>订单费用：{item.amount}</p>
-                                                <p>订单状态：{ORDER_STATE_DESC[item.state]}</p>
-                                                <WhiteSpace/>
-                                                {
-                                                    item.state === ORDER_STATE.AUDITED ?
-                                                        <Flex>
-                                                            <Flex.Item>
-                                                                <Button size={"small"} type={"ghost"} onClick={this.pay.bind(this,item)}>立即支付</Button>
-                                                            </Flex.Item>
-                                                        </Flex>
-                                                        :
-                                                        item.state === ORDER_STATE.DONE ?
-                                                            <Flex>
-                                                                <Flex.Item>
-                                                                    <Button onClick={this.showFeedbackModal}>咨询效果反馈</Button>
-                                                                </Flex.Item>
-                                                                <Flex.Item>
-                                                                    <Button onClick={this.showComplainModal}>投诉咨询师</Button>
-                                                                </Flex.Item>
-                                                            </Flex>
-                                                            :
-                                                            // order.state===ORDER_STATE.COMMIT || order.state===ORDER_STATE.AUDITED || order.state===ORDER_STATE.PAYED
-                                                            <Flex>
-                                                                <Flex.Item>
-                                                                    {/*<Button onClick={this.cancel}>取消预约</Button>*/}
-                                                                </Flex.Item>
-                                                            </Flex>
-                                                }
-                                                <br/>
-                                            </div>
+                                            <Card>
+                                                    <Card.Body>
+                                                        <p>咨询师：{item.therapist_name}</p>
+                                                        <p>预约时间：{item.order_date.split(' ')[0]}</p>
+                                                        <p>预约时段：{Util.getAppointPeriodStrFromArray(item)}</p>
+                                                        <p>订单费用：{item.amount}</p>
+                                                        <p>订单状态：{ORDER_STATE_DESC[item.state]}</p>
+                                                        <WhiteSpace/>
+                                                        {
+                                                            item.state === ORDER_STATE.COMMIT ?
+                                                                <Flex>
+                                                                    <Flex.Item>
+                                                                        <Button size={"small"} type={"ghost"} onClick={this.pay.bind(this,item)}>立即支付</Button>
+                                                                    </Flex.Item>
+                                                                </Flex>
+                                                                :
+                                                                item.state === ORDER_STATE.DONE ?
+                                                                    <Flex>
+                                                                        <Flex.Item>
+                                                                            <Button onClick={this.showFeedbackModal}>咨询效果反馈</Button>
+                                                                        </Flex.Item>
+                                                                        <Flex.Item>
+                                                                            <Button onClick={this.showComplainModal}>投诉咨询师</Button>
+                                                                        </Flex.Item>
+                                                                    </Flex>
+                                                                    :
+                                                                    // order.state===ORDER_STATE.COMMIT || order.state===ORDER_STATE.AUDITED || order.state===ORDER_STATE.PAYED
+                                                                    <Flex>
+                                                                        <Flex.Item>
+                                                                            {/*<Button onClick={this.cancel}>取消预约</Button>*/}
+                                                                        </Flex.Item>
+                                                                    </Flex>
+                                                        }
+                                                    </Card.Body>
+                                            </Card>
                                         )
                                     })
                                 )

@@ -13,6 +13,17 @@ export function getAppointmentsOfUsingByUserId() {
 }
 
 /**
+ * 根据用户id获取历史预约记录
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function getAppointmentHistoryByUserId() {
+
+    return axios.post('appointment/getHistoryByUserId', {})
+
+
+}
+
+/**
  * 根据预约id获取订单记录
  * @param params
  * @returns {Promise<AxiosResponse<T>>}
