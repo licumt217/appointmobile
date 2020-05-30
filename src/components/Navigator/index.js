@@ -61,7 +61,7 @@ class Index extends Component {
                                     >
                                     </TabBar.Item>
                                     <TabBar.Item
-                                        title="预约记录"
+                                        title="预约历史"
                                         key="2"
                                         icon={<div className='icon icon-record'/>}
                                         selectedIcon={<div className='icon icon-record-selected'/>}

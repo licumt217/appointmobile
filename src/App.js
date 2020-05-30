@@ -123,7 +123,7 @@ class App extends Component {
 
 
         // this.mock();
-        // this.mockTherapist()
+        this.mockTherapist()
 
 
         //验证openid是否和手机号绑定了

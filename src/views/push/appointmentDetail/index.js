@@ -4,25 +4,25 @@ import {Card, List, Button, Flex, WingBlank, WhiteSpace} from "antd-mobile";
 
 import Util from "../../../assets/js/Util";
 
-import {getAppointmentDetail, confirmOrder, denyAppointment,pay} from "../../../http/service";
+import {getAppointmentDetail, confirmOrder, denyAppointment, pay,doneAppointment} from "../../../http/service";
 
 import PayUtil from "../../../assets/js/PayUtil";
 
 import ORDER_STATE_DESC from "../../../assets/js/constants/ORDER_STATE_DESC";
 import ORDER_STATE from "../../../assets/js/constants/ORDER_STATE";
-import ComplainModal from "../../appoint/components/ComplainModal";
+import ComplainModal from "../../appoint/components/ComplainModal/ComplainModal";
 
 class Index extends Component {
 
     constructor(props) {
         super(props);
 
-        this.appointment_id = Util.getUrlParam('appointment_id')
-        // this.appointment_id = 'a55af5bc1bf54ef197c826e6b5af5ba3'
+        // this.appointment_id = Util.getUrlParam('appointment_id')
+        this.appointment_id = 'a55af5bc1bf54ef197c826e6b5af5ba3'
 
         this.state = {
-            isShowComplain:false,
-            order: {
+            isShowComplain: false,
+            appointment: {
                 fee_type: 0,
                 state: 0
             },
@@ -42,7 +42,7 @@ class Index extends Component {
         }).then((data) => {
             if (data) {
                 this.setState({
-                    order: data
+                    appointment: data
                 })
             } else {
                 Util.fail('预约不存在')
@@ -76,25 +76,12 @@ class Index extends Component {
 
     }
 
-    done = () => {
-        confirmOrder({
-            order_id: this.state.order.order_id
-        }).then((data) => {
-            Util.success('操作成功')
-            // this.getAppointmentDetail()
-
-        }).catch(err => {
-            Util.fail(err)
-        })
-    }
-
-
-    pay=()=> {
+    pay = () => {
         pay({
-            order_id:this.state.order.order_id,
+            order_id: this.state.appointment.order_id,
         }).then((data) => {
 
-            PayUtil.pay(data.secuParam,this.getAppointmentDetail,this.getAppointmentDetail)
+            PayUtil.pay(data.secuParam, this.getAppointmentDetail, this.getAppointmentDetail)
 
         }).catch(err => {
             Util.fail(err)
@@ -102,17 +89,15 @@ class Index extends Component {
     }
 
     accept = () => {
-        // sessionStorage.appointment=JSON.stringify(this.state.order)
+        // sessionStorage.appointment=JSON.stringify(this.state.appointment)
 
         this.props.history.push({
-            pathname:'/push/acceptAppointment',
-            state:{
-                appointment:this.state.order
+            pathname: '/push/acceptAppointment',
+            state: {
+                appointment: this.state.appointment
             }
         })
     }
-
-
 
 
     showComplainModal = () => {
@@ -132,28 +117,45 @@ class Index extends Component {
         this.getAppointmentDetail();
     }
 
+    /**
+     * 咨询师能否主动完成预约（结束）
+     * 当前预约状态必须是已审核
+     * 当前预约对应的所有订单必须都是最终状态：已拒绝、已取消、已过期、已完结。
+     */
+    done=()=>{
+        doneAppointment({
+            appointment_id: this.state.appointment.appointment_id
+        }).then((data) => {
+            Util.success('操作成功')
+            this.getAppointmentDetail()
+
+        }).catch(err => {
+            Util.fail(err)
+        })
+    }
+
 
     render() {
         return (
             <div>
                 <Card>
-                    <Card.Header title={'预约详情2'}/>
+                    <Card.Header title={'预约详情'}/>
                     <Card.Body>
                         <List>
                             <List.Item>
-                                <p>预约日期：{this.state.order.appoint_date}</p>
+                                <p>预约开始日期：{this.state.appointment.appoint_date}</p>
                             </List.Item>
                             <List.Item>
-                                <p>预约时段：{Util.getAppointPeriodStrFromArray(this.state.order)}</p>
+                                <p>预约时段：{Util.getAppointPeriodStrFromArray(this.state.appointment)}</p>
                             </List.Item>
                             <List.Item>
-                                <p>咨询师：{this.state.order.therapist_name}</p>
+                                <p>咨询师：{this.state.appointment.therapist_name}</p>
                             </List.Item>
                             <List.Item>
-                                <p>用户：{this.state.order.user_name}</p>
+                                <p>用户：{this.state.appointment.user_name}</p>
                             </List.Item>
                             <List.Item>
-                                <p>订单状态2：{ORDER_STATE_DESC[this.state.order.state]}</p>
+                                <p>预约状态：{ORDER_STATE_DESC[this.state.appointment.state]}</p>
                             </List.Item>
                         </List>
                     </Card.Body>
@@ -162,9 +164,9 @@ class Index extends Component {
                 {
                     this.state.user_type === 'user' ?
                         (
-                            this.state.order.fee_type === 0 ?
+                            this.state.appointment.fee_type === 0 ?
                                 (
-                                    this.state.order.state === ORDER_STATE.AUDITED ?
+                                    this.state.appointment.state === ORDER_STATE.AUDITED ?
                                         (
                                             <Button size={"small"} type={"ghost"} onClick={this.pay}>立即支付</Button>
                                         )
@@ -173,7 +175,7 @@ class Index extends Component {
                                 : (null)
                         )
                         : (
-                            this.state.order.state === ORDER_STATE.COMMIT ?
+                            this.state.appointment.state === ORDER_STATE.COMMIT ?
                                 (
                                     <WingBlank>
                                         <WhiteSpace/>
@@ -188,28 +190,32 @@ class Index extends Component {
                                     </WingBlank>
                                 )
                                 : (
-                                    <WingBlank>
-                                        <WhiteSpace/>
-                                        <Flex>
-                                            <Flex.Item>
-                                                <Button size={"small"} type={"ghost"} onClick={this.done}>确认完成</Button>
-                                            </Flex.Item>
-                                            <Flex.Item>
-                                                <Button size={"small"} type={"ghost"}
-                                                        onClick={this.showComplainModal}>投诉用户</Button>
-                                            </Flex.Item>
-                                        </Flex>
-                                        {
-                                            this.state.isShowComplain ?
-                                                (
-                                                    <ComplainModal user_type={'therapist'}
-                                                                   order_id={this.state.order.order_id}
-                                                                   onCancel={this.hideComplainModal}
-                                                                   onSave={this.handleAfterComplain}/>
-                                                )
-                                                : (null)
-                                        }
-                                    </WingBlank>
+
+
+
+                                // 预约本身状态：已下单、已审核、已拒绝、已完成
+                                    this.state.appointment.state === ORDER_STATE.AUDITED ?
+                                        (
+                                            <WingBlank>
+                                                <WhiteSpace/>
+                                                <Flex>
+                                                    <Flex.Item>
+                                                        <Button size={"small"} type={"ghost"} onClick={this.done}>确认完成</Button>
+                                                    </Flex.Item>
+                                                    {/*<Flex.Item>*/}
+                                                    {/*    <Button size={"small"} type={"ghost"}*/}
+                                                    {/*            onClick={this.showComplainModal}>投诉用户</Button>*/}
+                                                    {/*</Flex.Item>*/}
+                                                </Flex>
+
+                                            </WingBlank>
+                                        )
+                                        :
+                                        (
+                                            null
+                                        )
+
+
                                 )
                         )
                 }

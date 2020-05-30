@@ -24,6 +24,17 @@ export function getAppointmentHistoryByUserId() {
 }
 
 /**
+ * 根据咨询师id获取历史预约记录
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function getAppointmentHistoryByTherapistId() {
+
+    return axios.post('appointment/getHistoryByTherapistId', {})
+
+
+}
+
+/**
  * 根据预约id获取订单记录
  * @param params
  * @returns {Promise<AxiosResponse<T>>}
@@ -64,6 +75,18 @@ export function getAppointmentListOfUsingByStationId(params) {
 export function acceptAppointment(params) {
 
     return axios.post('appointment/accept', params)
+
+
+}
+
+/**
+ * 咨询师完成预约
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function doneAppointment(params) {
+
+    return axios.post('appointment/done', params)
 
 
 }
@@ -232,12 +255,7 @@ export function denyAppointment(params) {
 
 }
 
-export function confirmOrder(params) {
 
-    return axios.post('order/done', params)
-
-
-}
 
 
 export function getOpenid(params) {

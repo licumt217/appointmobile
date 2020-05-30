@@ -7,7 +7,7 @@ import PayUtil from '../../../assets/js/PayUtil'
 
 import {getAppointDetail, pay, cancelOrder} from '../../../http/service'
 
-import ComplainModal from "../components/ComplainModal";
+import ComplainModal from "../components/ComplainModal/ComplainModal";
 import FeedbackModal from "../components/FeedbackModal";
 
 const ORDER_STATE_DESC = require('../../../assets/js/constants/ORDER_STATE_DESC')

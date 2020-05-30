@@ -8,6 +8,7 @@ import {getOrdersByAppointmentId,pay} from '../../../http/service'
 import ORDER_STATE_DESC from "../../../assets/js/constants/ORDER_STATE_DESC";
 import ORDER_STATE from "../../../assets/js/constants/ORDER_STATE";
 import PayUtil from "../../../assets/js/PayUtil";
+import ComplainModal from "../../appoint/components/ComplainModal/ComplainModal";
 
 
 class Index extends Component {
@@ -18,6 +19,8 @@ class Index extends Component {
         this.appointment_id=this.props.location.state.appointment_id
         this.state = {
             orders: [],
+            isShowComplain:false,
+            order_id:''
 
         }
         //
@@ -90,10 +93,33 @@ class Index extends Component {
         })
     }
 
+    showComplain=(order)=>{
+        this.setState({
+            isShowComplain:true,
+            order_id:order.order_id
+        })
+    }
+
+    hideComplain=()=>{
+        this.setState({
+            isShowComplain:false
+        })
+    }
+
 
     render() {
         return (
             <div>
+                {
+                    this.state.isShowComplain ?
+                        (
+                            <ComplainModal user_type={'therapist'} show={this.state.isShowComplain}
+                                           order_id={this.state.order_id}
+                                onHide={this.hideComplain}
+                            />
+                        )
+                        : (null)
+                }
                 <section>
                     <Card>
                         <Card.Header
@@ -127,10 +153,10 @@ class Index extends Component {
                                                                 item.state === ORDER_STATE.DONE ?
                                                                     <Flex>
                                                                         <Flex.Item>
-                                                                            <Button onClick={this.showFeedbackModal}>咨询效果反馈</Button>
+                                                                            <Button size={"small"} type={"ghost"} onClick={this.showFeedbackModal}>咨询效果反馈</Button>
                                                                         </Flex.Item>
                                                                         <Flex.Item>
-                                                                            <Button onClick={this.showComplainModal}>投诉咨询师</Button>
+                                                                            <Button size={"small"} type={"ghost"} onClick={this.showComplain.bind(this,item)}>投诉咨询师</Button>
                                                                         </Flex.Item>
                                                                     </Flex>
                                                                     :

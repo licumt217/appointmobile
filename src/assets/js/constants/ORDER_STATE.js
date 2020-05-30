@@ -4,7 +4,7 @@
  */
 let ORDER_STATE = {
     COMMIT: 0,      //已下单
-    AUDITED: 1,      //已审核
+    AUDITED: 1,      //已审核（待支付）
     REJECTED: 2,      //已拒绝
     PAYED: 3,       //已支付
     UNFUNDED: 4,    //已退款
