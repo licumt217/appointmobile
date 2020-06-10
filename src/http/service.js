@@ -91,12 +91,7 @@ export function doneAppointment(params) {
 
 }
 
-export function getAppointDetail(params) {
 
-    return axios.post('order/getAppointDetail', params)
-
-
-}
 
 export function pay(params) {
 
@@ -197,9 +192,14 @@ export function updatePassword(params) {
 
 }
 
-export function getUserList(params) {
+/**
+ * 获取所有已关联了工作室的咨询师列表
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function getAllTherapist(params) {
 
-    return axios.post('user/list', params)
+    return axios.post('stationTherapistRelation/getAllTherapist', params)
 
 
 }

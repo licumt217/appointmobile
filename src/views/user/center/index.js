@@ -119,7 +119,7 @@ class Index extends Component {
 
             <WingBlank>
                 <List>
-                    <List.Item><h3>用户信息修改</h3></List.Item>
+                    <List.Item><h3>用户信息</h3></List.Item>
 
                     <InputItem value={this.state.form.phone} maxLength={11}
                                onChange={this.handleFormChange.bind(this, 'phone')}>手机号</InputItem>
@@ -154,7 +154,7 @@ class Index extends Component {
 
                     <WhiteSpace/>
 
-                    <Button type={"primary"} size={"small"} onClick={this.update}>修改</Button>
+                    <Button type={"primary"} onClick={this.update}>修改</Button>
 
                 </List>
             </WingBlank>

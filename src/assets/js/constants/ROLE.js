@@ -1,7 +1,7 @@
 /**
  * 用户类型
  */
-let Role = {
+let ROLE = {
     admin: 0,      //超管
     divisionManager: 1,       //分部管理员
     caseManager: 2,       //案例管理员
@@ -11,4 +11,4 @@ let Role = {
 
 
 
-export default Role
+export default ROLE

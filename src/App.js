@@ -7,7 +7,7 @@ import Navigator from './components/Navigator'
 
 import Util from "./assets/js/Util";
 import store from "./store";
-import Role from "./assets/js/Role";
+import ROLE from "./assets/js/constants/ROLE";
 import './assets/css/App.less'
 
 class App extends Component {
@@ -75,7 +75,7 @@ class App extends Component {
 
         store.dispatch({
             type:'role',
-            payload: Role.therapist
+            payload: ROLE.therapist
         })
 
         store.dispatch({
@@ -109,7 +109,7 @@ class App extends Component {
 
         store.dispatch({
             type:'role',
-            payload: Role.client
+            payload: ROLE.client
         })
 
 
@@ -122,7 +122,7 @@ class App extends Component {
     render() {
 
 
-        this.mock();
+        // this.mock();
         // this.mockTherapist()
 
 
@@ -145,7 +145,7 @@ class App extends Component {
             <section className='base-container'>
 
                 <Router basename={'/appointmobile/'}>
-                    <Navigator history={this.props.history}/>
+                    {/*<Navigator history={this.props.history}/>*/}
 
                     <Switch>
 

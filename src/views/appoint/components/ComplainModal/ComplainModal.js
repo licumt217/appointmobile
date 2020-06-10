@@ -8,7 +8,7 @@ import {addComplaint} from '../../../../http/service'
 
 import './index.less'
 import store from "../../../../store";
-import Role from "../../../../assets/js/Role";
+import ROLE from "../../../../assets/js/constants/ROLE";
 
 class ComplainModal extends Component {
 

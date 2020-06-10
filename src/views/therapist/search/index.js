@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 
 import {Picker, List, Flex, Button, Card,WingBlank,WhiteSpace} from "antd-mobile";
 import Util from "../../../assets/js/Util";
+import FEE_TYPE_DESC from "../../../assets/js/constants/FEE_TYPE_DESC";
 
-import {getQualificationtypeList, getMannertypeList, getSchooltypeList, getUserList} from '../../../http/service'
+import {getQualificationtypeList, getMannertypeList, getSchooltypeList, getAllTherapist} from '../../../http/service'
 
-import Role from "../../../assets/js/Role";
+import ROLE from "../../../assets/js/constants/ROLE";
 import {SEX} from "../../../assets/js/constants/constant"
 import './index.less'
 
@@ -104,7 +105,7 @@ class Index extends Component {
         let pageSize = Util.pageSize
 
         let whereObj = {
-            role: Role.therapist,
+            role: ROLE.therapist,
             page,
             pageSize: 3,
         }
@@ -112,7 +113,7 @@ class Index extends Component {
         Object.assign(whereObj, this.state.form)
 
 
-        getUserList(whereObj).then((data) => {
+        getAllTherapist(whereObj).then((data) => {
 
             this.setState({
                 listData: data
@@ -284,14 +285,15 @@ class Index extends Component {
                                                         <List.Item>流派：{this.schoolTypeObj[item.school_type_id] ? this.schoolTypeObj[item.school_type_id].school_type_name : ''}</List.Item>
                                                         <List.Item>资历：{this.qualificationTypeObj[item.qualification_type_id] ? this.qualificationTypeObj[item.qualification_type_id].qualification_type_name : ''}</List.Item>
                                                         <List.Item>咨询方式：{this.mannerTypeObj[item.manner_type_id] ? this.mannerTypeObj[item.manner_type_id].manner_type_name : ''}</List.Item>
+                                                        <List.Item>收费方式：{FEE_TYPE_DESC[item.fee_type]}</List.Item>
                                                     </List>
                                                         <Flex>
                                                             <Flex.Item>
                                                                 <Button type={"ghost"} size={"small"} onClick={this.next.bind(this, item)}>选择此咨询师</Button>
                                                             </Flex.Item>
-                                                            <Flex.Item>
-                                                                <Button type={"primary"}  size={"small"} onClick={this.detail.bind(this, item)}>查看详情</Button>
-                                                            </Flex.Item>
+                                                            {/*<Flex.Item>*/}
+                                                            {/*    <Button type={"primary"}  size={"small"} onClick={this.detail.bind(this, item)}>查看详情</Button>*/}
+                                                            {/*</Flex.Item>*/}
                                                         </Flex>
                                                 </Card.Body>
                                             </Card>

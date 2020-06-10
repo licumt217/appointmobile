@@ -11,8 +11,11 @@ import {
 } from '../../../http/service'
 import APPOINTMENT_STATE from "../../../assets/js/constants/APPOINTMENT_STATE";
 import APPOINTMENT_STATE_DESC from "../../../assets/js/constants/APPOINTMENT_STATE_DESC";
+import APPOINTMENT_MULTI from "../../../assets/js/constants/APPOINTMENT_MULTI";
+import FEE_TYPE from "../../../assets/js/constants/FEE_TYPE";
+import FEE_TYPE_DESC from "../../../assets/js/constants/FEE_TYPE_DESC";
 import store from "../../../store";
-import Role from "../../../assets/js/Role";
+import ROLE from "../../../assets/js/constants/ROLE";
 
 
 class Index extends Component {
@@ -24,9 +27,9 @@ class Index extends Component {
 
         }
         //
-        if (store.getState().role === Role.client) {
+        if (store.getState().role === ROLE.client) {
             this.getAppointmentsOfUsingByUserId();
-        } else if (store.getState().role === Role.therapist) {
+        } else if (store.getState().role === ROLE.therapist) {
             this.getAppointmentsOfUsingByTherapistId()
         }
 
@@ -141,7 +144,8 @@ class Index extends Component {
                                                     <p>预约时段：{Util.getAppointPeriodStrFromArray(appointment)}</p>
                                                     <p>咨询师：{appointment.therapist_name}</p>
                                                     <p>房间：{appointment.room_name}</p>
-                                                    <p>预约类型：{appointment.ismulti === 1 ? '持续预约' : '单次预约'}</p>
+                                                    <p>预约类型：{appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '持续预约' : '单次预约'}</p>
+                                                    <p>收费类型：{FEE_TYPE_DESC[appointment.fee_type]}</p>
                                                     <p>预约状态：{APPOINTMENT_STATE_DESC[appointment.state]}</p>
                                                     <WhiteSpace/>
                                                     <Flex justify={"around"} align={"center"} alignContent={"center"}>
@@ -170,7 +174,7 @@ class Index extends Component {
 
                             <WhiteSpace/>
                             {
-                                store.getState().role===Role.client?
+                                store.getState().role===ROLE.client?
                                     (
                                         <Flex>
                                             <Flex.Item><Button type="primary" size={"small"}

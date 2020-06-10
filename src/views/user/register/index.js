@@ -5,7 +5,7 @@ import Util from '../../../assets/js/Util'
 import {Tabs, WhiteSpace, SegmentedControl, List, InputItem, Picker, DatePicker, Button, WingBlank} from 'antd-mobile';
 import {bindUser, registerAndBind} from '../../../http/service'
 import store from "../../../store";
-import Role from "../../../assets/js/Role";
+import ROLE from "../../../assets/js/constants/ROLE";
 
 
 class Index extends Component {
@@ -80,7 +80,7 @@ class Index extends Component {
 
         store.dispatch({
             type:'role',
-            payload:Role.client
+            payload:ROLE.client
         })
     }
 
@@ -142,7 +142,7 @@ class Index extends Component {
 
         store.dispatch({
             type:'role',
-            payload:Role.therapist
+            payload:ROLE.therapist
         })
     }
 
