@@ -141,6 +141,8 @@ class Index extends Component {
                                onChange={this.handleFormChange.bind(this, 'email')}>电子邮箱</InputItem>
 
                     <DatePicker
+                        minDate={new Date(1900,1,1,0,0,0)}
+                        maxDate={new Date(2100,1,1,0,0,0)}
                         mode="date"
                         title="出生日期"
                         extra="请选择"

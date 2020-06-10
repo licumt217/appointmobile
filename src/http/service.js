@@ -105,6 +105,18 @@ export function pay(params) {
 
 }
 
+/**
+ * 多订单批量支付
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function batchPay(params) {
+
+    return axios.post('order/batchPay', params)
+
+
+}
+
 export function cancelOrder(params) {
 
     return axios.post('order/cancelOrder', params)

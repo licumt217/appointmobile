@@ -1,16 +1,15 @@
 /**
  * 订单状态
- * @type {{UN_PAY: number, PAYED: number, UNFUNDED: number, CANCELED: number, EXPIRED: number}}
+ * 最终状态：已退款、已过期、已完结、已取消
+ * @type {{PAYED: number, UNFUNDED: number, DONE: number, COMMIT: number, EXPIRED: number}}
  */
 let ORDER_STATE = {
     COMMIT: 0,      //已下单
-    AUDITED: 1,      //已审核（待支付）
-    REJECTED: 2,      //已拒绝
-    PAYED: 3,       //已支付
-    UNFUNDED: 4,    //已退款
-    CANCELED: 5,    //已取消
-    EXPIRED: 6,     //已过期
-    DONE: 7,     //已完结
+    PAYED: 1,       //已支付
+    UNFUNDED: 2,    //已退款
+    EXPIRED: 3,     //已过期
+    CANCELED: 4,     //已取消
+    DONE: 5,     //已完结
 };
 
 

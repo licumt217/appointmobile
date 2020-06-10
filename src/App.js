@@ -122,8 +122,8 @@ class App extends Component {
     render() {
 
 
-        // this.mock();
-        this.mockTherapist()
+        this.mock();
+        // this.mockTherapist()
 
 
         //验证openid是否和手机号绑定了

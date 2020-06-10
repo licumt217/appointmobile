@@ -8,8 +8,8 @@ import {getAppointmentDetail, confirmOrder, denyAppointment, pay,doneAppointment
 
 import PayUtil from "../../../assets/js/PayUtil";
 
-import ORDER_STATE_DESC from "../../../assets/js/constants/ORDER_STATE_DESC";
-import ORDER_STATE from "../../../assets/js/constants/ORDER_STATE";
+import APPOINTMENT_STATE_DESC from "../../../assets/js/constants/APPOINTMENT_STATE_DESC";
+import APPOINTMENT_STATE from "../../../assets/js/constants/APPOINTMENT_STATE";
 import ComplainModal from "../../appoint/components/ComplainModal/ComplainModal";
 
 class Index extends Component {
@@ -17,8 +17,8 @@ class Index extends Component {
     constructor(props) {
         super(props);
 
-        // this.appointment_id = Util.getUrlParam('appointment_id')
-        this.appointment_id = 'a55af5bc1bf54ef197c826e6b5af5ba3'
+        this.appointment_id = Util.getUrlParam('appointment_id')
+        // this.appointment_id = 'a55af5bc1bf54ef197c826e6b5af5ba3'
 
         this.state = {
             isShowComplain: false,
@@ -155,7 +155,7 @@ class Index extends Component {
                                 <p>用户：{this.state.appointment.user_name}</p>
                             </List.Item>
                             <List.Item>
-                                <p>预约状态：{ORDER_STATE_DESC[this.state.appointment.state]}</p>
+                                <p>预约状态：{APPOINTMENT_STATE_DESC[this.state.appointment.state]}</p>
                             </List.Item>
                         </List>
                     </Card.Body>
@@ -166,7 +166,7 @@ class Index extends Component {
                         (
                             this.state.appointment.fee_type === 0 ?
                                 (
-                                    this.state.appointment.state === ORDER_STATE.AUDITED ?
+                                    this.state.appointment.state === APPOINTMENT_STATE.AUDITED ?
                                         (
                                             <Button size={"small"} type={"ghost"} onClick={this.pay}>立即支付</Button>
                                         )
@@ -175,7 +175,7 @@ class Index extends Component {
                                 : (null)
                         )
                         : (
-                            this.state.appointment.state === ORDER_STATE.COMMIT ?
+                            this.state.appointment.state === APPOINTMENT_STATE.COMMIT ?
                                 (
                                     <WingBlank>
                                         <WhiteSpace/>
@@ -184,7 +184,7 @@ class Index extends Component {
                                                 <Button size={"small"} type={"ghost"} onClick={this.accept}>接受咨询</Button>
                                             </Flex.Item>
                                             <Flex.Item>
-                                                <Button size={"small"} type={"ghost"} onClick={this.deny}>拒绝咨询</Button>
+                                                <Button size={"small"} type={"warning"} onClick={this.deny}>拒绝咨询</Button>
                                             </Flex.Item>
                                         </Flex>
                                     </WingBlank>
@@ -194,7 +194,7 @@ class Index extends Component {
 
 
                                 // 预约本身状态：已下单、已审核、已拒绝、已完成
-                                    this.state.appointment.state === ORDER_STATE.AUDITED ?
+                                    this.state.appointment.state === APPOINTMENT_STATE.AUDITED ?
                                         (
                                             <WingBlank>
                                                 <WhiteSpace/>

@@ -462,7 +462,7 @@ class Index extends Component {
                             <div className="switch" onClick={this.switchMonth.bind(this, 0)}>
                                 &lt;
                             </div>
-                            <div className="content">
+                            <div className="date_content">
                                 {this.state.selectMonth}
                             </div>
                             <div className="switch" onClick={this.switchMonth.bind(this, 1)}>

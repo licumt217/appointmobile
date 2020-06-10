@@ -9,8 +9,8 @@ import {
     cancelAppointment,
     getAppointmentsOfUsingByTherapistId
 } from '../../../http/service'
-import ORDER_STATE from "../../../assets/js/constants/ORDER_STATE";
-import ORDER_STATE_DESC from "../../../assets/js/constants/ORDER_STATE_DESC";
+import APPOINTMENT_STATE from "../../../assets/js/constants/APPOINTMENT_STATE";
+import APPOINTMENT_STATE_DESC from "../../../assets/js/constants/APPOINTMENT_STATE_DESC";
 import store from "../../../store";
 import Role from "../../../assets/js/Role";
 
@@ -142,7 +142,7 @@ class Index extends Component {
                                                     <p>咨询师：{appointment.therapist_name}</p>
                                                     <p>房间：{appointment.room_name}</p>
                                                     <p>预约类型：{appointment.ismulti === 1 ? '持续预约' : '单次预约'}</p>
-                                                    <p>预约状态：{ORDER_STATE_DESC[appointment.state]}</p>
+                                                    <p>预约状态：{APPOINTMENT_STATE_DESC[appointment.state]}</p>
                                                     <WhiteSpace/>
                                                     <Flex justify={"around"} align={"center"} alignContent={"center"}>
                                                         <Flex.Item style={{textAlign: 'center'}}><Button type="ghost"
@@ -150,7 +150,7 @@ class Index extends Component {
                                                                                                          onClick={this.go2OrderList.bind(this, appointment)}>订单记录</Button></Flex.Item>
 
                                                         {
-                                                            appointment.state === ORDER_STATE.COMMIT ?
+                                                            appointment.state === APPOINTMENT_STATE.COMMIT ?
                                                                 <Flex.Item>
                                                                     <Button type="warning" size={"small"}
                                                                             onClick={this.cancel.bind(this, appointment)}>取消预约</Button>

@@ -5,8 +5,8 @@ import {Button, Card, Flex, WhiteSpace, WingBlank} from 'antd-mobile'
 import Util from '../../../assets/js/Util'
 
 import {getAppointmentHistoryByUserId, getAppointmentHistoryByTherapistId} from '../../../http/service'
-import ORDER_STATE from "../../../assets/js/constants/ORDER_STATE";
-import ORDER_STATE_DESC from "../../../assets/js/constants/ORDER_STATE_DESC";
+import APPOINTMENT_STATE from "../../../assets/js/constants/APPOINTMENT_STATE";
+import APPOINTMENT_STATE_DESC from "../../../assets/js/constants/APPOINTMENT_STATE_DESC";
 import Role from "../../../assets/js/Role";
 import store from "../../../store";
 
@@ -89,10 +89,10 @@ class Index extends Component {
                                                     <p>预约时段：{Util.getAppointPeriodStrFromArray(appointment)}</p>
                                                     <p>咨询师：{appointment.therapist_name}</p>
                                                     <p>预约类型：{appointment.ismulti === 1 ? '持续预约' : '单次预约'}</p>
-                                                    <p>预约状态：{ORDER_STATE_DESC[appointment.state]}</p>
+                                                    <p>预约状态：{APPOINTMENT_STATE_DESC[appointment.state]}</p>
                                                     <p>创建时间：{appointment.create_date}</p>
                                                     {
-                                                        appointment.state === ORDER_STATE.DONE ?
+                                                        appointment.state === APPOINTMENT_STATE.DONE ?
                                                             <React.Fragment>
                                                                 <WhiteSpace/>
                                                                 <Flex justify={"around"} align={"center"}

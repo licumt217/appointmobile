@@ -5,7 +5,6 @@ import UserCenter from '../views/user/center'
 import Agreement from '../views/user/agreement'
 
 
-import Appoint_Detail from '../views/appoint/detail'
 import Appoint_History from '../views/appoint/history'
 import MyAppoint from '../views/appoint/myAppoint'
 import Select_Date from '../views/appoint/selectDate'
@@ -27,7 +26,7 @@ import Auth from '../views/auth'
 import Order_List from '../views/order/list'
 
 
-export {Error,Home,Register,UserCenter,Appoint_History,MyAppoint,Appoint_Detail,Select_Date,Setting,EmergencyPerson,Modifypass,
+export {Error,Home,Register,UserCenter,Appoint_History,MyAppoint,Select_Date,Setting,EmergencyPerson,Modifypass,
     Therapist_Search,Therapist_Detail,Agreement,Auth,Order_List}
 
 
@@ -45,7 +44,6 @@ const routers = [
     {path: '/therapist/detail', component: Therapist_Detail},
 
 
-    {path: '/appoint/detail', component: Appoint_Detail},
     {path: '/appoint/history', component: Appoint_History},
     {path: '/appoint/myAppoint', component: MyAppoint},
     {path: '/appoint/selectDate', component: Select_Date},
