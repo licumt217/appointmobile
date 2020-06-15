@@ -286,9 +286,11 @@ class Index extends Component {
                                                         <List.Item>资历：{this.qualificationTypeObj[item.qualification_type_id] ? this.qualificationTypeObj[item.qualification_type_id].qualification_type_name : ''}</List.Item>
                                                         <List.Item>咨询方式：{this.mannerTypeObj[item.manner_type_id] ? this.mannerTypeObj[item.manner_type_id].manner_type_name : ''}</List.Item>
                                                         <List.Item>收费方式：{FEE_TYPE_DESC[item.fee_type]}</List.Item>
+                                                        <List.Item>费用：{item.fee}</List.Item>
                                                     </List>
                                                         <Flex>
                                                             <Flex.Item>
+                                                                <WhiteSpace/>
                                                                 <Button type={"ghost"} size={"small"} onClick={this.next.bind(this, item)}>选择此咨询师</Button>
                                                             </Flex.Item>
                                                             {/*<Flex.Item>*/}

@@ -196,7 +196,7 @@ class Index extends Component {
                                                             }
                                                             <p>咨询师：{item.therapist_name}</p>
                                                             <p>预约时间：{(item.order_date && item.order_date.split(' ')[0]) || ''}</p>
-                                                            <p>预约时段：{Util.getAppointPeriodStrFromArray(item)}</p>
+                                                            <p>预约时段：{Util.getAppointmentPeriodStrFromArray(item.period)}</p>
                                                             <p>订单费用：{item.amount}</p>
                                                             <p>收费类型：{FEE_TYPE_DESC[this.state.appointment.fee_type]}</p>
                                                             <p>订单状态：{ORDER_STATE_DESC[item.state]}</p>

@@ -232,9 +232,9 @@ export function getTherapistById(params) {
 
 }
 
-export function getUseablePeriodSet(params) {
+export function getUseablePeriodSetByTherapistId(params) {
 
-    return axios.post('therapist/getUseablePeriodSet', params)
+    return axios.post('therapistPeriodSet/getByTherapistId', params)
 
 
 }

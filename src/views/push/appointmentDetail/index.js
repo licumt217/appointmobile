@@ -4,13 +4,14 @@ import {Card, List, Button, Flex, WingBlank, WhiteSpace} from "antd-mobile";
 
 import Util from "../../../assets/js/Util";
 
-import {getAppointmentDetail, confirmOrder, denyAppointment, pay,doneAppointment} from "../../../http/service";
+import {getAppointmentDetail, confirmOrder, denyAppointment, pay, doneAppointment} from "../../../http/service";
 
 import PayUtil from "../../../assets/js/PayUtil";
 
 import APPOINTMENT_STATE_DESC from "../../../assets/js/constants/APPOINTMENT_STATE_DESC";
 import APPOINTMENT_STATE from "../../../assets/js/constants/APPOINTMENT_STATE";
 import ComplainModal from "../../appoint/components/ComplainModal/ComplainModal";
+import APPOINTMENT_MULTI from "../../../assets/js/constants/APPOINTMENT_MULTI";
 
 class Index extends Component {
 
@@ -122,7 +123,7 @@ class Index extends Component {
      * 当前预约状态必须是已审核
      * 当前预约对应的所有订单必须都是最终状态：已拒绝、已取消、已过期、已完结。
      */
-    done=()=>{
+    done = () => {
         doneAppointment({
             appointment_id: this.state.appointment.appointment_id
         }).then((data) => {
@@ -146,13 +147,16 @@ class Index extends Component {
                                 <p>预约开始日期：{this.state.appointment.appoint_date}</p>
                             </List.Item>
                             <List.Item>
-                                <p>预约时段：{Util.getAppointPeriodStrFromArray(this.state.appointment)}</p>
+                                <p>预约时段：{Util.getAppointmentPeriodStrFromArray(this.state.appointment.period)}</p>
                             </List.Item>
                             <List.Item>
                                 <p>咨询师：{this.state.appointment.therapist_name}</p>
                             </List.Item>
                             <List.Item>
                                 <p>用户：{this.state.appointment.user_name}</p>
+                            </List.Item>
+                            <List.Item>
+                                <p>持续预约：{this.state.appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '是' : '否'}</p>
                             </List.Item>
                             <List.Item>
                                 <p>预约状态：{APPOINTMENT_STATE_DESC[this.state.appointment.state]}</p>
@@ -192,8 +196,7 @@ class Index extends Component {
                                 : (
 
 
-
-                                // 预约本身状态：已下单、已审核、已拒绝、已完成
+                                    // 预约本身状态：已下单、已审核、已拒绝、已完成
                                     this.state.appointment.state === APPOINTMENT_STATE.AUDITED ?
                                         (
                                             <WingBlank>

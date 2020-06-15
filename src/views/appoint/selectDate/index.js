@@ -6,7 +6,7 @@ import Util from "../../../assets/js/Util";
 
 import DateUtil from "../../../assets/js/DateUtil";
 
-import {getUseablePeriodSet, getAppointmentsOfUsingByTherapistId,addAppointment} from "../../../http/service";
+import {getUseablePeriodSetByTherapistId, getAppointmentsOfUsingByTherapistId,addAppointment} from "../../../http/service";
 
 import './index.less'
 
@@ -322,7 +322,7 @@ class Index extends Component {
     getPeriodSet = () => {
         return new Promise(resolve => {
 
-            getUseablePeriodSet({
+            getUseablePeriodSetByTherapistId({
                 therapist_id: this.therapist_id
             }).then((data) => {
                 this.setState({
@@ -435,8 +435,6 @@ class Index extends Component {
             appoint_date: DateUtil.format(this.state.appoint_date),
             periodArray: this.state.selectPeriodArray,
             isMulti: this.state.isMulti
-            // consult_type_id:this.consult_type_id,
-            // manner_type_id:this.manner_type_id,
         }).then((data) => {
             Util.info('提交成功，请等待咨询师审核')
 

@@ -141,7 +141,7 @@ class Index extends Component {
                                             <Card key={index} style={{marginBottom: '.5em'}}>
                                                 <Card.Body>
                                                     <p>预约开始日期：{appointment.appoint_date.split(" ")[0]}</p>
-                                                    <p>预约时段：{Util.getAppointPeriodStrFromArray(appointment)}</p>
+                                                    <p>预约时段：{Util.getAppointmentPeriodStrFromArray(appointment.period)}</p>
                                                     <p>咨询师：{appointment.therapist_name}</p>
                                                     <p>房间：{appointment.room_name}</p>
                                                     <p>预约类型：{appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '持续预约' : '单次预约'}</p>
