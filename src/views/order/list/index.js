@@ -7,8 +7,8 @@ import Util from '../../../assets/js/Util'
 import {getOrdersByAppointmentId, pay, getAppointmentDetail,batchPay} from '../../../http/service'
 import ORDER_STATE_DESC from "../../../assets/js/constants/ORDER_STATE_DESC";
 import ORDER_STATE from "../../../assets/js/constants/ORDER_STATE";
-import FEE_TYPE from "../../../assets/js/constants/FEE_TYPE";
-import FEE_TYPE_DESC from "../../../assets/js/constants/FEE_TYPE_DESC";
+import PAY_MANNER from "../../../assets/js/constants/PAY_MANNER";
+import PAY_MANNER_DESC from "../../../assets/js/constants/PAY_MANNER_DESC";
 import PayUtil from "../../../assets/js/PayUtil";
 import ComplainModal from "../../appoint/components/ComplainModal/ComplainModal";
 import './index.less'
@@ -185,7 +185,7 @@ class Index extends Component {
                                                     <Card key={index}>
                                                         <Card.Body>
                                                             {
-                                                                this.state.appointment.fee_type===FEE_TYPE.AFTER_MONTH?
+                                                                this.state.appointment.pay_manner===PAY_MANNER.AFTER_MONTH?
                                                                     <div className='checkbox-right-top'>
                                                                         <Checkbox.CheckboxItem
                                                                             disabled={item.state !== ORDER_STATE.COMMIT}
@@ -198,7 +198,7 @@ class Index extends Component {
                                                             <p>预约时间：{(item.order_date && item.order_date.split(' ')[0]) || ''}</p>
                                                             <p>预约时段：{Util.getAppointmentPeriodStrFromArray(item.period)}</p>
                                                             <p>订单费用：{item.amount}</p>
-                                                            <p>收费类型：{FEE_TYPE_DESC[this.state.appointment.fee_type]}</p>
+                                                            <p>收费类型：{PAY_MANNER_DESC[this.state.appointment.pay_manner]}</p>
                                                             <p>订单状态：{ORDER_STATE_DESC[item.state]}</p>
                                                             <WhiteSpace/>
                                                             {
@@ -239,7 +239,7 @@ class Index extends Component {
                                             })
                                         }
                                         {
-                                            this.state.appointment.fee_type === FEE_TYPE.AFTER_MONTH ?
+                                            this.state.appointment.pay_manner === PAY_MANNER.AFTER_MONTH ?
                                                 <React.Fragment>
                                                     <WhiteSpace/>
                                                     <Flex>

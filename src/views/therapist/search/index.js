@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 
 import {Picker, List, Flex, Button, Card,WingBlank,WhiteSpace} from "antd-mobile";
 import Util from "../../../assets/js/Util";
-import FEE_TYPE_DESC from "../../../assets/js/constants/FEE_TYPE_DESC";
 
 import {getQualificationtypeList, getMannertypeList, getSchooltypeList, getAllTherapist} from '../../../http/service'
 
@@ -285,7 +284,6 @@ class Index extends Component {
                                                         <List.Item>流派：{this.schoolTypeObj[item.school_type_id] ? this.schoolTypeObj[item.school_type_id].school_type_name : ''}</List.Item>
                                                         <List.Item>资历：{this.qualificationTypeObj[item.qualification_type_id] ? this.qualificationTypeObj[item.qualification_type_id].qualification_type_name : ''}</List.Item>
                                                         <List.Item>咨询方式：{this.mannerTypeObj[item.manner_type_id] ? this.mannerTypeObj[item.manner_type_id].manner_type_name : ''}</List.Item>
-                                                        <List.Item>收费方式：{FEE_TYPE_DESC[item.fee_type]}</List.Item>
                                                         <List.Item>费用：{item.fee}</List.Item>
                                                     </List>
                                                         <Flex>

@@ -10,7 +10,6 @@ import APPOINTMENT_STATE_DESC from "../../../assets/js/constants/APPOINTMENT_STA
 import APPOINTMENT_MULTI from "../../../assets/js/constants/APPOINTMENT_MULTI";
 import ROLE from "../../../assets/js/constants/ROLE";
 import store from "../../../store";
-import FEE_TYPE_DESC from "../../../assets/js/constants/FEE_TYPE_DESC";
 
 
 class Index extends Component {
@@ -91,7 +90,6 @@ class Index extends Component {
                                                     <p>预约时段：{Util.getAppointmentPeriodStrFromArray(appointment.period)}</p>
                                                     <p>咨询师：{appointment.therapist_name}</p>
                                                     <p>预约类型：{appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '持续预约' : '单次预约'}</p>
-                                                    <p>收费类型：{FEE_TYPE_DESC[appointment.fee_type]}</p>
                                                     <p>预约状态：{APPOINTMENT_STATE_DESC[appointment.state]}</p>
                                                     <p>创建时间：{appointment.create_date}</p>
                                                     {

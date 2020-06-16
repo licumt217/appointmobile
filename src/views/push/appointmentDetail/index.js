@@ -10,7 +10,7 @@ import PayUtil from "../../../assets/js/PayUtil";
 
 import APPOINTMENT_STATE_DESC from "../../../assets/js/constants/APPOINTMENT_STATE_DESC";
 import APPOINTMENT_STATE from "../../../assets/js/constants/APPOINTMENT_STATE";
-import ComplainModal from "../../appoint/components/ComplainModal/ComplainModal";
+import PAY_MANNER from "../../../assets/js/constants/PAY_MANNER";
 import APPOINTMENT_MULTI from "../../../assets/js/constants/APPOINTMENT_MULTI";
 
 class Index extends Component {
@@ -24,7 +24,7 @@ class Index extends Component {
         this.state = {
             isShowComplain: false,
             appointment: {
-                fee_type: 0,
+                pay_manner: PAY_MANNER.BEFORE_SINGLE,
                 state: 0
             },
             user_type: '',
@@ -168,7 +168,7 @@ class Index extends Component {
                 {
                     this.state.user_type === 'user' ?
                         (
-                            this.state.appointment.fee_type === 0 ?
+                            this.state.appointment.pay_manner === PAY_MANNER.BEFORE_SINGLE ?
                                 (
                                     this.state.appointment.state === APPOINTMENT_STATE.AUDITED ?
                                         (
