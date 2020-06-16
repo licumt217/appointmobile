@@ -26,7 +26,7 @@ class Index extends Component {
             canAppointDate: {},
             date: {},
             selectPeriodArray: [],
-            isMulti: false,
+            ismulti: false,
 
         }
     }
@@ -365,7 +365,7 @@ class Index extends Component {
     resetSelectArray() {
         this.setState({
             selectPeriodArray: [],
-            isMulti:false
+            ismulti:false
         })
     }
 
@@ -434,7 +434,7 @@ class Index extends Component {
             therapist_id: this.therapist_id,
             appoint_date: DateUtil.format(this.state.appoint_date),
             periodArray: this.state.selectPeriodArray,
-            isMulti: this.state.isMulti
+            ismulti: this.state.ismulti
         }).then((data) => {
             Util.info('提交成功，请等待咨询师审核')
 
@@ -543,9 +543,9 @@ class Index extends Component {
                                         </Card.Body>
                                     </Card>
                                     <section>
-                                        <List.Item extra={<Switch platform="android" checked={this.state.isMulti} onChange={() => {
+                                        <List.Item extra={<Switch platform="android" checked={this.state.ismulti} onChange={() => {
                                             this.setState({
-                                                isMulti: !this.state.isMulti,
+                                                ismulti: !this.state.ismulti,
                                             });
                                         }}></Switch>}>
                                             是否连续预约

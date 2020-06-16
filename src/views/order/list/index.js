@@ -4,7 +4,7 @@ import {Button, Card, Flex, WhiteSpace, WingBlank, Checkbox} from 'antd-mobile'
 
 import Util from '../../../assets/js/Util'
 
-import {getOrdersByAppointmentId, pay, getAppointmentDetail,batchPay} from '../../../http/service'
+import {getOrdersByAppointmentId, pay, getAppointmentDetail,batchPay,cancelOrder} from '../../../http/service'
 import ORDER_STATE_DESC from "../../../assets/js/constants/ORDER_STATE_DESC";
 import ORDER_STATE from "../../../assets/js/constants/ORDER_STATE";
 import PAY_MANNER from "../../../assets/js/constants/PAY_MANNER";
@@ -63,17 +63,16 @@ class Index extends Component {
     }
 
 
-    cancel = () => {
-        this.$Modal.confirm({
+    cancel = (order) => {
+        Util.confirm({
             title: '您确定取消吗？',
-            content: '',
-            onOk: () => {
-                this.http.post('order/cancelOrder', {
-                    order_id: this.curAppoint.order_id
-                }).then((data) => {
-                    this.curAppoint = data;
+            msg: '',
+            onConfirm: () => {
+                cancelOrder({
+                    order_id: order.order_id
+                }).then(() => {
                     Util.success("操作成功")
-                    this.init()
+                    this.getAppointmentDetail()
 
                 }).catch(err => {
                     Util.fail(err)
@@ -208,6 +207,10 @@ class Index extends Component {
                                                                             <Flex.Item>
                                                                                 <Button size={"small"} type={"ghost"}
                                                                                         onClick={this.pay.bind(this, item)}>立即支付</Button>
+                                                                            </Flex.Item>
+                                                                            <Flex.Item>
+                                                                                <Button size={"small"} type={"warning"}
+                                                                                        onClick={this.cancel.bind(this, item)}>取消订单</Button>
                                                                             </Flex.Item>
                                                                         </Flex>
                                                                     )

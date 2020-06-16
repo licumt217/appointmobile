@@ -114,7 +114,7 @@ export function batchPay(params) {
 
 export function cancelOrder(params) {
 
-    return axios.post('order/cancelOrder', params)
+    return axios.post('order/cancel', params)
 
 
 }
