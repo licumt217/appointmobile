@@ -2,15 +2,13 @@ import React, {Component} from 'react';
 
 import {Button, Flex, TextareaItem, Card} from "antd-mobile";
 
-import Util from "../../../../assets/js/Util";
+import Util from "../../../assets/js/Util";
 
-import {addComplaint} from '../../../../http/service'
+import {addComplaint,getComplaintByOrderId} from '../../../http/service'
 
 import './index.less'
-import store from "../../../../store";
-import ROLE from "../../../../assets/js/constants/ROLE";
 
-class ComplainModal extends Component {
+class Index extends Component {
 
 
     constructor(props) {
@@ -23,6 +21,20 @@ class ComplainModal extends Component {
         this.user_type = this.props.user_type;
 
 
+    }
+
+    componentDidMount() {
+        getComplaintByOrderId({
+            order_id: this.props.order_id,
+        }).then((data) => {
+            if(data){
+                this.setState({
+                    content:data.content
+                })
+            }
+        }).catch(err => {
+            Util.fail(err)
+        })
     }
 
     getTitle = () => {
@@ -87,7 +99,7 @@ class ComplainModal extends Component {
                                             />
                                             <Flex>
                                                 <Flex.Item>
-                                                    <Button size={"small"} onClick={this.props.onCancel}>取消</Button>
+                                                    <Button size={"small"} onClick={this.props.onHide}>取消</Button>
                                                 </Flex.Item>
                                                 <Flex.Item>
                                                     <Button size={"small"} type={"warning"}
@@ -110,4 +122,4 @@ class ComplainModal extends Component {
     }
 }
 
-export default ComplainModal;
+export default Index;

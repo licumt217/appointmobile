@@ -126,6 +126,27 @@ export function addComplaint(params) {
 
 }
 
+export function getComplaintByOrderId(params) {
+
+    return axios.post('complaint/getByOrderId', params)
+
+
+}
+
+export function addFeedback(params) {
+
+    return axios.post('feedback/add', params)
+
+
+}
+
+export function getFeedbackByOrderId(params) {
+
+    return axios.post('feedback/getByOrderId', params)
+
+
+}
+
 export function getUserById(params) {
 
     return axios.post('user/getById', params)

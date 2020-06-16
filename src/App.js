@@ -94,7 +94,7 @@ class App extends Component {
 
         store.dispatch({
             type:'user_id',
-            payload: '0ca990eb46074e34a896edbeba3039ff'
+            payload: 'ce645425d808411eaee861ecdaf348c3'
         })
 
         store.dispatch({
@@ -104,7 +104,7 @@ class App extends Component {
 
         store.dispatch({
             type:'token',
-            payload: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJ1c2VyX2lkIjoiMGNhOTkwZWI0NjA3NGUzNGE4OTZlZGJlYmEzMDM5ZmYiLCJwaG9uZSI6IjE1OTAwMDAwMDAzIiwibmFtZSI6IuWSqOivouW4iDAwMyIsImlkZW50aWZpY2F0aW9uX25vIjoiNDEwODgyMTk4ODAyMTc4ODgxIiwiZ2VuZGVyIjoiZmVtYWxlIiwiZW1haWwiOiIyMzIzQDEyNi5jb20iLCJiaXJ0aGRheSI6IjIwMjctMDQtMDYiLCJvcF9kYXRlIjoiMjAyMC0wNS0wOCAxNTo1ODoyMiIsInJvbGUiOjMsInBhc3N3b3JkIjoiZTEwYWRjMzk0OWJhNTlhYmJlNTZlMDU3ZjIwZjg4M2UifSwiaWF0IjoxNTkwMjA0ODcyfQ.fOSKeoo8QgE_TRd52VixPQCTDilZJusR-WOCdddBLpw'
+            payload: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJ1c2VyX2lkIjoiY2U2NDU0MjVkODA4NDExZWFlZTg2MWVjZGFmMzQ4YzMiLCJwaG9uZSI6IjE4MTAxMzYwMDAxIiwibmFtZSI6IuW8oOaXoOW_jCIsImlkZW50aWZpY2F0aW9uX25vIjoiNDEwODgyMTk4ODAyMTcwMDAxIiwiZ2VuZGVyIjoibWFsZSIsImVtYWlsIjoiNDQ3ODE4MDAxQHFxLmNvbSIsImJpcnRoZGF5IjoiMTk4OC0wNi0xMCIsIm9wX2RhdGUiOiIyMDIwLTA2LTEwIDE1OjQ3OjQ1Iiwicm9sZSI6NCwicGFzc3dvcmQiOm51bGx9LCJpYXQiOjE1OTIzMDM4ODN9.FQSlmw3Bi3Mvos8EdVJS6kG3fZdO8io9oD5hIXEA9ss'
         })
 
         store.dispatch({

@@ -4,13 +4,14 @@ import {Button, Card, Flex, WhiteSpace, WingBlank, Checkbox} from 'antd-mobile'
 
 import Util from '../../../assets/js/Util'
 
-import {getOrdersByAppointmentId, pay, getAppointmentDetail,batchPay,cancelOrder} from '../../../http/service'
+import {getOrdersByAppointmentId, pay, getAppointmentDetail, batchPay, cancelOrder} from '../../../http/service'
 import ORDER_STATE_DESC from "../../../assets/js/constants/ORDER_STATE_DESC";
 import ORDER_STATE from "../../../assets/js/constants/ORDER_STATE";
 import PAY_MANNER from "../../../assets/js/constants/PAY_MANNER";
 import PAY_MANNER_DESC from "../../../assets/js/constants/PAY_MANNER_DESC";
 import PayUtil from "../../../assets/js/PayUtil";
-import ComplainModal from "../../appoint/components/ComplainModal/ComplainModal";
+import ComplainModal from "../../components/ComplainModal";
+import FeedbackModal from "../../components/FeedbackModal";
 import './index.less'
 
 class Index extends Component {
@@ -23,6 +24,7 @@ class Index extends Component {
         this.state = {
             orders: [],
             isShowComplain: false,
+            isShowFeedback: false,
             order_id: '',
             appointment: {}
 
@@ -83,22 +85,7 @@ class Index extends Component {
         })
     }
 
-    appoint = () => {
-        if (this.curAppoint) {
-            Util.info("您有进行中的预约！")
-            return;
-        }
-        this.props.history.push({
-            pathname: '/therapist/search',
-        })
-    }
 
-    emergencyConsult = () => {
-        this.props.history.push({
-            pathname: '/therapistList',
-            isEmergency: true
-        })
-    }
     pay = (order) => {
         pay({
             order_id: order.order_id
@@ -116,11 +103,26 @@ class Index extends Component {
             isShowComplain: true,
             order_id: order.order_id
         })
+
     }
 
     hideComplain = () => {
         this.setState({
             isShowComplain: false
+        })
+    }
+
+    showFeedback = (order) => {
+        this.setState({
+            isShowFeedback: true,
+            order_id: order.order_id
+        })
+
+    }
+
+    hideFeedback = () => {
+        this.setState({
+            isShowFeedback: false
         })
     }
 
@@ -134,7 +136,7 @@ class Index extends Component {
     }
 
     allPay = () => {
-        if(this.orderIdSet.size>0){
+        if (this.orderIdSet.size > 0) {
             console.log(this.orderIdSet)
             batchPay({
                 order_id_array: [...this.orderIdSet]
@@ -145,7 +147,7 @@ class Index extends Component {
             }).catch(err => {
                 Util.fail(err)
             })
-        }else{
+        } else {
             Util.info('请选择要支付的订单！')
         }
 
@@ -162,6 +164,17 @@ class Index extends Component {
                                            order_id={this.state.order_id}
                                            onHide={this.hideComplain}
                             />
+                        )
+                        : (null)
+                }
+
+                {
+                    this.state.isShowFeedback ?
+                        (
+                                <FeedbackModal show={this.state.isShowFeedback}
+                                               order_id={this.state.order_id}
+                                               onHide={this.hideFeedback}
+                                />
                         )
                         : (null)
                 }
@@ -184,7 +197,7 @@ class Index extends Component {
                                                     <Card key={index}>
                                                         <Card.Body>
                                                             {
-                                                                this.state.appointment.pay_manner===PAY_MANNER.AFTER_MONTH?
+                                                                this.state.appointment.pay_manner === PAY_MANNER.AFTER_MONTH ?
                                                                     <div className='checkbox-right-top'>
                                                                         <Checkbox.CheckboxItem
                                                                             disabled={item.state !== ORDER_STATE.COMMIT}
@@ -220,19 +233,15 @@ class Index extends Component {
                                                                         <Flex>
                                                                             <Flex.Item>
                                                                                 <Button size={"small"} type={"ghost"}
-                                                                                        onClick={this.showFeedbackModal}>咨询效果反馈</Button>
+                                                                                        onClick={this.showFeedback.bind(this, item)}>咨询效果反馈</Button>
                                                                             </Flex.Item>
                                                                             <Flex.Item>
-                                                                                <Button size={"small"} type={"ghost"}
+                                                                                <Button size={"small"} type={"warning"}
                                                                                         onClick={this.showComplain.bind(this, item)}>投诉咨询师</Button>
                                                                             </Flex.Item>
                                                                         </Flex>
                                                                         :
-                                                                        <Flex>
-                                                                            <Flex.Item>
-                                                                                {/*<Button onClick={this.cancel}>取消预约</Button>*/}
-                                                                            </Flex.Item>
-                                                                        </Flex>
+                                                                        null
                                                             }
 
 
