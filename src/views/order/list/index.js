@@ -249,6 +249,7 @@ class Index extends Component {
                                                     </Card>
                                                 )
                                             })
+
                                         }
                                         {
                                             this.state.appointment.pay_manner === PAY_MANNER.AFTER_MONTH ?

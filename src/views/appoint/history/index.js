@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {Button, Card, Flex, WhiteSpace, WingBlank} from 'antd-mobile'
+import {Button, Card, Flex, WhiteSpace, WingBlank,Pagination} from 'antd-mobile'
 
 import Util from '../../../assets/js/Util'
 
@@ -17,25 +17,33 @@ class Index extends Component {
     constructor() {
         super();
         this.state = {
-            appointments: [],
+            data:{
+                data:[]
+            }
 
         }
-        //
+        this.getList();
+
+    }
+
+    getList=(page=1)=>{
         if (store.getState().role === ROLE.client) {
-            this.getAppointmentHistoryByUserId();
+            this.getAppointmentHistoryByUserId(page);
         } else if (store.getState().role === ROLE.therapist) {
-            this.getAppointmentHistoryByTherapistId()
+            this.getAppointmentHistoryByTherapistId(page)
         }
-
     }
 
     /**
      * */
-    getAppointmentHistoryByTherapistId = () => {
-        getAppointmentHistoryByTherapistId().then((data) => {
+    getAppointmentHistoryByTherapistId = (page) => {
+        getAppointmentHistoryByTherapistId({
+            page,
+            pageSize:Util.pageSize
+        }).then((data) => {
 
             this.setState({
-                appointments: data
+                data: data
             })
 
         }).catch(err => {
@@ -45,17 +53,21 @@ class Index extends Component {
 
     /**
      * */
-    getAppointmentHistoryByUserId = () => {
-        getAppointmentHistoryByUserId().then((data) => {
+    getAppointmentHistoryByUserId = (page) => {
+        getAppointmentHistoryByUserId({
+            page,
+            pageSize:Util.pageSize
+        }).then((data) => {
 
             this.setState({
-                appointments: data
+                data: data
             })
 
         }).catch(err => {
             Util.fail(err)
         })
     }
+
 
     go2OrderList = (appointment) => {
         this.props.history.push({
@@ -76,42 +88,52 @@ class Index extends Component {
                             title="预约历史"
                         />
                         <Card.Body>
-                            {this.state.appointments.length === 0 ?
+                            {this.state.data.data.length === 0 ?
                                 <div className='center'>
                                     暂无数据
                                 </div>
                                 :
                                 (
-                                    this.state.appointments.map((appointment, index) => {
-                                        return (
-                                            <Card key={index} style={{marginBottom: '.5em'}}>
-                                                <Card.Body>
-                                                    <p>预约开始日期：{appointment.appoint_date.split(" ")[0]}</p>
-                                                    <p>预约时段：{Util.getAppointmentPeriodStrFromArray(appointment.period)}</p>
-                                                    <p>咨询师：{appointment.therapist_name}</p>
-                                                    <p>预约类型：{appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '持续预约' : '单次预约'}</p>
-                                                    <p>预约状态：{APPOINTMENT_STATE_DESC[appointment.state]}</p>
-                                                    <p>创建时间：{appointment.create_date}</p>
-                                                    {
-                                                        appointment.state === APPOINTMENT_STATE.DONE ?
-                                                            <React.Fragment>
-                                                                <WhiteSpace/>
-                                                                <Flex justify={"around"} align={"center"}
-                                                                      alignContent={"center"}>
-                                                                    <Flex.Item style={{textAlign: 'center'}}><Button
-                                                                        type="ghost" size={"small"}
-                                                                        onClick={this.go2OrderList.bind(this, appointment)}>订单记录</Button></Flex.Item>
+                                    <React.Fragment>
+                                        {
+                                            this.state.data.data.map((appointment, index) => {
+                                                return (
+                                                    <Card key={index} style={{marginBottom: '.5em'}}>
+                                                        <Card.Body>
+                                                            <p>预约开始日期：{appointment.appoint_date.split(" ")[0]}</p>
+                                                            <p>预约时段：{Util.getAppointmentPeriodStrFromArray(appointment.period)}</p>
+                                                            <p>咨询师：{appointment.therapist_name}</p>
+                                                            <p>预约类型：{appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '持续预约' : '单次预约'}</p>
+                                                            <p>预约状态：{APPOINTMENT_STATE_DESC[appointment.state]}</p>
+                                                            <p>创建时间：{appointment.create_date}</p>
+                                                            {
+                                                                appointment.state === APPOINTMENT_STATE.DONE ?
+                                                                    <React.Fragment>
+                                                                        <WhiteSpace/>
+                                                                        <Flex justify={"around"} align={"center"}
+                                                                              alignContent={"center"}>
+                                                                            <Flex.Item style={{textAlign: 'center'}}><Button
+                                                                                type="ghost" size={"small"}
+                                                                                onClick={this.go2OrderList.bind(this, appointment)}>订单记录</Button></Flex.Item>
 
-                                                                </Flex>
-                                                            </React.Fragment>
-                                                            :
-                                                            null
-                                                    }
+                                                                        </Flex>
+                                                                    </React.Fragment>
+                                                                    :
+                                                                    null
+                                                            }
 
-                                                </Card.Body>
-                                            </Card>
-                                        )
-                                    })
+                                                        </Card.Body>
+                                                    </Card>
+                                                )
+                                            })
+                                        }
+                                        {
+                                            this.state.data.totalPages>1?
+                                                <Pagination total={this.state.data.totalPages} current={this.state.data.currentPage}  onChange={this.getList}/>
+                                                :null
+                                        }
+
+                                    </React.Fragment>
                                 )
 
                             }

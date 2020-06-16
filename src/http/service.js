@@ -5,9 +5,9 @@ import Util from '../assets/js/Util'
  * 根据用户id获取进行中的预约
  * @returns {Promise<AxiosResponse<T>>}
  */
-export function getAppointmentsOfUsingByUserId() {
+export function getAppointmentsOfUsingByUserId(params={}) {
 
-    return axios.post('appointment/getListOfUsingByUserId', {})
+    return axios.post('appointment/getListOfUsingByUserId', params)
 
 
 }
@@ -16,9 +16,9 @@ export function getAppointmentsOfUsingByUserId() {
  * 根据用户id获取历史预约记录
  * @returns {Promise<AxiosResponse<T>>}
  */
-export function getAppointmentHistoryByUserId() {
+export function getAppointmentHistoryByUserId(params={}) {
 
-    return axios.post('appointment/getHistoryByUserId', {})
+    return axios.post('appointment/getHistoryByUserId', params)
 
 
 }
@@ -27,9 +27,9 @@ export function getAppointmentHistoryByUserId() {
  * 根据咨询师id获取历史预约记录
  * @returns {Promise<AxiosResponse<T>>}
  */
-export function getAppointmentHistoryByTherapistId() {
+export function getAppointmentHistoryByTherapistId(params={}) {
 
-    return axios.post('appointment/getHistoryByTherapistId', {})
+    return axios.post('appointment/getHistoryByTherapistId', params)
 
 
 }
