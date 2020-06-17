@@ -290,7 +290,9 @@ class Index extends Component {
                         (
                             this.state.roomList.length === 0 ?
                                 (
-                                    <div>无可用房间</div>
+                                    <div className='center' style={{marginTop:".8em"}}>
+                                        无可用房间
+                                    </div>
                                 )
                                 :
                                 (
@@ -339,7 +341,7 @@ class Index extends Component {
                             <Button size={"small"} type={"ghost"} onClick={this.back}>取消</Button>
                         </Flex.Item>
                         <Flex.Item>
-                            <Button size={"small"} type={"ghost"} onClick={this.accept}>确定</Button>
+                            <Button size={"small"} type={"primary"} onClick={this.accept}>确定</Button>
                         </Flex.Item>
                     </Flex>
                 </WingBlank>

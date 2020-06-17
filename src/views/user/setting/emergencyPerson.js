@@ -114,7 +114,7 @@ class EmergencyPerson extends Component {
         return (
             <WingBlank>
                 <List>
-                    <List.Item className={'center'}><h3>{this.state.title}</h3></List.Item>
+                    <List.Item className={'center'}><p style={{fontSize:'16px'}}>{this.state.title}</p></List.Item>
                 </List>
                 <InputItem value={this.state.form.name} maxLength={20}
                            onChange={this.handleFormChange.bind(this, 'name')}>姓名</InputItem>

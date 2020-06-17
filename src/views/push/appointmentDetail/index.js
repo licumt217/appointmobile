@@ -20,16 +20,16 @@ class Index extends Component {
     constructor(props) {
         super(props);
 
-        this.appointment_id = Util.getUrlParam('appointment_id')
+        this.appointment_id = Util.getUrlParam('appointment_id')||this.props.location.state.appointment_id;
         // this.appointment_id = 'a55af5bc1bf54ef197c826e6b5af5ba3'
 
         this.state = {
             isShowComplain: false,
             appointment: {
                 pay_manner: PAY_MANNER.BEFORE_SINGLE,
-                state: 0
+                state: 0,
+                appoint_date:''
             },
-            user_type: '',
 
 
         }
@@ -145,12 +145,6 @@ class Index extends Component {
                     <Card.Header title={'预约详情'}/>
                     <Card.Body>
                         <List>
-                            <List.Item>
-                                <p>预约开始日期：{this.state.appointment.appoint_date}</p>
-                            </List.Item>
-                            <List.Item>
-                                <p>预约时段：{Util.getAppointmentPeriodStrFromArray(this.state.appointment.period)}</p>
-                            </List.Item>
                             {
                                 store.getState().role===ROLE.client?
                                     <List.Item>
@@ -162,7 +156,13 @@ class Index extends Component {
                                     </List.Item>
                             }
                             <List.Item>
-                                <p>持续预约：{this.state.appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '是' : '否'}</p>
+                                <p>预约开始日期：{this.state.appointment.appoint_date.split(' ')[0]}</p>
+                            </List.Item>
+                            <List.Item>
+                                <p>预约时段：{Util.getAppointmentPeriodStrFromArray(this.state.appointment.period)}</p>
+                            </List.Item>
+                            <List.Item>
+                                <p>预约类型：{this.state.appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '持续预约' : '单次预约'}</p>
                             </List.Item>
                             <List.Item>
                                 <p>预约状态：{APPOINTMENT_STATE_DESC[this.state.appointment.state]}</p>

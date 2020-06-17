@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {Button, Card, Flex, WhiteSpace, WingBlank, Checkbox} from 'antd-mobile'
+import {Button, Card, Flex, WhiteSpace, WingBlank, Checkbox, ActivityIndicator} from 'antd-mobile'
 
 import Util from '../../../assets/js/Util'
 
@@ -29,7 +29,8 @@ class Index extends Component {
             isShowComplain: false,
             isShowFeedback: false,
             order_id: '',
-            appointment: {}
+            appointment: {},
+            showMain:false,
 
         }
         //
@@ -59,7 +60,8 @@ class Index extends Component {
         }).then((data) => {
 
             this.setState({
-                orders: data
+                orders: data,
+                showMain:true
             })
 
         }).catch(err => {
@@ -181,118 +183,123 @@ class Index extends Component {
                         )
                         : (null)
                 }
-                <section>
-                    <Card>
-                        <Card.Header
-                            title="订单记录"
-                        />
-                        <Card.Body>
-                            {this.state.orders.length === 0 ?
-                                <div className='center'>
-                                    暂无数据
-                                </div>
-                                :
-                                (
-                                    <React.Fragment>
-                                        {
-                                            this.state.orders.map((item, index) => {
-                                                return (
-                                                    <Card key={index}>
-                                                        <Card.Body>
-                                                            {
-                                                                (this.state.appointment.pay_manner === PAY_MANNER.AFTER_MONTH && store.getState().role === ROLE.client) ?
-                                                                    <div className='checkbox-right-top'>
-                                                                        <Checkbox.CheckboxItem
-                                                                            disabled={item.state !== ORDER_STATE.COMMIT}
-                                                                            onChange={this.onChange.bind(this, item.order_id)}></Checkbox.CheckboxItem>
-                                                                    </div>
-                                                                    :
-                                                                    null
-                                                            }
-                                                            {
-                                                                store.getState().role === ROLE.client ?
-                                                                    <p>咨询师：{item.therapist_name}</p>
-                                                                    :
-                                                                    <p>用户：{item.user_name}</p>
-
-                                                            }
-                                                            <p>预约时间：{(item.order_date && item.order_date.split(' ')[0]) || ''}</p>
-                                                            <p>预约时段：{Util.getAppointmentPeriodStrFromArray(item.period)}</p>
-                                                            <p>房间：{item.room_name}</p>
-                                                            <p>订单费用：{item.amount}</p>
-                                                            <p>收费类型：{PAY_MANNER_DESC[this.state.appointment.pay_manner]}</p>
-                                                            <p>订单状态：{ORDER_STATE_DESC[item.state]}</p>
-                                                            <WhiteSpace/>
-                                                            {
-                                                                store.getState().role === ROLE.client ?
-                                                                    (
-                                                                        item.state === ORDER_STATE.COMMIT ?
-                                                                            (
-                                                                                <Flex>
-                                                                                    <Flex.Item>
-                                                                                        <Button size={"small"}
-                                                                                                type={"ghost"}
-                                                                                                onClick={this.pay.bind(this, item)}>立即支付</Button>
-                                                                                    </Flex.Item>
-                                                                                    <Flex.Item>
-                                                                                        <Button size={"small"}
-                                                                                                type={"warning"}
-                                                                                                onClick={this.cancel.bind(this, item)}>取消订单</Button>
-                                                                                    </Flex.Item>
-                                                                                </Flex>
-                                                                            )
-
+                {
+                    this.state.showMain?
+                        <section>
+                            <Card>
+                                <Card.Header
+                                    title="订单记录"
+                                />
+                                <Card.Body>
+                                    {this.state.orders.length === 0 ?
+                                        <div className='center' style={{marginTop:".8em"}}>
+                                            暂无数据
+                                        </div>
+                                        :
+                                        (
+                                            <React.Fragment>
+                                                {
+                                                    this.state.orders.map((item, index) => {
+                                                        return (
+                                                            <Card key={index}>
+                                                                <Card.Body>
+                                                                    {
+                                                                        (this.state.appointment.pay_manner === PAY_MANNER.AFTER_MONTH && store.getState().role === ROLE.client) ?
+                                                                            <div className='checkbox-right-top'>
+                                                                                <Checkbox.CheckboxItem
+                                                                                    disabled={item.state !== ORDER_STATE.COMMIT}
+                                                                                    onChange={this.onChange.bind(this, item.order_id)}></Checkbox.CheckboxItem>
+                                                                            </div>
                                                                             :
-                                                                            item.state === ORDER_STATE.DONE ?
-                                                                                <Flex>
-                                                                                    <Flex.Item>
-                                                                                        <Button size={"small"}
-                                                                                                type={"ghost"}
-                                                                                                onClick={this.showFeedback.bind(this, item)}>咨询效果反馈</Button>
-                                                                                    </Flex.Item>
-                                                                                    <Flex.Item>
-                                                                                        <Button size={"small"}
-                                                                                                type={"warning"}
-                                                                                                onClick={this.showComplain.bind(this, item)}>投诉咨询师</Button>
-                                                                                    </Flex.Item>
-                                                                                </Flex>
-                                                                                :
-                                                                                null
-                                                                    )
-                                                                    :
-                                                                    (null)
+                                                                            null
+                                                                    }
+                                                                    {
+                                                                        store.getState().role === ROLE.client ?
+                                                                            <p>咨询师：{item.therapist_name}</p>
+                                                                            :
+                                                                            <p>用户：{item.user_name}</p>
 
-                                                            }
+                                                                    }
+                                                                    <p>预约时间：{(item.order_date && item.order_date.split(' ')[0]) || ''}</p>
+                                                                    <p>预约时段：{Util.getAppointmentPeriodStrFromArray(item.period)}</p>
+                                                                    <p>房间：{item.room_name}</p>
+                                                                    <p>订单费用：{item.amount}</p>
+                                                                    <p>收费类型：{PAY_MANNER_DESC[this.state.appointment.pay_manner]}</p>
+                                                                    <p>订单状态：{ORDER_STATE_DESC[item.state]}</p>
+                                                                    <WhiteSpace/>
+                                                                    {
+                                                                        store.getState().role === ROLE.client ?
+                                                                            (
+                                                                                item.state === ORDER_STATE.COMMIT ?
+                                                                                    (
+                                                                                        <Flex>
+                                                                                            <Flex.Item>
+                                                                                                <Button size={"small"}
+                                                                                                        type={"ghost"}
+                                                                                                        onClick={this.pay.bind(this, item)}>立即支付</Button>
+                                                                                            </Flex.Item>
+                                                                                            <Flex.Item>
+                                                                                                <Button size={"small"}
+                                                                                                        type={"warning"}
+                                                                                                        onClick={this.cancel.bind(this, item)}>取消订单</Button>
+                                                                                            </Flex.Item>
+                                                                                        </Flex>
+                                                                                    )
 
-                                                        </Card.Body>
-                                                    </Card>
-                                                )
-                                            })
+                                                                                    :
+                                                                                    item.state === ORDER_STATE.DONE ?
+                                                                                        <Flex>
+                                                                                            <Flex.Item>
+                                                                                                <Button size={"small"}
+                                                                                                        type={"ghost"}
+                                                                                                        onClick={this.showFeedback.bind(this, item)}>咨询效果反馈</Button>
+                                                                                            </Flex.Item>
+                                                                                            <Flex.Item>
+                                                                                                <Button size={"small"}
+                                                                                                        type={"warning"}
+                                                                                                        onClick={this.showComplain.bind(this, item)}>投诉咨询师</Button>
+                                                                                            </Flex.Item>
+                                                                                        </Flex>
+                                                                                        :
+                                                                                        null
+                                                                            )
+                                                                            :
+                                                                            (null)
 
-                                        }
-                                        {
-                                            (this.state.appointment.pay_manner === PAY_MANNER.AFTER_MONTH && store.getState().role === ROLE.client && this.state.appointment.state===APPOINTMENT_STATE.AUDITED) ?
-                                                <React.Fragment>
-                                                    <WhiteSpace/>
-                                                    <Flex>
-                                                        <Flex.Item>
-                                                            <Button size={"small"} type={"ghost"}
-                                                                    onClick={this.allPay}>批量支付</Button>
-                                                        </Flex.Item>
-                                                    </Flex>
-                                                </React.Fragment>
-                                                :
-                                                null
-                                        }
+                                                                    }
 
-                                    </React.Fragment>
-                                )
+                                                                </Card.Body>
+                                                            </Card>
+                                                        )
+                                                    })
 
-                            }
+                                                }
+                                                {
+                                                    (this.state.appointment.pay_manner === PAY_MANNER.AFTER_MONTH && store.getState().role === ROLE.client && this.state.appointment.state===APPOINTMENT_STATE.AUDITED) ?
+                                                        <React.Fragment>
+                                                            <WhiteSpace/>
+                                                            <Flex>
+                                                                <Flex.Item>
+                                                                    <Button size={"small"} type={"ghost"}
+                                                                            onClick={this.allPay}>批量支付</Button>
+                                                                </Flex.Item>
+                                                            </Flex>
+                                                        </React.Fragment>
+                                                        :
+                                                        null
+                                                }
 
-                        </Card.Body>
-                    </Card>
-                </section>
+                                            </React.Fragment>
+                                        )
+
+                                    }
+
+                                </Card.Body>
+                            </Card>
+                        </section>
+                        :
+                        <ActivityIndicator toast text={"Loading..."}/>
+                }
             </div>
         );
     }

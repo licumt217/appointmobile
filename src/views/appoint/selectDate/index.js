@@ -1,12 +1,18 @@
 import React, {Component} from 'react';
 
-import {Card, Flex, Checkbox, WhiteSpace, Switch,List,Button} from "antd-mobile";
+import {Card, Flex, Checkbox, WhiteSpace, Switch, List, Button} from "antd-mobile";
 
 import Util from "../../../assets/js/Util";
 
 import DateUtil from "../../../assets/js/DateUtil";
 
-import {getUseablePeriodSetByTherapistId, getAppointmentsOfUsingByTherapistId,addAppointment} from "../../../http/service";
+import APPOINTMENT_MULTI from "../../../assets/js/constants/APPOINTMENT_MULTI";
+
+import {
+    getUseablePeriodSetByTherapistId,
+    getAppointmentsOfUsingByTherapistId,
+    addAppointment
+} from "../../../http/service";
 
 import './index.less'
 
@@ -26,7 +32,7 @@ class Index extends Component {
             canAppointDate: {},
             date: {},
             selectPeriodArray: [],
-            ismulti: false,
+            ismulti: APPOINTMENT_MULTI.SINGLE,
 
         }
     }
@@ -138,7 +144,7 @@ class Index extends Component {
         }).then((data) => {
 
             this.setState({
-                availablePeriodArray:[]
+                availablePeriodArray: []
             })
 
             let dataList = this.state.dataList;
@@ -174,7 +180,7 @@ class Index extends Component {
                     let periodArray = item.period.split(',')
 
                     //持续的预约
-                    if (item.ismulti === 1) {
+                    if (item.ismulti === APPOINTMENT_MULTI.CONTINUE) {
                         if (weekMap[week]) {
                             weekMap[week] = weekMap[week].concat(periodArray);
                         } else {
@@ -182,13 +188,12 @@ class Index extends Component {
                         }
                     } else {//单次预约
                         if (singleMap[date]) {
-                            singleMap[date]=singleMap[date].concat(periodArray);
+                            singleMap[date] = singleMap[date].concat(periodArray);
                         } else {
                             singleMap[date] = periodArray
                         }
                     }
                 })
-
 
 
                 dataList.forEach((item, index) => {
@@ -340,7 +345,7 @@ class Index extends Component {
 
     switchMonth = (type) => {
         if (type === 1) {//下一月
-            let date=this.state.date;
+            let date = this.state.date;
             date.setMonth(this.state.date.getMonth() + 1)
             this.setState({
                 date
@@ -350,7 +355,7 @@ class Index extends Component {
 
             if (this.state.date.getTime() > this.state.nowDate.getTime()) {
 
-                let date=this.state.date;
+                let date = this.state.date;
                 date.setMonth(this.state.date.getMonth() + -1)
                 this.setState({
                     date
@@ -365,7 +370,7 @@ class Index extends Component {
     resetSelectArray() {
         this.setState({
             selectPeriodArray: [],
-            ismulti:false
+            ismulti: APPOINTMENT_MULTI.SINGLE
         })
     }
 
@@ -422,15 +427,14 @@ class Index extends Component {
 
     }
 
-    next=()=> {
+    next = () => {
 
         if (!this.state.selectPeriodArray || this.state.selectPeriodArray.length === 0) {
             Util.info('请选择预约时段!')
             return;
         }
 
-        addAppointment( {
-            amount: 0.01,
+        addAppointment({
             therapist_id: this.therapist_id,
             appoint_date: DateUtil.format(this.state.appoint_date),
             periodArray: this.state.selectPeriodArray,
@@ -530,7 +534,8 @@ class Index extends Component {
 
                                                             <Flex.Item className='inline' style={{minWidth: '40%'}}
                                                                        key={index}>
-                                                                <Checkbox.CheckboxItem key={period} checked={this.state.selectPeriodArray.includes(period)}
+                                                                <Checkbox.CheckboxItem key={period}
+                                                                                       checked={this.state.selectPeriodArray.includes(period)}
                                                                                        onChange={this.handlePeriodChange.bind(this, period)}>
                                                                     {`${period}:00-${period}:50`}
                                                                 </Checkbox.CheckboxItem>
@@ -543,11 +548,13 @@ class Index extends Component {
                                         </Card.Body>
                                     </Card>
                                     <section>
-                                        <List.Item extra={<Switch platform="android" checked={this.state.ismulti} onChange={() => {
-                                            this.setState({
-                                                ismulti: !this.state.ismulti,
-                                            });
-                                        }}></Switch>}>
+                                        <List.Item extra={<Switch platform="android"
+                                                                  checked={this.state.ismulti === APPOINTMENT_MULTI.CONTINUE}
+                                                                  onChange={() => {
+                                                                      this.setState({
+                                                                          ismulti: this.state.ismulti === APPOINTMENT_MULTI.SINGLE ? APPOINTMENT_MULTI.CONTINUE : APPOINTMENT_MULTI.SINGLE,
+                                                                      })
+                                                                  }}></Switch>}>
                                             是否连续预约
                                         </List.Item>
                                         <WhiteSpace/>
