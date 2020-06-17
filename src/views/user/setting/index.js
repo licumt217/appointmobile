@@ -100,7 +100,9 @@ class Index extends Component {
                                 )
                                 :
                                 (
-                                    <div>暂无数据</div>
+                                    <div className='center' style={{marginTop:".8em"}}>
+                                        暂无数据
+                                    </div>
                                 )
 
 
@@ -113,7 +115,6 @@ class Index extends Component {
                         </Flex>
                     </Accordion.Panel>
                     <Accordion.Panel header="其它设置" className="pad">
-                        text text text text text text text text text text text text text text text
                     </Accordion.Panel>
                 </Accordion>
             </WingBlank>

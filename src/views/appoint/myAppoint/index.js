@@ -133,8 +133,8 @@ class Index extends Component {
                         />
                         <Card.Body>
                             {this.state.appointments.length === 0 ?
-                                <div className='center'>
-                                    暂无预约
+                                <div className='center' style={{marginTop:".8em"}}>
+                                    暂无数据
                                 </div>
                                 :
                                 (

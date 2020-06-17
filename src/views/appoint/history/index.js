@@ -89,7 +89,7 @@ class Index extends Component {
                         />
                         <Card.Body>
                             {this.state.data.data.length === 0 ?
-                                <div className='center'>
+                                <div className='center' style={{marginTop:".8em"}}>
                                     暂无数据
                                 </div>
                                 :

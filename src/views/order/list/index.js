@@ -189,7 +189,7 @@ class Index extends Component {
                         <Card.Body>
                             {this.state.orders.length === 0 ?
                                 <div className='center'>
-                                    暂无订单
+                                    暂无数据
                                 </div>
                                 :
                                 (
