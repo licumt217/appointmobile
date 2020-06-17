@@ -15,6 +15,7 @@ import FeedbackModal from "../../components/FeedbackModal";
 import store from "../../../store";
 import './index.less'
 import ROLE from "../../../assets/js/constants/ROLE";
+import APPOINTMENT_STATE from "../../../assets/js/constants/APPOINTMENT_STATE";
 
 class Index extends Component {
 
@@ -199,7 +200,7 @@ class Index extends Component {
                                                     <Card key={index}>
                                                         <Card.Body>
                                                             {
-                                                                this.state.appointment.pay_manner === PAY_MANNER.AFTER_MONTH ?
+                                                                (this.state.appointment.pay_manner === PAY_MANNER.AFTER_MONTH && store.getState().role === ROLE.client) ?
                                                                     <div className='checkbox-right-top'>
                                                                         <Checkbox.CheckboxItem
                                                                             disabled={item.state !== ORDER_STATE.COMMIT}
@@ -270,7 +271,7 @@ class Index extends Component {
 
                                         }
                                         {
-                                            (this.state.appointment.pay_manner === PAY_MANNER.AFTER_MONTH && store.getState().role === ROLE.client) ?
+                                            (this.state.appointment.pay_manner === PAY_MANNER.AFTER_MONTH && store.getState().role === ROLE.client && this.state.appointment.state===APPOINTMENT_STATE.AUDITED) ?
                                                 <React.Fragment>
                                                     <WhiteSpace/>
                                                     <Flex>
