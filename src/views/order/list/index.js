@@ -12,7 +12,9 @@ import PAY_MANNER_DESC from "../../../assets/js/constants/PAY_MANNER_DESC";
 import PayUtil from "../../../assets/js/PayUtil";
 import ComplainModal from "../../components/ComplainModal";
 import FeedbackModal from "../../components/FeedbackModal";
+import store from "../../../store";
 import './index.less'
+import ROLE from "../../../assets/js/constants/ROLE";
 
 class Index extends Component {
 
@@ -171,10 +173,10 @@ class Index extends Component {
                 {
                     this.state.isShowFeedback ?
                         (
-                                <FeedbackModal show={this.state.isShowFeedback}
-                                               order_id={this.state.order_id}
-                                               onHide={this.hideFeedback}
-                                />
+                            <FeedbackModal show={this.state.isShowFeedback}
+                                           order_id={this.state.order_id}
+                                           onHide={this.hideFeedback}
+                            />
                         )
                         : (null)
                 }
@@ -206,44 +208,60 @@ class Index extends Component {
                                                                     :
                                                                     null
                                                             }
-                                                            <p>咨询师：{item.therapist_name}</p>
+                                                            {
+                                                                store.getState().role === ROLE.client ?
+                                                                    <p>咨询师：{item.therapist_name}</p>
+                                                                    :
+                                                                    <p>用户：{item.user_name}</p>
+
+                                                            }
                                                             <p>预约时间：{(item.order_date && item.order_date.split(' ')[0]) || ''}</p>
                                                             <p>预约时段：{Util.getAppointmentPeriodStrFromArray(item.period)}</p>
+                                                            <p>房间：{item.room_name}</p>
                                                             <p>订单费用：{item.amount}</p>
                                                             <p>收费类型：{PAY_MANNER_DESC[this.state.appointment.pay_manner]}</p>
                                                             <p>订单状态：{ORDER_STATE_DESC[item.state]}</p>
                                                             <WhiteSpace/>
                                                             {
-                                                                item.state === ORDER_STATE.COMMIT ?
+                                                                store.getState().role === ROLE.client ?
                                                                     (
-                                                                        <Flex>
-                                                                            <Flex.Item>
-                                                                                <Button size={"small"} type={"ghost"}
-                                                                                        onClick={this.pay.bind(this, item)}>立即支付</Button>
-                                                                            </Flex.Item>
-                                                                            <Flex.Item>
-                                                                                <Button size={"small"} type={"warning"}
-                                                                                        onClick={this.cancel.bind(this, item)}>取消订单</Button>
-                                                                            </Flex.Item>
-                                                                        </Flex>
+                                                                        item.state === ORDER_STATE.COMMIT ?
+                                                                            (
+                                                                                <Flex>
+                                                                                    <Flex.Item>
+                                                                                        <Button size={"small"}
+                                                                                                type={"ghost"}
+                                                                                                onClick={this.pay.bind(this, item)}>立即支付</Button>
+                                                                                    </Flex.Item>
+                                                                                    <Flex.Item>
+                                                                                        <Button size={"small"}
+                                                                                                type={"warning"}
+                                                                                                onClick={this.cancel.bind(this, item)}>取消订单</Button>
+                                                                                    </Flex.Item>
+                                                                                </Flex>
+                                                                            )
+
+                                                                            :
+                                                                            item.state === ORDER_STATE.DONE ?
+                                                                                <Flex>
+                                                                                    <Flex.Item>
+                                                                                        <Button size={"small"}
+                                                                                                type={"ghost"}
+                                                                                                onClick={this.showFeedback.bind(this, item)}>咨询效果反馈</Button>
+                                                                                    </Flex.Item>
+                                                                                    <Flex.Item>
+                                                                                        <Button size={"small"}
+                                                                                                type={"warning"}
+                                                                                                onClick={this.showComplain.bind(this, item)}>投诉咨询师</Button>
+                                                                                    </Flex.Item>
+                                                                                </Flex>
+                                                                                :
+                                                                                null
                                                                     )
-
                                                                     :
-                                                                    item.state === ORDER_STATE.DONE ?
-                                                                        <Flex>
-                                                                            <Flex.Item>
-                                                                                <Button size={"small"} type={"ghost"}
-                                                                                        onClick={this.showFeedback.bind(this, item)}>咨询效果反馈</Button>
-                                                                            </Flex.Item>
-                                                                            <Flex.Item>
-                                                                                <Button size={"small"} type={"warning"}
-                                                                                        onClick={this.showComplain.bind(this, item)}>投诉咨询师</Button>
-                                                                            </Flex.Item>
-                                                                        </Flex>
-                                                                        :
-                                                                        null
-                                                            }
+                                                                    (null)
 
+                                                            }
 
                                                         </Card.Body>
                                                     </Card>
@@ -252,7 +270,7 @@ class Index extends Component {
 
                                         }
                                         {
-                                            this.state.appointment.pay_manner === PAY_MANNER.AFTER_MONTH ?
+                                            (this.state.appointment.pay_manner === PAY_MANNER.AFTER_MONTH && store.getState().role === ROLE.client) ?
                                                 <React.Fragment>
                                                     <WhiteSpace/>
                                                     <Flex>

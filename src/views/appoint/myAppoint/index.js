@@ -25,13 +25,16 @@ class Index extends Component {
             appointments: [],
 
         }
-        //
+        this.init();
+
+    }
+
+    init=()=>{
         if (store.getState().role === ROLE.client) {
             this.getAppointmentsOfUsingByUserId();
         } else if (store.getState().role === ROLE.therapist) {
             this.getAppointmentsOfUsingByTherapistId()
         }
-
     }
 
     /**
@@ -139,9 +142,15 @@ class Index extends Component {
                                         return (
                                             <Card key={index} style={{marginBottom: '.5em'}}>
                                                 <Card.Body>
+                                                    {
+                                                        store.getState().role === ROLE.client ?
+                                                            <p>咨询师：{appointment.therapist_name}</p>
+                                                            :
+                                                            <p>用户：{appointment.user_name}</p>
+
+                                                    }
                                                     <p>预约开始日期：{appointment.appoint_date.split(" ")[0]}</p>
                                                     <p>预约时段：{Util.getAppointmentPeriodStrFromArray(appointment.period)}</p>
-                                                    <p>咨询师：{appointment.therapist_name}</p>
                                                     <p>房间：{appointment.room_name}</p>
                                                     <p>预约类型：{appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '持续预约' : '单次预约'}</p>
                                                     <p>收费类型：{PAY_MANNER_DESC[appointment.pay_manner]}</p>

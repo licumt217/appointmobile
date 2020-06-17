@@ -12,6 +12,8 @@ import APPOINTMENT_STATE_DESC from "../../../assets/js/constants/APPOINTMENT_STA
 import APPOINTMENT_STATE from "../../../assets/js/constants/APPOINTMENT_STATE";
 import PAY_MANNER from "../../../assets/js/constants/PAY_MANNER";
 import APPOINTMENT_MULTI from "../../../assets/js/constants/APPOINTMENT_MULTI";
+import store from "../../../store";
+import ROLE from "../../../assets/js/constants/ROLE";
 
 class Index extends Component {
 
@@ -149,12 +151,16 @@ class Index extends Component {
                             <List.Item>
                                 <p>预约时段：{Util.getAppointmentPeriodStrFromArray(this.state.appointment.period)}</p>
                             </List.Item>
-                            <List.Item>
-                                <p>咨询师：{this.state.appointment.therapist_name}</p>
-                            </List.Item>
-                            <List.Item>
-                                <p>用户：{this.state.appointment.user_name}</p>
-                            </List.Item>
+                            {
+                                store.getState().role===ROLE.client?
+                                    <List.Item>
+                                        <p>咨询师：{this.state.appointment.therapist_name}</p>
+                                    </List.Item>
+                                    :
+                                    <List.Item>
+                                        <p>用户：{this.state.appointment.user_name}</p>
+                                    </List.Item>
+                            }
                             <List.Item>
                                 <p>持续预约：{this.state.appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '是' : '否'}</p>
                             </List.Item>
@@ -166,7 +172,7 @@ class Index extends Component {
                 </Card>
 
                 {
-                    this.state.user_type === 'user' ?
+                    store.getState().role === ROLE.client ?
                         (
                             this.state.appointment.pay_manner === PAY_MANNER.BEFORE_SINGLE ?
                                 (
