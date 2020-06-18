@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {Card, List, Button, Flex, WingBlank, WhiteSpace} from "antd-mobile";
+import {Card, List, Button, Flex, WingBlank, WhiteSpace, ActivityIndicator} from "antd-mobile";
 
 import Util from "../../../assets/js/Util";
 
@@ -30,6 +30,7 @@ class Index extends Component {
                 state: 0,
                 appoint_date:''
             },
+            showMain:false,
 
 
         }
@@ -43,13 +44,10 @@ class Index extends Component {
         getAppointmentDetail({
             appointment_id: this.appointment_id
         }).then((data) => {
-            if (data) {
-                this.setState({
-                    appointment: data
-                })
-            } else {
-                Util.fail('预约不存在')
-            }
+            this.setState({
+                appointment: data,
+                showMain:true
+            })
 
 
         }).catch(err => {
@@ -141,93 +139,101 @@ class Index extends Component {
     render() {
         return (
             <div>
-                <Card>
-                    <Card.Header title={'预约详情'}/>
-                    <Card.Body>
-                        <List>
-                            {
-                                store.getState().role===ROLE.client?
-                                    <List.Item>
-                                        <p>咨询师：{this.state.appointment.therapist_name}</p>
-                                    </List.Item>
-                                    :
-                                    <List.Item>
-                                        <p>用户：{this.state.appointment.user_name}</p>
-                                    </List.Item>
-                            }
-                            <List.Item>
-                                <p>预约开始日期：{this.state.appointment.appoint_date.split(' ')[0]}</p>
-                            </List.Item>
-                            <List.Item>
-                                <p>预约时段：{Util.getAppointmentPeriodStrFromArray(this.state.appointment.period)}</p>
-                            </List.Item>
-                            <List.Item>
-                                <p>预约类型：{this.state.appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '持续预约' : '单次预约'}</p>
-                            </List.Item>
-                            <List.Item>
-                                <p>预约状态：{APPOINTMENT_STATE_DESC[this.state.appointment.state]}</p>
-                            </List.Item>
-                        </List>
-                    </Card.Body>
-                </Card>
-
                 {
-                    store.getState().role === ROLE.client ?
-                        (
-                            this.state.appointment.pay_manner === PAY_MANNER.BEFORE_SINGLE ?
-                                (
-                                    this.state.appointment.state === APPOINTMENT_STATE.AUDITED ?
-                                        (
-                                            <Button size={"small"} type={"ghost"} onClick={this.pay}>立即支付</Button>
-                                        )
-                                        : (null)
-                                )
-                                : (null)
-                        )
-                        : (
-                            this.state.appointment.state === APPOINTMENT_STATE.COMMIT ?
-                                (
-                                    <WingBlank>
-                                        <WhiteSpace/>
-                                        <Flex>
-                                            <Flex.Item>
-                                                <Button size={"small"} type={"ghost"} onClick={this.accept}>接受咨询</Button>
-                                            </Flex.Item>
-                                            <Flex.Item>
-                                                <Button size={"small"} type={"warning"} onClick={this.deny}>拒绝咨询</Button>
-                                            </Flex.Item>
-                                        </Flex>
-                                    </WingBlank>
-                                )
-                                : (
+                    this.state.showMain?
+                        <React.Fragment>
+                            <Card>
+                                <Card.Header title={'预约详情'}/>
+                                <Card.Body>
+                                    <List>
+                                        {
+                                            store.getState().role===ROLE.client?
+                                                <List.Item>
+                                                    <p>咨询师：{this.state.appointment.therapist_name}</p>
+                                                </List.Item>
+                                                :
+                                                <List.Item>
+                                                    <p>用户：{this.state.appointment.user_name}</p>
+                                                </List.Item>
+                                        }
+                                        <List.Item>
+                                            <p>预约开始日期：{this.state.appointment.appoint_date.split(' ')[0]}</p>
+                                        </List.Item>
+                                        <List.Item>
+                                            <p>预约时段：{Util.getAppointmentPeriodStrFromArray(this.state.appointment.period)}</p>
+                                        </List.Item>
+                                        <List.Item>
+                                            <p>预约类型：{this.state.appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '持续预约' : '单次预约'}</p>
+                                        </List.Item>
+                                        <List.Item>
+                                            <p>预约状态：{APPOINTMENT_STATE_DESC[this.state.appointment.state]}</p>
+                                        </List.Item>
+                                    </List>
+                                </Card.Body>
+                            </Card>
+
+                            {
+                                store.getState().role === ROLE.client ?
+                                    (
+                                        this.state.appointment.pay_manner === PAY_MANNER.BEFORE_SINGLE ?
+                                            (
+                                                this.state.appointment.state === APPOINTMENT_STATE.AUDITED ?
+                                                    (
+                                                        <Button size={"small"} type={"ghost"} onClick={this.pay}>立即支付</Button>
+                                                    )
+                                                    : (null)
+                                            )
+                                            : (null)
+                                    )
+                                    : (
+                                        this.state.appointment.state === APPOINTMENT_STATE.COMMIT ?
+                                            (
+                                                <WingBlank>
+                                                    <WhiteSpace/>
+                                                    <Flex>
+                                                        <Flex.Item>
+                                                            <Button size={"small"} type={"ghost"} onClick={this.accept}>接受咨询</Button>
+                                                        </Flex.Item>
+                                                        <Flex.Item>
+                                                            <Button size={"small"} type={"warning"} onClick={this.deny}>拒绝咨询</Button>
+                                                        </Flex.Item>
+                                                    </Flex>
+                                                </WingBlank>
+                                            )
+                                            : (
 
 
-                                    // 预约本身状态：已下单、已审核、已拒绝、已完成
-                                    this.state.appointment.state === APPOINTMENT_STATE.AUDITED ?
-                                        (
-                                            <WingBlank>
-                                                <WhiteSpace/>
-                                                <Flex>
-                                                    <Flex.Item>
-                                                        <Button size={"small"} type={"ghost"} onClick={this.done}>确认完成</Button>
-                                                    </Flex.Item>
-                                                    {/*<Flex.Item>*/}
-                                                    {/*    <Button size={"small"} type={"ghost"}*/}
-                                                    {/*            onClick={this.showComplainModal}>投诉用户</Button>*/}
-                                                    {/*</Flex.Item>*/}
-                                                </Flex>
+                                                // 预约本身状态：已下单、已审核、已拒绝、已完成
+                                                this.state.appointment.state === APPOINTMENT_STATE.AUDITED ?
+                                                    (
+                                                        <WingBlank>
+                                                            <WhiteSpace/>
+                                                            <Flex>
+                                                                <Flex.Item>
+                                                                    <Button size={"small"} type={"ghost"} onClick={this.done}>确认完成</Button>
+                                                                </Flex.Item>
+                                                                {/*<Flex.Item>*/}
+                                                                {/*    <Button size={"small"} type={"ghost"}*/}
+                                                                {/*            onClick={this.showComplainModal}>投诉用户</Button>*/}
+                                                                {/*</Flex.Item>*/}
+                                                            </Flex>
 
-                                            </WingBlank>
-                                        )
-                                        :
-                                        (
-                                            null
-                                        )
+                                                        </WingBlank>
+                                                    )
+                                                    :
+                                                    (
+                                                        null
+                                                    )
 
 
-                                )
-                        )
+                                            )
+                                    )
+                            }
+                        </React.Fragment>
+                        :
+                        <ActivityIndicator toast text={"Loading..."}/>
                 }
+
 
             </div>
         );
