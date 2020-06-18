@@ -7,6 +7,7 @@ import {getQualificationtypeList, getMannertypeList, getSchooltypeList, getAllTh
 
 import ROLE from "../../../assets/js/constants/ROLE";
 import {SEX} from "../../../assets/js/constants/constant"
+import {pczOptions} from "../../../assets/js/pcz";
 import './index.less'
 
 class Index extends Component {
@@ -21,7 +22,7 @@ class Index extends Component {
             listData: {},
             therapistList: [],
             form: {
-                zone: '',
+                area: '',
                 gender: '',
                 qualification_type_id: '',
                 school_type_id: '',
@@ -30,40 +31,7 @@ class Index extends Component {
             qualificationOptions: [],
             schoolTypeOptions: [],
             mannerTypeOptions: [],
-            provinces: [
-                {
-                    label: '北京市',
-                    value: '北京市',
-                    children: [
-                        {
-                            label: '昌平区',
-                            value: '昌平区'
-                        },
-                        {
-                            label: '大兴区',
-                            value: '大兴区'
-                        },
-                        {
-                            label: '海淀区',
-                            value: '海淀区'
-                        },
-                    ]
-                },
-                {
-                    label: '河北省',
-                    value: '河北省',
-                    children: [
-                        {
-                            label: '保定市',
-                            value: '保定市'
-                        },
-                        {
-                            label: '张家口市',
-                            value: '张家口市'
-                        }
-                    ]
-                }
-            ],
+            pczOptions
         }
     }
 
@@ -101,12 +69,10 @@ class Index extends Component {
 
         page = page || 1;
 
-        let pageSize = Util.pageSize
-
         let whereObj = {
             role: ROLE.therapist,
             page,
-            pageSize: 3,
+            pageSize: Util.pageSize
         }
 
         Object.assign(whereObj, this.state.form)
@@ -185,7 +151,7 @@ class Index extends Component {
 
         let form = this.state.form;
         if (value.length > 0) {
-            if(type==='zone'){
+            if(type==='area'){
                 form[type] = value
             }else{form[type] = value[0];
 
@@ -208,11 +174,11 @@ class Index extends Component {
         return (
             <div className={'wrapper'}>
                 <Picker extra="请选择"
-                        data={this.state.provinces}
+                        data={this.state.pczOptions}
                         title="区域"
-                        value={this.state.form.zone}
+                        value={this.state.form.area}
                         // onChange={v => console.log(v)}
-                        onOk={this.handleFormChange.bind(this, 'zone')}
+                        onOk={this.handleFormChange.bind(this, 'area')}
                 >
                     <List.Item arrow="horizontal" key={1}>咨询师所在区域</List.Item>
                 </Picker>
