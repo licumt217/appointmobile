@@ -17,8 +17,13 @@ class Index extends Component {
 
     }
 
-    goError=()=>{
-        this.props.history.push('/error')
+    goError=(errMsg)=>{
+        this.props.history.push({
+            pathname:'/error',
+            state:{
+                errMsg
+            }
+        })
     }
 
     goRegister=()=>{
@@ -75,19 +80,15 @@ class Index extends Component {
                 }
 
             },err=>{
-                Util.fail(err)
-                this.goError()
+                this.goError(err)
             }).catch(err => {
-                Util.fail(err)
-                this.goError()
+                this.goError(err)
             })
 
         },err=>{
-            Util.fail(err)
-            this.goError()
+            this.goError(err)
         }).catch(err => {
-            Util.fail(err)
-            this.goError()
+            this.goError(err)
         })
     }
 

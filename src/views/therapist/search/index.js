@@ -9,6 +9,9 @@ import ROLE from "../../../assets/js/constants/ROLE";
 import {SEX} from "../../../assets/js/constants/constant"
 import {pczOptions} from "../../../assets/js/pcz";
 import './index.less'
+import ETHICSNOTICE_SHOW_MANNER from "../../../assets/js/constants/ETHICSNOTICE_SHOW_MANNER";
+import ETHICSNOTICE_STATE from "../../../assets/js/constants/ETHICSNOTICE_STATE";
+import DateUtil from "../../../assets/js/DateUtil";
 
 class Index extends Component {
 
@@ -146,6 +149,23 @@ class Index extends Component {
         //TODO 后续流程呢？
     }
 
+    /**
+     * 是否显示伦理公告
+     * */
+    isShowEthicsnotice=(item)=>{
+        if(item.state===ETHICSNOTICE_STATE.ON){
+            if(item.show_manner===ETHICSNOTICE_SHOW_MANNER.FOREVER){//永久
+                return true;
+            }else if(item.show_manner===ETHICSNOTICE_SHOW_MANNER.PERIOD){//一段时间
+                if(DateUtil.isBefore(new Date(),new Date(item.end_date))){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 
     handleFormChange = (type, value) => {
 
@@ -251,6 +271,16 @@ class Index extends Component {
                                                         <List.Item>资历：{this.qualificationTypeObj[item.qualification_type_id] ? this.qualificationTypeObj[item.qualification_type_id].qualification_type_name : ''}</List.Item>
                                                         <List.Item>咨询方式：{this.mannerTypeObj[item.manner_type_id] ? this.mannerTypeObj[item.manner_type_id].manner_type_name : ''}</List.Item>
                                                         <List.Item>费用：{item.fee}</List.Item>
+                                                        {
+
+                                                            this.isShowEthicsnotice(item)?
+                                                                <List.Item >
+                                                                    <span style={{color:'red'}}>
+                                                                        伦理公告：{item.content}
+                                                                    </span>
+                                                                </List.Item>
+                                                                :null
+                                                        }
                                                     </List>
                                                         <Flex>
                                                             <Flex.Item>
