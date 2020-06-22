@@ -173,60 +173,46 @@ class Index extends Component {
                             </Card>
 
                             {
-                                store.getState().role === ROLE.client ?
+                                this.state.appointment.state === APPOINTMENT_STATE.COMMIT ?
                                     (
-                                        this.state.appointment.pay_manner === PAY_MANNER.BEFORE_SINGLE ?
-                                            (
-                                                this.state.appointment.state === APPOINTMENT_STATE.AUDITED ?
-                                                    (
-                                                        <Button size={"small"} type={"ghost"} onClick={this.pay}>立即支付</Button>
-                                                    )
-                                                    : (null)
-                                            )
-                                            : (null)
+                                        <WingBlank>
+                                            <WhiteSpace/>
+                                            <Flex>
+                                                <Flex.Item>
+                                                    <Button size={"small"} type={"ghost"} onClick={this.accept}>接受咨询</Button>
+                                                </Flex.Item>
+                                                <Flex.Item>
+                                                    <Button size={"small"} type={"warning"} onClick={this.deny}>拒绝咨询</Button>
+                                                </Flex.Item>
+                                            </Flex>
+                                        </WingBlank>
                                     )
                                     : (
-                                        this.state.appointment.state === APPOINTMENT_STATE.COMMIT ?
+
+
+                                        // 预约本身状态：已下单、已审核、已拒绝、已完成
+                                        this.state.appointment.state === APPOINTMENT_STATE.AUDITED ?
                                             (
                                                 <WingBlank>
                                                     <WhiteSpace/>
                                                     <Flex>
                                                         <Flex.Item>
-                                                            <Button size={"small"} type={"ghost"} onClick={this.accept}>接受咨询</Button>
+                                                            <Button size={"small"} type={"ghost"} onClick={this.done}>确认完成</Button>
                                                         </Flex.Item>
-                                                        <Flex.Item>
-                                                            <Button size={"small"} type={"warning"} onClick={this.deny}>拒绝咨询</Button>
-                                                        </Flex.Item>
+                                                        {/*<Flex.Item>*/}
+                                                        {/*    <Button size={"small"} type={"ghost"}*/}
+                                                        {/*            onClick={this.showComplainModal}>投诉用户</Button>*/}
+                                                        {/*</Flex.Item>*/}
                                                     </Flex>
+
                                                 </WingBlank>
                                             )
-                                            : (
-
-
-                                                // 预约本身状态：已下单、已审核、已拒绝、已完成
-                                                this.state.appointment.state === APPOINTMENT_STATE.AUDITED ?
-                                                    (
-                                                        <WingBlank>
-                                                            <WhiteSpace/>
-                                                            <Flex>
-                                                                <Flex.Item>
-                                                                    <Button size={"small"} type={"ghost"} onClick={this.done}>确认完成</Button>
-                                                                </Flex.Item>
-                                                                {/*<Flex.Item>*/}
-                                                                {/*    <Button size={"small"} type={"ghost"}*/}
-                                                                {/*            onClick={this.showComplainModal}>投诉用户</Button>*/}
-                                                                {/*</Flex.Item>*/}
-                                                            </Flex>
-
-                                                        </WingBlank>
-                                                    )
-                                                    :
-                                                    (
-                                                        null
-                                                    )
-
-
+                                            :
+                                            (
+                                                null
                                             )
+
+
                                     )
                             }
                         </React.Fragment>

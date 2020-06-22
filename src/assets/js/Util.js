@@ -190,6 +190,17 @@ class Util {
         ])
     }
 
+    static notice(obj) {
+
+        Modal.alert(obj.title || '', obj.msg, [
+            {
+                text: '确定', onPress: () => {
+                    obj.onConfirm && obj.onConfirm()
+                }
+            },
+        ])
+    }
+
     static back(){
         window.history.back();
     }

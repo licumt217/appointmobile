@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {Flex, List, Switch, Radio, WhiteSpace, Button, WingBlank, Picker} from "antd-mobile";
+import {Flex, List, Switch, Radio, WhiteSpace, Button, WingBlank, Picker, ActivityIndicator} from "antd-mobile";
 
 import {
     getRoomPeriodSetByStationId,
@@ -12,6 +12,7 @@ import {
 import Util from "../../../assets/js/Util";
 import store from "../../../store";
 import DateUtil from "../../../assets/js/DateUtil";
+import USE_ROOM from "../../../assets/js/constants/USE_ROOM";
 import APPOINTMENT_MULTI from "../../../assets/js/constants/APPOINTMENT_MULTI";
 
 
@@ -28,7 +29,9 @@ class Index extends Component {
             assign_room_type: 1,
             roomList: [],
             room_id: '',
-            pay_manner: ''
+            pay_manner: '',
+            showMain: false,
+            use_room: USE_ROOM.YES
         }
     }
 
@@ -75,7 +78,7 @@ class Index extends Component {
 
         getRoomListByTherapistNoPage({
             therapist_id: this.appointment.therapist_id,
-            station_id:this.appointment.station_id
+            station_id: this.appointment.station_id
         }).then((data) => {
 
             this.setState({
@@ -150,6 +153,10 @@ class Index extends Component {
 
 
                 }
+
+                this.setState({
+                    showMain: true
+                })
 
             })
 
@@ -228,10 +235,11 @@ class Index extends Component {
     }
     accept = () => {
 
-
-        if (this.state.assign_room_type === 1 && !this.state.room_id) {
-            Util.info('请选择房间！')
-            return;
+        if (this.state.use_room === USE_ROOM.YES) {
+            if (this.state.assign_room_type === 1 && !this.state.room_id) {
+                Util.info('请选择房间！')
+                return;
+            }
         }
 
         if (!this.state.pay_manner) {
@@ -244,7 +252,8 @@ class Index extends Component {
             appointment_id: this.appointment.appointment_id,
             room_id: this.state.room_id,
             assign_room_type: this.state.assign_room_type,
-            pay_manner: this.state.pay_manner
+            pay_manner: this.state.pay_manner,
+            use_room: this.state.use_room
         }).then((data) => {
             Util.success('操作成功')
             this.back();
@@ -275,77 +284,104 @@ class Index extends Component {
     render() {
         return (
             <div>
-                <List>
-                    <List.Item><span style={{fontSize: '14px', fontWeight: 'bold'}}>选择房间</span></List.Item>
-                </List>
-                <List.Item
-                    extra={<Switch platform="android" checked={this.state.assign_room_type === 1} onChange={() => {
-                        this.setState({
-                            assign_room_type: this.state.assign_room_type === 1 ? 0 : 1
-                        });
-                    }}></Switch>}>
-                    手动分配房间
-                </List.Item>
                 {
-                    this.state.assign_room_type === 1 ?
-                        (
-                            this.state.roomList.length === 0 ?
-                                (
-                                    <div className='center' style={{marginTop:".8em",marginBottom:'.8em'}}>
-                                        无可用房间
-                                    </div>
-                                )
-                                :
-                                (
-                                    <List>
+                    this.state.showMain ?
+                        <React.Fragment>
+                            <List>
+                                <List.Item><span style={{fontSize: '14px', fontWeight: 'bold'}}>选择房间</span></List.Item>
+                            </List>
+                            <List.Item
+                                extra={<Switch platform="android" checked={this.state.use_room === USE_ROOM.YES}
+                                               onChange={() => {
+                                                   this.setState({
+                                                       use_room: this.state.use_room === USE_ROOM.YES ? USE_ROOM.NO : USE_ROOM.YES
+                                                   });
+                                               }}></Switch>}>
+                                是否使用房间
+                            </List.Item>
+                            {
+                                this.state.use_room === USE_ROOM.YES ?
+                                    <React.Fragment>
+                                        <List.Item
+                                            extra={<Switch platform="android"
+                                                           checked={this.state.assign_room_type === 1}
+                                                           onChange={() => {
+                                                               this.setState({
+                                                                   assign_room_type: this.state.assign_room_type === 1 ? 0 : 1
+                                                               });
+                                                           }}></Switch>}>
+                                            手动分配房间
+                                        </List.Item>
                                         {
-                                            this.state.roomList.map((room, index) => {
-                                                return (
-                                                    <Radio.RadioItem key={index}
-                                                                     checked={this.state.room_id === room.room_id}
-                                                                     onChange={this.onChange.bind(this, room.room_id)}>
-                                                        {room.name}
-                                                    </Radio.RadioItem>
+                                            this.state.assign_room_type === 1 ?
+                                                (
+                                                    this.state.roomList.length === 0 ?
+                                                        (
+                                                            <div className='center'
+                                                                 style={{marginTop: ".8em", marginBottom: '.8em'}}>
+                                                                无可用房间
+                                                            </div>
+                                                        )
+                                                        :
+                                                        (
+                                                            <List>
+                                                                {
+                                                                    this.state.roomList.map((room, index) => {
+                                                                        return (
+                                                                            <Radio.RadioItem key={index}
+                                                                                             checked={this.state.room_id === room.room_id}
+                                                                                             onChange={this.onChange.bind(this, room.room_id)}>
+                                                                                {room.name}
+                                                                            </Radio.RadioItem>
+                                                                        )
+
+
+                                                                    })
+                                                                }
+                                                            </List>
+                                                        )
                                                 )
-
-
-                                            })
+                                                : null
                                         }
-                                    </List>
-                                )
-                        )
-                        : null
+                                    </React.Fragment>
+                                    :
+                                    null
+                            }
+                            <List>
+                                <List.Item><span
+                                    style={{fontSize: '14px', fontWeight: 'bold'}}>选择支付方式</span></List.Item>
+                            </List>
+                            <Flex>
+                                <Flex.Item>
+                                    <Picker
+                                        data={this.appointment.ismulti === APPOINTMENT_MULTI.SINGLE ? Util.payMannerOptions.single : Util.payMannerOptions.multi}
+                                        cols={1}
+                                        extra="请选择"
+                                        value={[this.state.pay_manner]}
+                                        onOk={this.handleFormChange.bind(this)}
+                                    >
+                                        <List.Item arrow="horizontal">支付方式</List.Item>
+                                    </Picker>
+
+
+                                </Flex.Item>
+
+                            </Flex>
+                            <WingBlank>
+                                <WhiteSpace/>
+                                <Flex>
+                                    <Flex.Item>
+                                        <Button size={"small"} type={"ghost"} onClick={this.back}>取消</Button>
+                                    </Flex.Item>
+                                    <Flex.Item>
+                                        <Button size={"small"} type={"primary"} onClick={this.accept}>确定</Button>
+                                    </Flex.Item>
+                                </Flex>
+                            </WingBlank>
+                        </React.Fragment>
+                        :
+                        <ActivityIndicator toast text={"Loading..."}/>
                 }
-                <List>
-                    <List.Item><span style={{fontSize: '14px', fontWeight: 'bold'}}>选择支付方式</span></List.Item>
-                </List>
-                <Flex>
-                    <Flex.Item>
-                        <Picker
-                            data={this.appointment.ismulti === APPOINTMENT_MULTI.SINGLE ? Util.payMannerOptions.single : Util.payMannerOptions.multi}
-                            cols={1}
-                            extra="请选择"
-                            value={[this.state.pay_manner]}
-                            onOk={this.handleFormChange.bind(this)}
-                        >
-                            <List.Item arrow="horizontal">支付方式</List.Item>
-                        </Picker>
-
-
-                    </Flex.Item>
-
-                </Flex>
-                <WingBlank>
-                    <WhiteSpace/>
-                    <Flex>
-                        <Flex.Item>
-                            <Button size={"small"} type={"ghost"} onClick={this.back}>取消</Button>
-                        </Flex.Item>
-                        <Flex.Item>
-                            <Button size={"small"} type={"primary"} onClick={this.accept}>确定</Button>
-                        </Flex.Item>
-                    </Flex>
-                </WingBlank>
             </div>
         );
     }

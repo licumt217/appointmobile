@@ -100,6 +100,13 @@ export function pay(params) {
 
 }
 
+export function offlinePay(params) {
+
+    return axios.post('order/offlinePay', params)
+
+
+}
+
 /**
  * 多订单批量支付
  * @param params
@@ -108,6 +115,18 @@ export function pay(params) {
 export function batchPay(params) {
 
     return axios.post('order/batchPay', params)
+
+
+}
+
+/**
+ * 多订单批量线下支付
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function offlineBatchPay(params) {
+
+    return axios.post('order/offlineBatchPay', params)
 
 
 }
@@ -315,6 +334,21 @@ export function getRoomPeriodSetByStationId(params) {
 export function getRoomListByTherapistNoPage(params) {
 
     return axios.post('room/listByTherapistNoPage', params)
+
+
+}
+
+export function getDivisionByStationTherapistRelationId(params) {
+
+    return axios.post('division/getByStationTherapistRelationId', params)
+
+
+}
+
+
+export function getDivisionByStationId(params) {
+
+    return axios.post('division/getByStationId', params)
 
 
 }

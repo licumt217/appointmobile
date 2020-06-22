@@ -4,7 +4,7 @@ import {Button, Card, Flex, WhiteSpace, WingBlank, Checkbox, ActivityIndicator} 
 
 import Util from '../../../assets/js/Util'
 
-import {getOrdersByAppointmentId, pay, getAppointmentDetail, batchPay, cancelOrder} from '../../../http/service'
+import {getOrdersByAppointmentId, pay, getAppointmentDetail, batchPay, cancelOrder,offlinePay,offlineBatchPay} from '../../../http/service'
 import ORDER_STATE_DESC from "../../../assets/js/constants/ORDER_STATE_DESC";
 import ORDER_STATE from "../../../assets/js/constants/ORDER_STATE";
 import PAY_MANNER from "../../../assets/js/constants/PAY_MANNER";
@@ -16,6 +16,7 @@ import store from "../../../store";
 import './index.less'
 import ROLE from "../../../assets/js/constants/ROLE";
 import APPOINTMENT_STATE from "../../../assets/js/constants/APPOINTMENT_STATE";
+import FUNCTION_LEVEL from "../../../assets/js/constants/FUNCTION_LEVEL";
 
 class Index extends Component {
 
@@ -31,6 +32,7 @@ class Index extends Component {
             order_id: '',
             appointment: {},
             showMain:false,
+            function_level:FUNCTION_LEVEL.BASE
 
         }
         //
@@ -47,6 +49,7 @@ class Index extends Component {
                 appointment: data
             })
             this.getOrdersByAppointmentId();
+
 
         }).catch(err => {
             Util.fail(err)
@@ -91,16 +94,39 @@ class Index extends Component {
     }
 
 
+    /**
+     * 开通线上支付的话，直接线上支付；否则，用户确认已线下支付
+     * @param order
+     */
     pay = (order) => {
-        pay({
-            order_id: order.order_id
-        }).then((data) => {
+        if(this.state.appointment.function_level===FUNCTION_LEVEL.ONLINEPAY){
+            pay({
+                order_id: order.order_id
+            }).then((data) => {
 
-            PayUtil.pay(data.secuParam, this.getOrdersByAppointmentId, this.getOrdersByAppointmentId)
+                PayUtil.pay(data.secuParam, this.getOrdersByAppointmentId, this.getOrdersByAppointmentId)
 
-        }).catch(err => {
-            Util.fail(err)
-        })
+            }).catch(err => {
+                Util.fail(err)
+            })
+        }else{
+            Util.confirm({
+                title:'支付确认',
+                msg:'请您确认已线下支付过本次订单的费用',
+                onConfirm:()=>{
+
+                    offlinePay({
+                        order_id:order.order_id
+                    }).then(()=>{
+                        Util.success(`支付成功`)
+                        this.getOrdersByAppointmentId();
+                    }).catch(err => {
+                        Util.fail(err)
+                    })
+                }
+            })
+        }
+
     }
 
     showComplain = (order) => {
@@ -142,21 +168,35 @@ class Index extends Component {
 
     allPay = () => {
         if (this.orderIdSet.size > 0) {
-            console.log(this.orderIdSet)
-            batchPay({
-                order_id_array: [...this.orderIdSet]
-            }).then((data) => {
+            if(this.state.appointment.function_level===FUNCTION_LEVEL.ONLINEPAY){
+                batchPay({
+                    order_id_array: [...this.orderIdSet]
+                }).then((data) => {
 
-                PayUtil.pay(data.secuParam, this.getOrdersByAppointmentId, this.getOrdersByAppointmentId)
+                    PayUtil.pay(data.secuParam, this.getOrdersByAppointmentId, this.getOrdersByAppointmentId)
 
-            }).catch(err => {
-                Util.fail(err)
-            })
+                }).catch(err => {
+                    Util.fail(err)
+                })
+            }else{
+                offlineBatchPay({
+                    order_id_array: [...this.orderIdSet]
+                }).then((data) => {
+                    Util.success(`支付成功`)
+                    this.getOrdersByAppointmentId();
+
+                }).catch(err => {
+                    Util.fail(err)
+                })
+            }
+
         } else {
             Util.info('请选择要支付的订单！')
         }
 
     }
+
+
 
 
     render() {

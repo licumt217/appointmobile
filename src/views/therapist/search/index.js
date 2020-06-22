@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {Picker, List, Flex, Button, Card,WingBlank,WhiteSpace} from "antd-mobile";
 import Util from "../../../assets/js/Util";
 
-import {getQualificationtypeList, getMannertypeList, getSchooltypeList, getAllTherapist} from '../../../http/service'
+import {getQualificationtypeList, getMannertypeList, getSchooltypeList, getAllTherapist,getDivisionByStationTherapistRelationId} from '../../../http/service'
 
 import ROLE from "../../../assets/js/constants/ROLE";
 import {SEX} from "../../../assets/js/constants/constant"
@@ -11,6 +11,7 @@ import {pczOptions} from "../../../assets/js/pcz";
 import './index.less'
 import ETHICSNOTICE_SHOW_MANNER from "../../../assets/js/constants/ETHICSNOTICE_SHOW_MANNER";
 import ETHICSNOTICE_STATE from "../../../assets/js/constants/ETHICSNOTICE_STATE";
+import FUNCTION_LEVEL from "../../../assets/js/constants/FUNCTION_LEVEL";
 import DateUtil from "../../../assets/js/DateUtil";
 
 class Index extends Component {
@@ -118,27 +119,41 @@ class Index extends Component {
     }
 
     next=(item)=> {
+        //首先判断所选咨询师所在的分部的权限是否能在线预约，能的话下一步，不能的话提示用户
+
+        getDivisionByStationTherapistRelationId({
+            station_therapist_relation_id:item.station_therapist_relation_id
+        }).then(data=>{
+            if(data.function_level===FUNCTION_LEVEL.BASE){
+                Util.notice({
+                    title:'通知',
+                    msg:'该咨询师所在的分部暂未开通在线预约功能，请您通过该咨询师的联系方式进行线下联系！'
+                })
+            }else{
+                //TODO 紧急咨询时填原因
 
 
-        //TODO 紧急咨询时填原因
+                //TODO 判断是否首次预约，首次的话需要同意隐私条款。隐私条款每条都需要同意吗？类似复选框都选中？还是确定一条之后依次出现下一条。这样是否太变态了？
 
-        //TODO 判断是否平台黑名单或所选咨询师的黑名单，是的话无法继续预约。分两次判断，当前所选咨询师黑名单的话可以切换咨询师
+                if (this.isEmergency) {
 
-        //TODO 判断是否首次预约，首次的话需要同意隐私条款。隐私条款每条都需要同意吗？类似复选框都选中？还是确定一条之后依次出现下一条。这样是否太变态了？
+                    // this.$refs.emergencyConsult.show()
 
-        if (this.isEmergency) {
-
-            // this.$refs.emergencyConsult.show()
-
-        } else {
-            this.props.history.push({
-                pathname: '/appoint/selectDate',
-                state:{
-                    therapist_id: item.user_id,
-                    station_id: item.station_id,
+                } else {
+                    this.props.history.push({
+                        pathname: '/appoint/selectDate',
+                        state:{
+                            therapist_id: item.user_id,
+                            station_id: item.station_id,
+                        }
+                    })
                 }
-            })
-        }
+            }
+        }).catch(err => {
+            Util.fail(err)
+        });
+
+
 
     }
 
