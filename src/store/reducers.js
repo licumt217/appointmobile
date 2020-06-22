@@ -17,14 +17,6 @@ const user_id = (state = '', action) => {
     }
 };
 
-const station_id = (state = '', action) => {
-    if(action.type==='station_id'){
-        return action.payload;
-    }else{
-        return state;
-    }
-};
-
 const menu_selected_index = (state = '', action) => {
     if(action.type==='menu_selected_index'){
         return action.payload;
@@ -67,7 +59,6 @@ let reducers=combineReducers({
     user_id,
     role,
     token,
-    station_id,
     menu_selected_index
 })
 

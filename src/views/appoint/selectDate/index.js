@@ -22,6 +22,7 @@ class Index extends Component {
         super(props);
 
         this.therapist_id = this.props.location.state.therapist_id;
+        this.station_id = this.props.location.state.station_id;
 
         this.state = {
             selectMonth: '',
@@ -317,7 +318,7 @@ class Index extends Component {
     getCanAppointDate = () => {
 
         return new Promise(function (resolve) {
-            resolve(new Date(2020, 7, 21))
+            resolve(new Date(2030, 12, 31))
         })
     }
 
@@ -438,7 +439,8 @@ class Index extends Component {
             therapist_id: this.therapist_id,
             appoint_date: DateUtil.format(this.state.appoint_date),
             periodArray: this.state.selectPeriodArray,
-            ismulti: this.state.ismulti
+            ismulti: this.state.ismulti,
+            station_id:this.station_id
         }).then((data) => {
             Util.info('提交成功，请等待咨询师审核')
 

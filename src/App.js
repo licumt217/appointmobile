@@ -60,7 +60,7 @@ class App extends Component {
     mockTherapist=()=>{
         store.dispatch({
             type:'user_id',
-            payload: 'c71569b37cdd49c399261511b64b2ed7'
+            payload: '49c3c3f285334868bf70f147bfd9b831'
         })
 
         store.dispatch({
@@ -70,20 +70,13 @@ class App extends Component {
 
         store.dispatch({
             type:'token',
-            payload: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJ1c2VyX2lkIjoiYzcxNTY5YjM3Y2RkNDljMzk5MjYxNTExYjY0YjJlZDciLCJwaG9uZSI6IjE1OTAwMDAwMDAxIiwibmFtZSI6IuWSqOivouW4iDAwMSIsImlkZW50aWZpY2F0aW9uX25vIjoiNDEwODgyMTk4ODAyMTc4ODg1IiwiZ2VuZGVyIjoibWFsZSIsImVtYWlsIjoiMjMyM0AxMjYuY29tIiwiYmlydGhkYXkiOiIyMDIwLTA0LTA4Iiwib3BfZGF0ZSI6IjIwMjAtMDUtMTQgMTE6MDg6MzQiLCJyb2xlIjozLCJwYXNzd29yZCI6ImUxMGFkYzM5NDliYTU5YWJiZTU2ZTA1N2YyMGY4ODNlIn0sImlhdCI6MTU5MDIwNzQ5NX0._r6qhBviUwiS6jYjlaeHWeUbVRJIwX39g03I4NlZiGw'
+            payload: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJ1c2VyX2lkIjoiNDljM2MzZjI4NTMzNDg2OGJmNzBmMTQ3YmZkOWI4MzEiLCJwaG9uZSI6IjE4NjAxOTYwMDAxIiwibmFtZSI6IuW8oOWwj-WHoSIsImlkZW50aWZpY2F0aW9uX25vIjoiNDEwODgyMTk4ODAyMTcwMDAxIiwiZ2VuZGVyIjoibWFsZSIsImVtYWlsIjoiNDQ3ODE4MDAxQHFxLmNvbSIsImJpcnRoZGF5IjoiMjAxMC0wNi0yNSIsIm9wX2RhdGUiOiIyMDIwLTA2LTA5IDEwOjUyOjI4Iiwicm9sZSI6MywicGFzc3dvcmQiOiJlMTBhZGMzOTQ5YmE1OWFiYmU1NmUwNTdmMjBmODgzZSJ9LCJpYXQiOjE1OTI3OTkwMzh9.tI6H2tdsQN_FGwgk620a_vspk7gujq2v_0TPdzxMK8U'
         })
 
         store.dispatch({
             type:'role',
             payload: ROLE.therapist
         })
-
-        store.dispatch({
-            type:'station_id',
-            payload: 'f186213dcbbb48f4a4487bf5e8db10a8'
-        })
-
-
 
         store.dispatch({
             type:'login',
@@ -123,7 +116,7 @@ class App extends Component {
 
 
         // this.mock();
-        // this.mockTherapist()
+        this.mockTherapist()
 
 
         //验证openid是否和手机号绑定了

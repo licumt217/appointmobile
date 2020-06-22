@@ -135,8 +135,7 @@ class Index extends Component {
                 pathname: '/appoint/selectDate',
                 state:{
                     therapist_id: item.user_id,
-                    consult_type_id: item.consult_type_id,
-                    manner_type_id: item.manner_type_id
+                    station_id: item.station_id,
                 }
             })
         }
@@ -267,6 +266,7 @@ class Index extends Component {
                                                     <List>
                                                         <List.Item>姓名：{item.name}</List.Item>
                                                         <List.Item>性别：{SEX[item.gender]}</List.Item>
+                                                        <List.Item>工作室：{item.station_name}</List.Item>
                                                         <List.Item>流派：{this.schoolTypeObj[item.school_type_id] ? this.schoolTypeObj[item.school_type_id].school_type_name : ''}</List.Item>
                                                         <List.Item>资历：{this.qualificationTypeObj[item.qualification_type_id] ? this.qualificationTypeObj[item.qualification_type_id].qualification_type_name : ''}</List.Item>
                                                         <List.Item>咨询方式：{this.mannerTypeObj[item.manner_type_id] ? this.mannerTypeObj[item.manner_type_id].manner_type_name : ''}</List.Item>

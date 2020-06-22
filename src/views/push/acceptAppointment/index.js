@@ -74,7 +74,8 @@ class Index extends Component {
     getRooms = () => {
 
         getRoomListByTherapistNoPage({
-            therapist_id: this.appointment.therapist_id
+            therapist_id: this.appointment.therapist_id,
+            station_id:this.appointment.station_id
         }).then((data) => {
 
             this.setState({
@@ -290,7 +291,7 @@ class Index extends Component {
                         (
                             this.state.roomList.length === 0 ?
                                 (
-                                    <div className='center' style={{marginTop:".8em"}}>
+                                    <div className='center' style={{marginTop:".8em",marginBottom:'.8em'}}>
                                         无可用房间
                                     </div>
                                 )
