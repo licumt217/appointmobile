@@ -135,6 +135,16 @@ class Index extends Component {
         })
     }
 
+    go2OrderList = (appointment) => {
+        this.props.history.push({
+            pathname: '/order/list',
+            state: {
+                appointment_id: appointment.appointment_id
+            }
+        })
+
+    }
+
 
     render() {
         return (
@@ -196,13 +206,12 @@ class Index extends Component {
                                                 <WingBlank>
                                                     <WhiteSpace/>
                                                     <Flex>
-                                                        <Flex.Item>
-                                                            <Button size={"small"} type={"ghost"} onClick={this.done}>确认完成</Button>
+                                                        <Flex.Item style={{textAlign: 'center'}}>
+                                                            <Button type="ghost" size={"small"} onClick={this.go2OrderList.bind(this, this.state.appointment)}>订单记录</Button>
                                                         </Flex.Item>
-                                                        {/*<Flex.Item>*/}
-                                                        {/*    <Button size={"small"} type={"ghost"}*/}
-                                                        {/*            onClick={this.showComplainModal}>投诉用户</Button>*/}
-                                                        {/*</Flex.Item>*/}
+                                                        <Flex.Item>
+                                                            <Button size={"small"} type={"warning"} onClick={this.done}>结束预约</Button>
+                                                        </Flex.Item>
                                                     </Flex>
 
                                                 </WingBlank>

@@ -7,7 +7,7 @@ import Util from '../../../assets/js/Util'
 import {
     getAppointmentsOfUsingByUserId,
     cancelAppointment,
-    getAppointmentsOfUsingByTherapistId
+    getAppointmentsOfUsingByTherapistId, doneAppointment
 } from '../../../http/service'
 import APPOINTMENT_STATE from "../../../assets/js/constants/APPOINTMENT_STATE";
 import APPOINTMENT_STATE_DESC from "../../../assets/js/constants/APPOINTMENT_STATE_DESC";
@@ -23,7 +23,7 @@ class Index extends Component {
         super();
         this.state = {
             appointments: [],
-            showMain:false,
+            showMain: false,
 
         }
 
@@ -49,7 +49,7 @@ class Index extends Component {
 
             this.setState({
                 appointments: data,
-                showMain:true
+                showMain: true
             })
 
         }).catch(err => {
@@ -65,7 +65,7 @@ class Index extends Component {
 
             this.setState({
                 appointments: data,
-                showMain:true
+                showMain: true
             })
 
         }).catch(err => {
@@ -109,8 +109,8 @@ class Index extends Component {
     audit = (appointment) => {
         this.props.history.push({
             pathname: `/push/appointmentDetail`,
-            state:{
-                appointment_id:appointment.appointment_id
+            state: {
+                appointment_id: appointment.appointment_id
             }
         })
     }
@@ -132,6 +132,22 @@ class Index extends Component {
         })
     }
     /**
+     * 咨询师能否主动完成预约（结束）
+     * 当前预约状态必须是已审核
+     * 当前预约对应的所有订单必须都是最终状态：已拒绝、已取消、已过期、已完结。
+     */
+    done = (appointment) => {
+        doneAppointment({
+            appointment_id: appointment.appointment_id
+        }).then((data) => {
+            Util.success('操作成功')
+            this.init()
+
+        }).catch(err => {
+            Util.fail(err)
+        })
+    }
+    /**
      * 转介
      */
     transfer = () => {
@@ -146,7 +162,7 @@ class Index extends Component {
         return (
             <div>
                 {
-                    this.state.showMain?
+                    this.state.showMain ?
                         <section>
                             <Card>
                                 <Card.Header
@@ -173,25 +189,37 @@ class Index extends Component {
                                                             <p>预约开始日期：{appointment.appoint_date.split(" ")[0]}</p>
                                                             <p>预约时段：{Util.getAppointmentPeriodStrFromArray(appointment.period)}</p>
                                                             {
-                                                                (appointment.state === APPOINTMENT_STATE.AUDITED || appointment.state === APPOINTMENT_STATE.DONE)?
+                                                                (appointment.state === APPOINTMENT_STATE.AUDITED || appointment.state === APPOINTMENT_STATE.DONE) ?
                                                                     <p>房间：{appointment.room_name}</p>
-                                                                    :null
+                                                                    : null
                                                             }
                                                             <p>预约类型：{appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '持续预约' : '单次预约'}</p>
                                                             {
-                                                                (appointment.state === APPOINTMENT_STATE.AUDITED || appointment.state === APPOINTMENT_STATE.DONE)?
+                                                                (appointment.state === APPOINTMENT_STATE.AUDITED || appointment.state === APPOINTMENT_STATE.DONE) ?
                                                                     <p>收费类型：{PAY_MANNER_DESC[appointment.pay_manner]}</p>
-                                                                    :null
+                                                                    : null
                                                             }
                                                             <p>预约状态：{APPOINTMENT_STATE_DESC[appointment.state]}</p>
                                                             <WhiteSpace/>
-                                                            <Flex justify={"around"} align={"center"} alignContent={"center"}>
+                                                            <Flex justify={"around"} align={"center"}
+                                                                  alignContent={"center"}>
                                                                 {
-                                                                    (appointment.state === APPOINTMENT_STATE.AUDITED || appointment.state === APPOINTMENT_STATE.DONE) ?
+                                                                    (appointment.state === APPOINTMENT_STATE.AUDITED) ?
                                                                         (
-                                                                            <Flex.Item style={{textAlign: 'center'}}>
-                                                                                <Button type="ghost" size={"small"} onClick={this.go2OrderList.bind(this, appointment)}>订单记录</Button>
-                                                                            </Flex.Item>
+                                                                            <React.Fragment>
+                                                                                <Flex.Item
+                                                                                    style={{textAlign: 'center'}}>
+                                                                                    <Button type="ghost" size={"small"}
+                                                                                            onClick={this.go2OrderList.bind(this, appointment)}>订单记录</Button>
+                                                                                </Flex.Item>
+                                                                                <Flex.Item
+                                                                                    style={{textAlign: 'center'}}>
+                                                                                    <Button type="warning"
+                                                                                            size={"small"}
+                                                                                            onClick={this.done.bind(this, appointment)}>结束预约</Button>
+                                                                                </Flex.Item>
+                                                                            </React.Fragment>
+
                                                                         )
                                                                         :
                                                                         (null)
@@ -203,11 +231,15 @@ class Index extends Component {
                                                                         (
                                                                             store.getState().role === ROLE.client ?
                                                                                 <Flex.Item>
-                                                                                    <Button type="warning" size={"small"} onClick={this.cancel.bind(this, appointment)}>取消预约</Button>
+                                                                                    <Button type="warning"
+                                                                                            size={"small"}
+                                                                                            onClick={this.cancel.bind(this, appointment)}>取消预约</Button>
                                                                                 </Flex.Item>
                                                                                 :
                                                                                 <Flex.Item>
-                                                                                    <Button type="primary" size={"small"} onClick={this.audit.bind(this, appointment)}>审核</Button>
+                                                                                    <Button type="primary"
+                                                                                            size={"small"}
+                                                                                            onClick={this.audit.bind(this, appointment)}>审核</Button>
                                                                                 </Flex.Item>
                                                                         )
                                                                         :
