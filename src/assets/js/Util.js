@@ -148,8 +148,17 @@ class Util {
         if(!period){
             return str;
         }
-        period.split(',').forEach(item => {
-            str += (`${Util.fixZero(item)}:00-${Util.fixZero(item)}:50 `)
+        let array=period.split(',')
+        array.sort((a,b)=>{
+            return Number(a)-Number(b)
+        });
+        array.forEach((item,index) => {
+            if(index===array.length-1){
+                str += (`${Util.fixZero(item)}:00-${Util.fixZero(item)}:50`)
+            }else{
+                str += (`${Util.fixZero(item)}:00-${Util.fixZero(item)}:50，`)
+            }
+
         })
 
 

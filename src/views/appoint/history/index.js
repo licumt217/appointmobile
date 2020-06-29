@@ -114,7 +114,7 @@ class Index extends Component {
                                                                     }
                                                                     <p>预约开始日期：{appointment.appoint_date.split(" ")[0]}</p>
                                                                     <p>预约时段：{Util.getAppointmentPeriodStrFromArray(appointment.period)}</p>
-                                                                    <p>房间：{appointment.room_name}</p>
+                                                                    <p>房间：{appointment.room_name||'不使用房间'}</p>
                                                                     <p>预约类型：{appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '持续预约' : '单次预约'}</p>
                                                                     <p>预约状态：{APPOINTMENT_STATE_DESC[appointment.state]}</p>
                                                                     <p>创建时间：{appointment.create_date}</p>

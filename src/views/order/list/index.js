@@ -262,7 +262,7 @@ class Index extends Component {
                                                                     }
                                                                     <p>预约时间：{(item.order_date && item.order_date.split(' ')[0]) || ''}</p>
                                                                     <p>预约时段：{Util.getAppointmentPeriodStrFromArray(item.period)}</p>
-                                                                    <p>房间：{item.room_name}</p>
+                                                                    <p>房间：{item.room_name||'不使用房间'}</p>
                                                                     <p>订单费用：{item.amount}</p>
                                                                     <p>收费类型：{PAY_MANNER_DESC[this.state.appointment.pay_manner]}</p>
                                                                     <p>订单状态：{ORDER_STATE_DESC[item.state]}</p>

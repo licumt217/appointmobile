@@ -190,7 +190,7 @@ class Index extends Component {
                                                             <p>预约时段：{Util.getAppointmentPeriodStrFromArray(appointment.period)}</p>
                                                             {
                                                                 (appointment.state === APPOINTMENT_STATE.AUDITED || appointment.state === APPOINTMENT_STATE.DONE) ?
-                                                                    <p>房间：{appointment.room_name}</p>
+                                                                    <p>房间：{appointment.room_name||'不使用房间'}</p>
                                                                     : null
                                                             }
                                                             <p>预约类型：{appointment.ismulti === APPOINTMENT_MULTI.CONTINUE ? '持续预约' : '单次预约'}</p>
