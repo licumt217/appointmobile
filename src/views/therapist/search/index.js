@@ -3,7 +3,14 @@ import React, {Component} from 'react';
 import {Picker, List, Flex, Button, Card,WingBlank,WhiteSpace} from "antd-mobile";
 import Util from "../../../assets/js/Util";
 
-import {getQualificationtypeList, getMannertypeList, getSchooltypeList, getAllTherapist,getDivisionByStationTherapistRelationId} from '../../../http/service'
+import {
+    getQualificationtypeList,
+    getMannertypeList,
+    getSchooltypeList,
+    getAllTherapist,
+    getDivisionByStationTherapistRelationId,
+    getMeasureList
+} from '../../../http/service'
 
 import ROLE from "../../../assets/js/constants/ROLE";
 import {SEX} from "../../../assets/js/constants/constant"
@@ -141,15 +148,31 @@ class Index extends Component {
 
                 } else {
                     //判断是否回答过该咨询师对应分部的预检表，回答过的话直接到选日期页面；否则回答预检表
+                    getMeasureList({
+                        organizationId:item.division_id
+                    }).then(data=>{
 
-
-                    this.props.history.push({
-                        pathname: '/appoint/selectDate',
-                        state:{
-                            therapist_id: item.user_id,
-                            station_id: item.station_id,
+                        if(data.status===1){//已回答过
+                            this.props.history.push({
+                                pathname: '/appoint/selectDate',
+                                state:{
+                                    therapist_id: item.user_id,
+                                    station_id: item.station_id,
+                                }
+                            })
+                        }else{
+                            this.props.history.push({
+                                pathname: '/appoint/preCheck',
+                                state:{
+                                    division_id:item.division_id
+                                }
+                            })
                         }
-                    })
+                    }).catch(err => {
+                        Util.fail(err)
+                    });
+
+
                 }
             }
         }).catch(err => {

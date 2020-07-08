@@ -353,6 +353,18 @@ export function getDivisionByStationId(params) {
 
 }
 
+/**
+ * 用户获取量表列表（预检表列表，包含基础量表的和分部自己的）
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function getMeasureList(params) {
+
+    return axios.post('questionMobile/getMeasureList', params)
+
+
+}
+
 
 
 

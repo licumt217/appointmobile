@@ -256,5 +256,13 @@ Util.payMannerOptions = {
     ]
 };
 
+Util.suffixArrayOfMusic = ["mp3", "wave"]
+
+Util.suffixArrayOfPicture = ["jpg", "jpeg", "png"]
+
+Util.backendUrl = window.location.href.indexOf("localhost") > -1 ? 'http://127.0.0.1:8350' : 'http://' + window.location.hostname+'/appoint_wx'
+
+
+
 Util.pageSize = 10;
 export default Util
