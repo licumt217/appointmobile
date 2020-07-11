@@ -5,14 +5,12 @@ class Index extends Component {
 
     constructor(props) {
         super(props);
-        this.state={
-            item:this.props.item,
-            index:this.props.index,
+        this.state = {
+            item: this.props.item,
+            index: this.props.index,
+            readonly: !!this.props.readonly
         }
     }
-
-
-
 
 
     render() {
@@ -21,35 +19,42 @@ class Index extends Component {
                 <p className={'title'}>
                     {this.state.item.name}
                 </p>
-                <TextareaItem style={{fontSize: '12px'}}
-                              onBlur={(value) => {
+                {
+                    this.state.readonly?
+                        <p style={{fontSize:'12px',paddingTop:'.5em',paddingLeft:'1em',lineHeight:'1.5em'}}>{this.state.item.value}</p>
+                        :
 
-                                  this.props.onUpdate((val,self,isBaseMeasure)=>{
-                                      if(isBaseMeasure){
-                                          let roleAnswer = self.state.roleAnswer;
+                        <TextareaItem style={{fontSize: '12px'}}
+                                      onBlur={(value) => {
 
-                                          roleAnswer[this.state.index].value = val;
+                                          this.props.onUpdate((val, self, isBaseMeasure) => {
+                                              if (isBaseMeasure) {
+                                                  let roleAnswer = self.state.roleAnswer;
 
-                                          self.setState({
-                                              roleAnswer
-                                          })
-                                      }else{
-                                          let organizationAnswer = self.state.organizationAnswer;
+                                                  roleAnswer[this.state.index].value = val;
 
-                                          organizationAnswer[this.state.index].value = val;
+                                                  self.setState({
+                                                      roleAnswer
+                                                  })
+                                              } else {
+                                                  let organizationAnswer = self.state.organizationAnswer;
 
-                                          self.setState({
-                                              organizationAnswer
-                                          })
+                                                  organizationAnswer[this.state.index].value = val;
+
+                                                  self.setState({
+                                                      organizationAnswer
+                                                  })
+                                              }
+
+                                          }, value, this.props.isBaseMeasure)
+
                                       }
+                                      }
+                                      placeholder="请输入"
+                                      autoHeight
+                        />
+                }
 
-                                  },value,this.props.isBaseMeasure)
-
-                              }
-                              }
-                              placeholder="请输入"
-                              autoHeight
-                />
             </div>
         );
     }

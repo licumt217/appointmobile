@@ -9,6 +9,9 @@ import Appoint_History from '../views/appoint/history'
 import MyAppoint from '../views/appoint/myAppoint'
 import Select_Date from '../views/appoint/selectDate'
 import Pre_Check from '../views/appoint/preCheck'
+import QueryPreCheck from '../views/appoint/queryPreCheck'
+
+
 import Setting from '../views/user/setting'
 import EmergencyPerson from '../views/user/setting/emergencyPerson.js'
 import Modifypass from '../views/user/modifypass'
@@ -49,6 +52,7 @@ const routers = [
     {path: '/appoint/myAppoint', component: MyAppoint},
     {path: '/appoint/selectDate', component: Select_Date},
     {path: '/appoint/preCheck', component: Pre_Check},
+    {path: '/appoint/queryPreCheck', component: QueryPreCheck},
 
     {path: '/push/appointmentDetail', component: Push_Appointment_Detail},
     {path: '/push/acceptAppointment', component: AcceptAppointment},

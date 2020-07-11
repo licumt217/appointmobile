@@ -8,6 +8,7 @@ class Index extends Component {
         this.state={
             item:this.props.item,
             index:this.props.index,
+            readonly: !!this.props.readonly
         }
     }
 
@@ -32,6 +33,7 @@ class Index extends Component {
                                     {child.answer.map((i, iIndex) => (
                                         <RadioItem key={iIndex}
                                                    checked={i.value === child.value}
+                                                   disabled={this.state.readonly}
                                                    onChange={() => {
                                                        this.props.onUpdate((val,self,isBaseMeasure)=>{
                                                            if(isBaseMeasure){

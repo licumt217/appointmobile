@@ -55,6 +55,16 @@ class Index extends Component {
         })
     }
 
+    queryPreCheck=()=>{
+        this.props.history.push({
+            pathname: '/appoint/queryPreCheck',
+            state:{
+                user_id: this.state.appointment.user_id,
+                division_id: this.state.appointment.division_id,
+            }
+        })
+    }
+
 
     deny = () => {
 
@@ -101,11 +111,6 @@ class Index extends Component {
     }
 
 
-    showComplainModal = () => {
-        this.setState({
-            isShowComplain: true
-        })
-    }
 
     hideComplainModal = () => {
         this.setState({
@@ -113,10 +118,6 @@ class Index extends Component {
         })
     }
 
-    handleAfterComplain = () => {
-        this.hideComplainModal();
-        this.getAppointmentDetail();
-    }
 
     /**
      * 咨询师能否主动完成预约（结束）
@@ -181,6 +182,14 @@ class Index extends Component {
                                     </List>
                                 </Card.Body>
                             </Card>
+                            <WingBlank>
+                                <WhiteSpace/>
+                                <Flex>
+                                    <Flex.Item>
+                                        <Button size={"small"} onClick={this.queryPreCheck}>查看预检表</Button>
+                                    </Flex.Item>
+                                </Flex>
+                            </WingBlank>
 
                             {
                                 this.state.appointment.state === APPOINTMENT_STATE.COMMIT ?

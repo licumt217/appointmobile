@@ -149,7 +149,7 @@ class Index extends Component {
                 } else {
                     //判断是否回答过该咨询师对应分部的预检表，回答过的话直接到选日期页面；否则回答预检表
                     getMeasureList({
-                        organizationId:item.division_id
+                        organization_id:item.division_id
                     }).then(data=>{
 
                         if(data.status===1){//已回答过

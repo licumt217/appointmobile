@@ -365,6 +365,31 @@ export function getMeasureList(params) {
 
 }
 
+/**
+ * 保存用户回答的预检表
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function saveAnswer(params) {
+
+    return axios.post('questionMobile/saveAnswer', params)
+
+
+}
+
+
+/**
+ * 获取用户在某个分部下回答的预检表
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function getAnswerMeasureList(params) {
+
+    return axios.post('questionMobile/getAnswerMeasureList', params)
+
+
+}
+
 
 
 

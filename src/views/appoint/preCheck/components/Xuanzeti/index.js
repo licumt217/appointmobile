@@ -8,6 +8,7 @@ class Index extends Component {
         this.state={
             item:this.props.item,
             index:this.props.index,
+            readonly: !!this.props.readonly
         }
     }
 
@@ -24,7 +25,7 @@ class Index extends Component {
                 <WhiteSpace/>
                 <List>
                     {this.state.item.answer.map(i => (
-                        <RadioItem key={i.value} checked={this.state.item.value === i.value}
+                        <RadioItem disabled={this.state.readonly} key={i.value} checked={this.state.item.value === i.value}
                                    onChange={() => {
 
                                        this.props.onUpdate((val,self,isBaseMeasure)=>{
