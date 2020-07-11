@@ -30,7 +30,7 @@ class Index extends Component {
             allAvailablePeriodArray: [],
             availablePeriodArray: [],
             nowDate: {},
-            canAppointDate: {},
+            end_date: {},
             date: {},
             selectPeriodArray: [],
             ismulti: APPOINTMENT_MULTI.SINGLE,
@@ -40,14 +40,10 @@ class Index extends Component {
 
     componentDidMount() {
         this.getPeriodSet().then(data => {
-            this.getCanAppointDate().then(data => {
-
-                this.setState({
-                    canAppointDate: data,
-                    nowDate: new Date()
-                })
-                this.realSwitch(new Date(this.state.nowDate.getFullYear(), this.state.nowDate.getMonth(), this.state.nowDate.getDate()))
+            this.setState({
+                nowDate: new Date()
             })
+            this.realSwitch(new Date(this.state.nowDate.getFullYear(), this.state.nowDate.getMonth(), this.state.nowDate.getDate()))
         })
     }
 
@@ -156,7 +152,8 @@ class Index extends Component {
 
                 dataList.forEach((item, index) => {
                     if (item.date) {
-                        if (DateUtil.isBefore(item.date, this.state.canAppointDate) && !DateUtil.isBefore(item.date, this.state.nowDate) && this.state.allAvailablePeriodArray.length > 0) {
+
+                        if (this.state.weeks.includes(String(item.date.getDay())) && DateUtil.isBefore(item.date, this.state.end_date) && !DateUtil.isBefore(item.date, this.state.nowDate) && this.state.allAvailablePeriodArray.length > 0) {
                             item.canAppoint = true;
                             item = this.calAvailablePeriod(item)
                             dataList.splice(index, 1, item);
@@ -202,7 +199,7 @@ class Index extends Component {
                         let week = DateUtil.getWeekOfDate(item.date);
 
                         if (!weekMap[week]) {
-                            if (DateUtil.isBefore(item.date, this.state.canAppointDate) && !DateUtil.isBefore(item.date, this.state.nowDate) && this.state.allAvailablePeriodArray.length > 0) {
+                            if (this.state.weeks.includes(String(item.date.getDay())) && DateUtil.isBefore(item.date, this.state.end_date) && !DateUtil.isBefore(item.date, this.state.nowDate) && this.state.allAvailablePeriodArray.length > 0) {
 
                                 //当前所在的周几的第几个时段，必须要当前日期大于最大的已占用日期
                                 let period2 = this.getCanAppointPeriod(item.date, singleMap)
@@ -215,7 +212,7 @@ class Index extends Component {
 
                             }
                         } else {
-                            if (DateUtil.isBefore(item.date, this.state.canAppointDate) && !DateUtil.isBefore(item.date, this.state.nowDate) && this.state.allAvailablePeriodArray.length > 0) {
+                            if (this.state.weeks.includes(String(item.date.getDay())) && DateUtil.isBefore(item.date, this.state.end_date) && !DateUtil.isBefore(item.date, this.state.nowDate) && this.state.allAvailablePeriodArray.length > 0) {
 
                                 //当前所在的周几的第几个时段，必须要当前日期大于最大的已占用日期
                                 let period2 = this.getCanAppointPeriod(item.date, singleMap, weekMap[week])
@@ -331,8 +328,14 @@ class Index extends Component {
             getUseablePeriodSetByTherapistId({
                 therapist_id: this.therapist_id
             }).then((data) => {
+                let allAvailablePeriodArray=data.period.split(',')
+                allAvailablePeriodArray.sort((a,b)=>{
+                    return Number(a)-Number(b)
+                })
                 this.setState({
-                    allAvailablePeriodArray: data.period.split(',')
+                    end_date:data.end_date?new Date(data.end_date):new Date(),
+                    allAvailablePeriodArray,
+                    weeks: data.weeks.split(',')
                 })
                 resolve()
             }).catch(err => {
