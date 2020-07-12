@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 
-import {List, Steps, Card,Button,Flex,WhiteSpace,WingBlank} from "antd-mobile";
+import {List, Steps, Card, Button, Flex, WhiteSpace, WingBlank} from "antd-mobile";
 
 import Util from "../../../assets/js/Util";
 
 import './index.less'
 
-import {getAgreementList,acceptAgreement} from "../../../http/service";
+import {getAgreementList, acceptAgreement} from "../../../http/service";
 
 const Step = Steps.Step;
 
@@ -17,17 +17,17 @@ class Index extends Component {
         super(props);
         this.state = {
             agreements: [],
-            current:0
+            current: 0
         }
 
     }
 
     componentDidMount() {
 
-        getAgreementList().then(data=>{
-            if(data && data.length>0){
+        getAgreementList().then(data => {
+            if (data && data.length > 0) {
                 this.setState({
-                    agreements:data
+                    agreements: data
                 })
             }
         }).catch(err => {
@@ -35,13 +35,13 @@ class Index extends Component {
         });
     }
 
-    nextStep= ()=> {
-        if(this.state.current<this.state.agreements.length-1){
+    nextStep = () => {
+        if (this.state.current < this.state.agreements.length - 1) {
             this.setState({
-                current:this.state.current+1
+                current: this.state.current + 1
             })
-        }else{
-            acceptAgreement().then(data=>{
+        } else {
+            acceptAgreement().then(data => {
                 Util.success('操作成功！')
                 this.props.history.goBack()
             }).catch(err => {
@@ -52,11 +52,11 @@ class Index extends Component {
 
     }
 
-    prevStep= ()=> {
-        if(this.state.current===0){
-        }else{
+    prevStep = () => {
+        if (this.state.current === 0) {
+        } else {
             this.setState({
-                current:this.state.current-1
+                current: this.state.current - 1
             })
         }
 
@@ -71,13 +71,15 @@ class Index extends Component {
                 <WhiteSpace/>
 
                 <WingBlank>
-                    <Steps size='small' current={this.state.current} direction="horizontal" >
-                        {
-                            this.state.agreements.map((item,index)=>{
-                                return <Step  title={index+1} key={index}/>
-                            })
-                        }
-                    </Steps>
+                    <div style={{width:'100%',overflow:'hidden',paddingTop:'1em'}}>
+                        <Steps size='small' current={this.state.current} direction="horizontal">
+                            {
+                                this.state.agreements.map((item, index) => {
+                                    return <Step title={index + 1} key={index}/>
+                                })
+                            }
+                        </Steps>
+                    </div>
                     <WhiteSpace/>
 
                     {
@@ -88,7 +90,7 @@ class Index extends Component {
                                     {
                                         (index === this.state.current) ?
                                             <Card>
-                                                <Card.Header title={'协议'+(index+1)}/>
+                                                <Card.Header title={'协议' + (index + 1)}/>
                                                 <Card.Body>
                                                     {item.content}
                                                 </Card.Body>
