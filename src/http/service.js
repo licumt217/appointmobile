@@ -390,6 +390,42 @@ export function getAnswerMeasureList(params) {
 
 }
 
+/**
+ * 用户协议列表
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function getAgreementList(params={}) {
+
+    return axios.post('agreement/getList', params)
+
+
+}
+
+/**
+ * 是否同意用户协议
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function isAgree(params={}) {
+
+    return axios.post('userAgreement/isAgree', params)
+
+
+}
+
+/**
+ * 同意用户协议
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function acceptAgreement(params={}) {
+
+    return axios.post('userAgreement/accept', params)
+
+
+}
+
 
 
 

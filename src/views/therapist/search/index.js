@@ -9,7 +9,8 @@ import {
     getSchooltypeList,
     getAllTherapist,
     getDivisionByStationTherapistRelationId,
-    getMeasureList
+    getMeasureList,
+    isAgree
 } from '../../../http/service'
 
 import ROLE from "../../../assets/js/constants/ROLE";
@@ -147,32 +148,44 @@ class Index extends Component {
                     // this.$refs.emergencyConsult.show()
 
                 } else {
-                    //判断是否回答过该咨询师对应分部的预检表，回答过的话直接到选日期页面；否则回答预检表
-                    getMeasureList({
-                        organization_id:item.division_id
-                    }).then(data=>{
+                    //首先判断是否同意用户协议
 
-                        if(data.status===1){//已回答过
-                            this.props.history.push({
-                                pathname: '/appoint/selectDate',
-                                state:{
-                                    therapist_id: item.user_id,
-                                    station_id: item.station_id,
+                    isAgree().then(data=>{
+
+                        if(data.agree){
+                            //判断是否回答过该咨询师对应分部的预检表，回答过的话直接到选日期页面；否则回答预检表
+                            getMeasureList({
+                                organization_id:item.division_id
+                            }).then(data=>{
+
+                                if(data.status===1){//已回答过
+                                    this.props.history.push({
+                                        pathname: '/appoint/selectDate',
+                                        state:{
+                                            therapist_id: item.user_id,
+                                            station_id: item.station_id,
+                                        }
+                                    })
+                                }else{
+                                    this.props.history.push({
+                                        pathname: '/appoint/preCheck',
+                                        state:{
+                                            division_id:item.division_id
+                                        }
+                                    })
                                 }
-                            })
+                            }).catch(err => {
+                                Util.fail(err)
+                            });
                         }else{
+
                             this.props.history.push({
-                                pathname: '/appoint/preCheck',
-                                state:{
-                                    division_id:item.division_id
-                                }
+                                pathname: '/user/agreement',
                             })
                         }
                     }).catch(err => {
                         Util.fail(err)
                     });
-
-
                 }
             }
         }).catch(err => {
