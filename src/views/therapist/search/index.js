@@ -118,7 +118,7 @@ class Index extends Component {
     detail=(item)=> {
 
         this.props.history.push({
-            pathname: '/therapist/detail',
+            pathname: '/therapist/cv',
             state:{
                 therapist_id: item.user_id
             }
@@ -338,12 +338,11 @@ class Index extends Component {
                                                     </List>
                                                         <Flex>
                                                             <Flex.Item>
-                                                                <WhiteSpace/>
                                                                 <Button type={"ghost"} size={"small"} onClick={this.next.bind(this, item)}>选择此咨询师</Button>
                                                             </Flex.Item>
-                                                            {/*<Flex.Item>*/}
-                                                            {/*    <Button type={"primary"}  size={"small"} onClick={this.detail.bind(this, item)}>查看详情</Button>*/}
-                                                            {/*</Flex.Item>*/}
+                                                            <Flex.Item>
+                                                                <Button type={"primary"}  size={"small"} onClick={this.detail.bind(this, item)}>查看简历</Button>
+                                                            </Flex.Item>
                                                         </Flex>
                                                 </Card.Body>
                                             </Card>

@@ -426,6 +426,18 @@ export function acceptAgreement(params={}) {
 
 }
 
+/**
+ * 查看咨询师简历
+ * @param params
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export function getCvByTherapistId(params={}) {
+
+    return axios.post('cv/getByTherapistId', params)
+
+
+}
+
 
 
 

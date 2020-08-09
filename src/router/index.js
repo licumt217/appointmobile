@@ -18,6 +18,7 @@ import Modifypass from '../views/user/modifypass'
 
 import Therapist_Search from '../views/therapist/search'
 import Therapist_Detail from '../views/therapist/detail'
+import Therapist_Cv from '../views/therapist/cv'
 
 
 import Push_Appointment_Detail from '../views/push/appointmentDetail'
@@ -46,6 +47,7 @@ const routers = [
 
     {path: '/therapist/search', component: Therapist_Search},
     {path: '/therapist/detail', component: Therapist_Detail},
+    {path: '/therapist/cv', component: Therapist_Cv},
 
 
     {path: '/appoint/history', component: Appoint_History},
