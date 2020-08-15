@@ -181,6 +181,11 @@ class Index extends Component {
 
                             this.props.history.push({
                                 pathname: '/user/agreement',
+                                state:{
+                                    division_id:item.division_id,
+                                    therapist_id:item.user_id,
+                                    station_id:item.station_id,
+                                }
                             })
                         }
                     }).catch(err => {

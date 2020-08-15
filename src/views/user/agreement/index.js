@@ -6,7 +6,7 @@ import Util from "../../../assets/js/Util";
 
 import './index.less'
 
-import {getAgreementList, acceptAgreement} from "../../../http/service";
+import {getAgreementList, acceptAgreement, getMeasureList} from "../../../http/service";
 
 const Step = Steps.Step;
 
@@ -15,6 +15,9 @@ class Index extends Component {
 
     constructor(props) {
         super(props);
+        this.division_id=this.props.location.state.division_id;
+        this.therapist_id=this.props.location.state.therapist_id;
+        this.station_id=this.props.location.state.station_id;
         this.state = {
             agreements: [],
             current: 0
@@ -42,8 +45,30 @@ class Index extends Component {
             })
         } else {
             acceptAgreement().then(data => {
-                Util.success('操作成功！')
-                this.props.history.goBack()
+                //判断是否回答过该咨询师对应分部的预检表，回答过的话直接到选日期页面；否则回答预检表
+                getMeasureList({
+                    organization_id:this.division_id
+                }).then(data=>{
+
+                    if(data.status===1){//已回答过
+                        this.props.history.push({
+                            pathname: '/appoint/selectDate',
+                            state:{
+                                therapist_id: this.therapist_id,
+                                station_id: this.station_id,
+                            }
+                        })
+                    }else{
+                        this.props.history.push({
+                            pathname: '/appoint/preCheck',
+                            state:{
+                                division_id:this.division_id
+                            }
+                        })
+                    }
+                }).catch(err => {
+                    Util.fail(err)
+                });
             }).catch(err => {
                 Util.fail(err)
             });
