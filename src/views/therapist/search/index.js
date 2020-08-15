@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {Picker, List, Flex, Button, Card,WingBlank,WhiteSpace} from "antd-mobile";
+import {Picker, List, Flex, Button, Card, WingBlank, WhiteSpace} from "antd-mobile";
 import Util from "../../../assets/js/Util";
 
 import {
@@ -111,33 +111,33 @@ class Index extends Component {
         })
     }
 
-    loadMore=()=> {
+    loadMore = () => {
         this.getList(this.state.listData.currentPage + 1, true);
     }
 
-    detail=(item)=> {
+    detail = (item) => {
 
         this.props.history.push({
             pathname: '/therapist/cv',
-            state:{
+            state: {
                 therapist_id: item.user_id
             }
         })
 
     }
 
-    next=(item)=> {
+    next = (item) => {
         //首先判断所选咨询师所在的分部的权限是否能在线预约，能的话下一步，不能的话提示用户
 
         getDivisionByStationTherapistRelationId({
-            station_therapist_relation_id:item.station_therapist_relation_id
-        }).then(data=>{
-            if(data.function_level===FUNCTION_LEVEL.BASE){
+            station_therapist_relation_id: item.station_therapist_relation_id
+        }).then(data => {
+            if (data.function_level === FUNCTION_LEVEL.BASE) {
                 Util.notice({
-                    title:'通知',
-                    msg:'该咨询师所在的分部暂未开通在线预约功能，请您通过该咨询师的联系方式进行线下联系！'
+                    title: '通知',
+                    msg: '该咨询师所在的分部暂未开通在线预约功能，请您通过该咨询师的联系方式进行线下联系！'
                 })
-            }else{
+            } else {
                 //TODO 紧急咨询时填原因
 
 
@@ -150,41 +150,41 @@ class Index extends Component {
                 } else {
                     //首先判断是否同意用户协议
 
-                    isAgree().then(data=>{
+                    isAgree().then(data => {
 
-                        if(data.agree){
+                        if (data.agree) {
                             //判断是否回答过该咨询师对应分部的预检表，回答过的话直接到选日期页面；否则回答预检表
                             getMeasureList({
-                                organization_id:item.division_id
-                            }).then(data=>{
+                                organization_id: item.division_id
+                            }).then(data => {
 
-                                if(data.status===1){//已回答过
+                                if (data.status === 1) {//已回答过
                                     this.props.history.push({
                                         pathname: '/appoint/selectDate',
-                                        state:{
+                                        state: {
                                             therapist_id: item.user_id,
                                             station_id: item.station_id,
                                         }
                                     })
-                                }else{
+                                } else {
                                     this.props.history.push({
                                         pathname: '/appoint/preCheck',
-                                        state:{
-                                            division_id:item.division_id
+                                        state: {
+                                            division_id: item.division_id
                                         }
                                     })
                                 }
                             }).catch(err => {
                                 Util.fail(err)
                             });
-                        }else{
+                        } else {
 
                             this.props.history.push({
                                 pathname: '/user/agreement',
-                                state:{
-                                    division_id:item.division_id,
-                                    therapist_id:item.user_id,
-                                    station_id:item.station_id,
+                                state: {
+                                    division_id: item.division_id,
+                                    therapist_id: item.user_id,
+                                    station_id: item.station_id,
                                 }
                             })
                         }
@@ -198,24 +198,23 @@ class Index extends Component {
         });
 
 
-
     }
 
 
     //紧急咨询回调
-    consult=()=> {
+    consult = () => {
         //TODO 后续流程呢？
     }
 
     /**
      * 是否显示伦理公告
      * */
-    isShowEthicsnotice=(item)=>{
-        if(item.state===ETHICSNOTICE_STATE.ON){
-            if(item.show_manner===ETHICSNOTICE_SHOW_MANNER.FOREVER){//永久
+    isShowEthicsnotice = (item) => {
+        if (item.state === ETHICSNOTICE_STATE.ON) {
+            if (item.show_manner === ETHICSNOTICE_SHOW_MANNER.FOREVER) {//永久
                 return true;
-            }else if(item.show_manner===ETHICSNOTICE_SHOW_MANNER.PERIOD){//一段时间
-                if(DateUtil.isBefore(new Date(),new Date(item.end_date))){
+            } else if (item.show_manner === ETHICSNOTICE_SHOW_MANNER.PERIOD) {//一段时间
+                if (DateUtil.isBefore(new Date(), new Date(item.end_date))) {
                     return true;
                 }
             }
@@ -229,9 +228,10 @@ class Index extends Component {
 
         let form = this.state.form;
         if (value.length > 0) {
-            if(type==='area'){
+            if (type === 'area' || type === 'stationArea') {
                 form[type] = value
-            }else{form[type] = value[0];
+            } else {
+                form[type] = value[0];
 
             }
 
@@ -254,8 +254,17 @@ class Index extends Component {
                 <Picker extra="请选择"
                         data={this.state.pczOptions}
                         title="区域"
+                        value={this.state.form.stationArea}
+                    // onChange={v => console.log(v)}
+                        onOk={this.handleFormChange.bind(this, 'stationArea')}
+                >
+                    <List.Item arrow="horizontal" key={1}>工作室所在区域</List.Item>
+                </Picker>
+                <Picker extra="请选择"
+                        data={this.state.pczOptions}
+                        title="区域"
                         value={this.state.form.area}
-                        // onChange={v => console.log(v)}
+                    // onChange={v => console.log(v)}
                         onOk={this.handleFormChange.bind(this, 'area')}
                 >
                     <List.Item arrow="horizontal" key={1}>咨询师所在区域</List.Item>
@@ -314,13 +323,13 @@ class Index extends Component {
 
                 <section>
                     {
-                        this.state.therapistList.length>0?
+                        this.state.therapistList.length > 0 ?
                             this.state.therapistList.map((item, index) => {
                                 return (
                                     <React.Fragment key={index}>
                                         <WhiteSpace/>
                                         <WingBlank>
-                                            <Card >
+                                            <Card>
                                                 <Card.Body>
                                                     <List>
                                                         <List.Item>姓名：{item.name}</List.Item>
@@ -332,23 +341,25 @@ class Index extends Component {
                                                         <List.Item>费用：{item.fee}</List.Item>
                                                         {
 
-                                                            this.isShowEthicsnotice(item)?
-                                                                <List.Item >
-                                                                    <span style={{color:'red'}}>
+                                                            this.isShowEthicsnotice(item) ?
+                                                                <List.Item>
+                                                                    <span style={{color: 'red'}}>
                                                                         伦理公告：{item.content}
                                                                     </span>
                                                                 </List.Item>
-                                                                :null
+                                                                : null
                                                         }
                                                     </List>
-                                                        <Flex>
-                                                            <Flex.Item>
-                                                                <Button type={"ghost"} size={"small"} onClick={this.next.bind(this, item)}>选择此咨询师</Button>
-                                                            </Flex.Item>
-                                                            <Flex.Item>
-                                                                <Button type={"primary"}  size={"small"} onClick={this.detail.bind(this, item)}>查看简历</Button>
-                                                            </Flex.Item>
-                                                        </Flex>
+                                                    <Flex>
+                                                        <Flex.Item>
+                                                            <Button type={"ghost"} size={"small"}
+                                                                    onClick={this.next.bind(this, item)}>选择此咨询师</Button>
+                                                        </Flex.Item>
+                                                        <Flex.Item>
+                                                            <Button type={"primary"} size={"small"}
+                                                                    onClick={this.detail.bind(this, item)}>查看简历</Button>
+                                                        </Flex.Item>
+                                                    </Flex>
                                                 </Card.Body>
                                             </Card>
                                         </WingBlank>
@@ -366,7 +377,7 @@ class Index extends Component {
                     {
                         this.state.listData.totalPages > this.state.listData.currentPage ?
                             <React.Fragment>
-                                <p className={'center'} style={{margin:'1.5em'}}>
+                                <p className={'center'} style={{margin: '1.5em'}}>
                                     <span onClick={this.loadMore}>加载更多</span>
                                 </p>
                             </React.Fragment>
