@@ -2,7 +2,7 @@ let gulp = require('gulp') //加载gulp模块
 let pro = require('child_process') //运行子进程库
 let sftp = require('gulp-sftp') //sftp上传程序
 let username='root';
-let password='y2pe2NF7'
+let password='y2pe2NF7y2pe2NF7'
 let project_name='appointmobile'
 
 
