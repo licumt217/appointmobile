@@ -28,6 +28,8 @@ class Index extends Component {
         super(props);
 
         this.division_id = this.props.location.state.division_id;
+        this.therapist_id = this.props.location.state.therapist_id;
+        this.station_id = this.props.location.state.station_id;
 
         this.state = {
             roleAnswer: [],
@@ -162,7 +164,13 @@ class Index extends Component {
         }).then(data => {
 
             Util.success("提交成功")
-            this.back();
+            this.props.history.push({
+                pathname: '/appoint/selectDate',
+                state: {
+                    therapist_id: this.therapist_id,
+                    station_id: this.station_id,
+                }
+            })
         }).catch(err => {
             Util.fail(err)
         });

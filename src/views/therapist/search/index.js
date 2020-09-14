@@ -170,7 +170,9 @@ class Index extends Component {
                                     this.props.history.push({
                                         pathname: '/appoint/preCheck',
                                         state: {
-                                            division_id: item.division_id
+                                            division_id: item.division_id,
+                                            therapist_id: item.user_id,
+                                            station_id: item.station_id,
                                         }
                                     })
                                 }
