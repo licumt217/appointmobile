@@ -333,7 +333,7 @@ class Index extends Component {
                     return Number(a)-Number(b)
                 })
                 this.setState({
-                    end_date:data.end_date?new Date(data.end_date):new Date(),
+                    end_date:data.end_date?new Date(data.end_date.replace(/-/g,'/')):new Date(),
                     allAvailablePeriodArray,
                     weeks: data.weeks.split(',')
                 })
@@ -417,7 +417,7 @@ class Index extends Component {
         let array = this.state.selectPeriodArray;
 
         if (array.includes(period)) {
-            array.splice(array.findIndex(period), 1)
+            array.splice(array.indexOf(period), 1)
         } else {
             array.push(period)
         }
