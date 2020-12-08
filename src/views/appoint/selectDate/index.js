@@ -171,7 +171,7 @@ class Index extends Component {
                 let singleMap = {}
                 data.forEach(item => {
 
-                    let date = new Date(item.appoint_date)
+                    let date = new Date( item.appoint_date.replace(/-/g,'/'))
 
                     let week = DateUtil.getWeekOfDate(date)
 
@@ -256,7 +256,7 @@ class Index extends Component {
         let periodDateMap = {}
 
         for (let date2 in singleMap) {
-            date2 = new Date(date2)
+            date2 = new Date(date2.replace(/-/g,'/'))
             let w = DateUtil.getWeekOfDate(date2)
 
             let dateWeek = DateUtil.getWeekOfDate(date)
