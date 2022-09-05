@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-import {Picker, List, Flex, Button, Card, WingBlank, WhiteSpace} from "antd-mobile";
+import { Picker, List, Flex, Button, Card, WingBlank, WhiteSpace } from "antd-mobile";
 import Util from "../../../assets/js/Util";
 
 import {
@@ -14,8 +14,8 @@ import {
 } from '../../../http/service'
 
 import ROLE from "../../../assets/js/constants/ROLE";
-import {SEX} from "../../../assets/js/constants/constant"
-import {pczOptions} from "../../../assets/js/pcz";
+import { SEX } from "../../../assets/js/constants/constant"
+import { pczOptions } from "../../../assets/js/pcz";
 import './index.less'
 import ETHICSNOTICE_SHOW_MANNER from "../../../assets/js/constants/ETHICSNOTICE_SHOW_MANNER";
 import ETHICSNOTICE_STATE from "../../../assets/js/constants/ETHICSNOTICE_STATE";
@@ -25,8 +25,9 @@ import DateUtil from "../../../assets/js/DateUtil";
 class Index extends Component {
 
 
-    constructor(props) {
+    constructor (props) {
         super(props);
+
 
 
         this.state = {
@@ -47,33 +48,47 @@ class Index extends Component {
         }
     }
 
+    componentWillUnmount() {
+    }
     componentDidMount() {
-        this.getBaseInfo()
+        this.getBaseInfo().then(() => {
+            if (sessionStorage.formCookie) {
+                this.setState({
+                    form: JSON.parse(sessionStorage.formCookie)
+                })
+            }
+        })
     }
 
     getBaseInfo = () => {
 
+        return new Promise((r) => {
+            Promise.all([
 
-        Promise.all([
+                getQualificationtypeList(),
+                getSchooltypeList(),
+                getMannertypeList(),
+            ]).then((data) => {
+                this.qualificationTypeObj = Util.array2Object(data[0], 'qualification_type_id')
+                this.schoolTypeObj = Util.array2Object(data[1], 'school_type_id')
+                this.mannerTypeObj = Util.array2Object(data[2], 'manner_type_id')
 
-            getQualificationtypeList(),
-            getSchooltypeList(),
-            getMannertypeList(),
-        ]).then((data) => {
-            this.qualificationTypeObj = Util.array2Object(data[0], 'qualification_type_id')
-            this.schoolTypeObj = Util.array2Object(data[1], 'school_type_id')
-            this.mannerTypeObj = Util.array2Object(data[2], 'manner_type_id')
+                this.setState({
+                    qualificationOptions: Util.getPopupPickerOptions(data[0], 'qualification_type_id', 'qualification_type_name'),
+                    schoolTypeOptions: Util.getPopupPickerOptions(data[1], 'school_type_id', 'school_type_name'),
+                    mannerTypeOptions: Util.getPopupPickerOptions(data[2], 'manner_type_id', 'manner_type_name')
+                })
 
-            this.setState({
-                qualificationOptions: Util.getPopupPickerOptions(data[0], 'qualification_type_id', 'qualification_type_name'),
-                schoolTypeOptions: Util.getPopupPickerOptions(data[1], 'school_type_id', 'school_type_name'),
-                mannerTypeOptions: Util.getPopupPickerOptions(data[2], 'manner_type_id', 'manner_type_name')
-            })
+                r()
 
 
-        }).catch(err => {
-            Util.fail(err)
-        });
+            }).catch(err => {
+                Util.fail(err)
+            });
+        })
+
+
+
     }
 
     getList = (page, isLoadmore) => {
@@ -105,6 +120,8 @@ class Index extends Component {
                     therapistList: data.data
                 })
             }
+
+            sessionStorage.formCookie = JSON.stringify(this.state.form)
 
         }).catch(err => {
             Util.fail(err)
@@ -254,20 +271,20 @@ class Index extends Component {
         return (
             <div className={'wrapper'}>
                 <Picker extra="请选择"
-                        data={this.state.pczOptions}
-                        title="区域"
-                        value={this.state.form.stationArea}
+                    data={this.state.pczOptions}
+                    title="区域"
+                    value={this.state.form.stationArea}
                     // onChange={v => console.log(v)}
-                        onOk={this.handleFormChange.bind(this, 'stationArea')}
+                    onOk={this.handleFormChange.bind(this, 'stationArea')}
                 >
                     <List.Item arrow="horizontal" key={1}>工作室所在区域</List.Item>
                 </Picker>
                 <Picker extra="请选择"
-                        data={this.state.pczOptions}
-                        title="区域"
-                        value={this.state.form.area}
+                    data={this.state.pczOptions}
+                    title="区域"
+                    value={this.state.form.area}
                     // onChange={v => console.log(v)}
-                        onOk={this.handleFormChange.bind(this, 'area')}
+                    onOk={this.handleFormChange.bind(this, 'area')}
                 >
                     <List.Item arrow="horizontal" key={1}>咨询师所在区域</List.Item>
                 </Picker>
@@ -275,9 +292,9 @@ class Index extends Component {
                 <Flex>
                     <Flex.Item>
                         <Picker data={Util.genderOptions} cols={1}
-                                extra="请选择"
-                                value={[this.state.form.gender]}
-                                onOk={this.handleFormChange.bind(this, 'gender')}
+                            extra="请选择"
+                            value={[this.state.form.gender]}
+                            onOk={this.handleFormChange.bind(this, 'gender')}
                         >
                             <List.Item arrow="horizontal">性别</List.Item>
                         </Picker>
@@ -286,9 +303,9 @@ class Index extends Component {
                     </Flex.Item>
                     <Flex.Item>
                         <Picker data={this.state.qualificationOptions} cols={1}
-                                extra="请选择"
-                                value={[this.state.form.qualification_type_id]}
-                                onOk={this.handleFormChange.bind(this, 'qualification_type_id')}
+                            extra="请选择"
+                            value={[this.state.form.qualification_type_id]}
+                            onOk={this.handleFormChange.bind(this, 'qualification_type_id')}
                         >
                             <List.Item arrow="horizontal">资质</List.Item>
                         </Picker>
@@ -298,9 +315,9 @@ class Index extends Component {
                 <Flex>
                     <Flex.Item>
                         <Picker data={this.state.schoolTypeOptions} cols={1}
-                                extra="请选择"
-                                value={[this.state.form.school_type_id]}
-                                onOk={this.handleFormChange.bind(this, 'school_type_id')}
+                            extra="请选择"
+                            value={[this.state.form.school_type_id]}
+                            onOk={this.handleFormChange.bind(this, 'school_type_id')}
                         >
                             <List.Item arrow="horizontal">学派</List.Item>
                         </Picker>
@@ -309,9 +326,9 @@ class Index extends Component {
                     </Flex.Item>
                     <Flex.Item>
                         <Picker data={this.state.mannerTypeOptions} cols={1}
-                                extra="请选择"
-                                value={[this.state.form.manner_type_id]}
-                                onOk={this.handleFormChange.bind(this, 'manner_type_id')}
+                            extra="请选择"
+                            value={[this.state.form.manner_type_id]}
+                            onOk={this.handleFormChange.bind(this, 'manner_type_id')}
                         >
                             <List.Item arrow="horizontal">咨询方式</List.Item>
                         </Picker>
@@ -329,7 +346,7 @@ class Index extends Component {
                             this.state.therapistList.map((item, index) => {
                                 return (
                                     <React.Fragment key={index}>
-                                        <WhiteSpace/>
+                                        <WhiteSpace />
                                         <WingBlank>
                                             <Card>
                                                 <Card.Body>
@@ -345,7 +362,7 @@ class Index extends Component {
 
                                                             this.isShowEthicsnotice(item) ?
                                                                 <List.Item>
-                                                                    <span style={{color: 'red'}}>
+                                                                    <span style={{ color: 'red' }}>
                                                                         伦理公告：{item.content}
                                                                     </span>
                                                                 </List.Item>
@@ -355,11 +372,11 @@ class Index extends Component {
                                                     <Flex>
                                                         <Flex.Item>
                                                             <Button type={"ghost"} size={"small"}
-                                                                    onClick={this.next.bind(this, item)}>选择此咨询师</Button>
+                                                                onClick={this.next.bind(this, item)}>选择此咨询师</Button>
                                                         </Flex.Item>
                                                         <Flex.Item>
                                                             <Button type={"primary"} size={"small"}
-                                                                    onClick={this.detail.bind(this, item)}>查看简历</Button>
+                                                                onClick={this.detail.bind(this, item)}>查看简历</Button>
                                                         </Flex.Item>
                                                     </Flex>
                                                 </Card.Body>
@@ -371,7 +388,7 @@ class Index extends Component {
                             })
                             :
                             <React.Fragment>
-                                <WhiteSpace/>
+                                <WhiteSpace />
                                 <p className={'center'}>未找到符合条件的咨询师</p>
                             </React.Fragment>
                     }
@@ -379,7 +396,7 @@ class Index extends Component {
                     {
                         this.state.listData.totalPages > this.state.listData.currentPage ?
                             <React.Fragment>
-                                <p className={'center'} style={{margin: '1.5em'}}>
+                                <p className={'center'} style={{ margin: '1.5em' }}>
                                     <span onClick={this.loadMore}>加载更多</span>
                                 </p>
                             </React.Fragment>

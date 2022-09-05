@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
-import {Error, Auth} from './router'
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import { Error, Auth } from './router'
 import routers from "./router";
 
 import Navigator from './components/Navigator'
@@ -12,7 +12,7 @@ import './assets/css/App.less'
 
 class App extends Component {
 
-    constructor(props) {
+    constructor (props) {
         super(props);
     }
 
@@ -32,7 +32,7 @@ class App extends Component {
                     return (
                         <Redirect to={{
                             pathname: '/user/register'
-                        }}/>
+                        }} />
                     )
                 }
 
@@ -44,7 +44,7 @@ class App extends Component {
                     Util.fail('授权code不能为空!')
                     return <Redirect to={{
                         pathname: '/error'
-                    }}/>
+                    }} />
                 } else {
 
                     return <Auth path={path} {...props} />
@@ -57,59 +57,59 @@ class App extends Component {
 
     }
 
-    mockTherapist=()=>{
+    mockTherapist = () => {
         store.dispatch({
-            type:'user_id',
+            type: 'user_id',
             payload: '49c3c3f285334868bf70f147bfd9b831'
         })
 
         store.dispatch({
-            type:'openid',
+            type: 'openid',
             payload: 'oNkDEvmRwbJ7VPew59gJkbPSQVvw'
         })
 
         store.dispatch({
-            type:'token',
+            type: 'token',
             payload: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJ1c2VyX2lkIjoiNDljM2MzZjI4NTMzNDg2OGJmNzBmMTQ3YmZkOWI4MzEiLCJwaG9uZSI6IjE4NjAxOTYwMDAxIiwibmFtZSI6IuW8oOWwj-WHoSIsImlkZW50aWZpY2F0aW9uX25vIjoiNDEwODgyMTk4ODAyMTcwMDAxIiwiZ2VuZGVyIjoibWFsZSIsImVtYWlsIjoiNDQ3ODE4MDAxQHFxLmNvbSIsImJpcnRoZGF5IjoiMjAxMC0wNi0yNSIsIm9wX2RhdGUiOiIyMDIwLTA2LTA5IDEwOjUyOjI4Iiwicm9sZSI6MywicGFzc3dvcmQiOiJlMTBhZGMzOTQ5YmE1OWFiYmU1NmUwNTdmMjBmODgzZSJ9LCJpYXQiOjE1OTI3OTkwMzh9.tI6H2tdsQN_FGwgk620a_vspk7gujq2v_0TPdzxMK8U'
         })
 
         store.dispatch({
-            type:'role',
+            type: 'role',
             payload: ROLE.therapist
         })
 
         store.dispatch({
-            type:'login',
-            payload:true
+            type: 'login',
+            payload: true
         })
     }
-    mock=()=>{
+    mock = () => {
 
         store.dispatch({
-            type:'user_id',
+            type: 'user_id',
             payload: 'ce645425d808411eaee861ecdaf348c3'
         })
 
         store.dispatch({
-            type:'openid',
+            type: 'openid',
             payload: 'oNkDEvkobxGNXnlLyuV5IDqYQCMk'
         })
 
         store.dispatch({
-            type:'token',
+            type: 'token',
             payload: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJ1c2VyX2lkIjoiY2U2NDU0MjVkODA4NDExZWFlZTg2MWVjZGFmMzQ4YzMiLCJwaG9uZSI6IjE4MTAxMzYwMDAxIiwibmFtZSI6IuW8oOaXoOW_jCIsImlkZW50aWZpY2F0aW9uX25vIjoiNDEwODgyMTk4ODAyMTcwMDAxIiwiZ2VuZGVyIjoibWFsZSIsImVtYWlsIjoiNDQ3ODE4MDAxQHFxLmNvbSIsImJpcnRoZGF5IjoiMTk4OC0wNi0xMCIsIm9wX2RhdGUiOiIyMDIwLTA2LTEwIDE1OjQ3OjQ1Iiwicm9sZSI6NCwicGFzc3dvcmQiOm51bGx9LCJpYXQiOjE1OTIzMDM4ODN9.FQSlmw3Bi3Mvos8EdVJS6kG3fZdO8io9oD5hIXEA9ss'
         })
 
         store.dispatch({
-            type:'role',
+            type: 'role',
             payload: ROLE.client
         })
 
 
 
         store.dispatch({
-            type:'login',
-            payload:true
+            type: 'login',
+            payload: true
         })
     }
     render() {
@@ -146,14 +146,14 @@ class App extends Component {
                             routers.map((item, index) => {
 
                                 return <Route key={index} exact path={item.path}
-                                              component={this.createComponent(item.component, item.path)}/>
+                                    component={this.createComponent(item.component, item.path)} />
                             })
                         }
 
-                        <Route exact path='/error' component={Error}/>
-                        <Route exact path='/auth' component={Auth}/>
+                        <Route exact path='/error' component={Error} />
+                        <Route exact path='/auth' component={Auth} />
 
-                        <Redirect to="/"/>
+                        <Redirect to="/" />
                     </Switch>
                 </Router>
             </section>
