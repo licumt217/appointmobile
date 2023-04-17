@@ -57,6 +57,11 @@ class Index extends Component {
                     form: JSON.parse(sessionStorage.formCookie)
                 })
             }
+            if (sessionStorage.formCookieList) {
+                this.setState({
+                    therapistList: JSON.parse(sessionStorage.formCookieList)
+                })
+            }
         })
     }
 
@@ -122,6 +127,7 @@ class Index extends Component {
             }
 
             sessionStorage.formCookie = JSON.stringify(this.state.form)
+            sessionStorage.formCookieList = JSON.stringify(this.state.therapistList)
 
         }).catch(err => {
             Util.fail(err)
